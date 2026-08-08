@@ -20,7 +20,7 @@ makefile.write_text(s)
 cyber = root / 'fw/application/src/app/cyberdeck/app_cyberdeck.c'
 if cyber.exists():
     t = cyber.read_text()
-    t = t.replace('u8g2_font_6x10_tf', 'u8g2_font_wqy12_t_gb2312a_lite')
+    t = t.replace('u8g2_font_6x10_tf', 'u8g2_font_wqy12_t_gb2312a')
     cyber.write_text(t)
 
 print('post-patch include/font fixes applied')
