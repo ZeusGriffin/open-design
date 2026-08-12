@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d0f12" />
+  <title>Link Vault</title>
+  <style>
+    :root{
+      --bg:#0d0f12;
+      --panel:#15181d;
+      --panel2:#1c2026;
+      --text:#f7f7f3;
+      --muted:#9aa2ad;
+      --line:rgba(255,255,255,.08);
+      --accent:#f7f7f3;
+      --shadow:0 18px 50px rgba(0,0,0,.25);
+    }
+    *{box-sizing:border-box}
+    html{background:var(--bg)}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--text);
+      background:
+        radial-gradient(900px 420px at 50% -10%, rgba(255,255,255,.08), transparent 55%),
+        var(--bg);
+      font-family:Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing:-.01em;
+    }
+    button,input{font:inherit}
+    a{color:inherit;text-decoration:none}
+    .shell{width:min(1060px,100%);margin:auto;padding:28px 18px 80px}
+    .top{
+      display:flex;justify-content:space-between;gap:16px;align-items:flex-start;
+      margin-bottom:26px
+    }
+    .eyebrow{font-size:11px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+    h1{font-size:clamp(34px,7vw,68px);line-height:.9;margin:10px 0 12px;letter-spacing:-.055em}
+    .sub{max-width:640px;color:var(--muted);font-size:15px;line-height:1.55}
+    .count{
+      flex:0 0 auto;border:1px solid var(--line);background:rgba(255,255,255,.03);
+      border-radius:18px;padding:12px 14px;text-align:right;min-width:92px
+    }
+    .count strong{display:block;font-size:24px}
+    .count span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}
+    .toolbar{
+      position:sticky;top:0;z-index:10;
+      backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+      background:linear-gradient(to bottom, rgba(13,15,18,.94), rgba(13,15,18,.74));
+      padding:10px 0 14px;margin:0 0 10px
+    }
+    .search{
+      width:100%;border:1px solid var(--line);border-radius:18px;background:var(--panel);
+      color:var(--text);padding:15px 16px;outline:none;box-shadow:var(--shadow)
+    }
+    .chips{display:flex;gap:8px;overflow:auto;padding:10px 0 2px;scrollbar-width:none}
+    .chips::-webkit-scrollbar{display:none}
+    .chip{
+      border:1px solid var(--line);background:transparent;color:var(--muted);
+      border-radius:999px;padding:9px 12px;white-space:nowrap;cursor:pointer
+    }
+    .chip.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .card{
+      min-height:245px;border:1px solid var(--line);border-radius:24px;background:var(--panel);
+      padding:18px;display:flex;flex-direction:column;position:relative;overflow:hidden;
+      transition:.2s ease;box-shadow:0 8px 30px rgba(0,0,0,.15)
+    }
+    .card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.16)}
+    .card::after{
+      content:"";position:absolute;width:130px;height:130px;border-radius:50%;
+      background:rgba(255,255,255,.03);right:-55px;bottom:-55px
+    }
+    .row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .icon{
+      width:46px;height:46px;border-radius:14px;background:var(--panel2);
+      display:grid;place-items:center;font-size:14px;font-weight:800;letter-spacing:-.02em;
+      border:1px solid var(--line)
+    }
+    .fav{
+      width:38px;height:38px;border:1px solid var(--line);border-radius:13px;
+      background:transparent;color:var(--muted);cursor:pointer;font-size:17px
+    }
+    .fav.on{background:var(--text);color:var(--bg)}
+    .rank{margin-top:18px;font-size:10px;letter-spacing:.15em;color:var(--muted);text-transform:uppercase}
+    .name{font-size:25px;margin:4px 0 6px;letter-spacing:-.04em}
+    .desc{color:var(--muted);font-size:13px;line-height:1.45;max-width:92%}
+    .meta{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 16px}
+    .tag{border:1px solid var(--line);border-radius:999px;padding:5px 8px;font-size:10px;color:var(--muted)}
+    .open{
+      margin-top:auto;display:flex;align-items:center;justify-content:space-between;
+      border-top:1px solid var(--line);padding-top:14px;font-size:13px;font-weight:700
+    }
+    .arrow{font-size:18px}
+    .empty{grid-column:1/-1;color:var(--muted);padding:50px 10px;text-align:center}
+    .footer{color:var(--muted);text-align:center;font-size:11px;padding:34px 0 0}
+    @media(max-width:700px){
+      .shell{padding:20px 14px 70px}
+      .grid{grid-template-columns:1fr}
+      .card{min-height:220px}
+      .top{align-items:flex-end}
+      .count{min-width:78px}
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="top">
+      <div>
+        <div class="eyebrow">Free Web Tools / Collection 01</div>
+        <h1>LINK<br>VAULT</h1>
+        <div class="sub">Ten free websites from “Free Websites That Are Secretly Better Than Paid Apps.” Search, filter, favorite, and launch each tool instantly.</div>
+      </div>
+      <div class="count"><strong id="visibleCount">10</strong><span>links</span></div>
+    </section>
+
+    <section class="toolbar">
+      <input id="search" class="search" placeholder="Search tools, uses, or categories…" autocomplete="off" />
+      <div class="chips" id="chips"></div>
+    </section>
+
+    <section class="grid" id="grid"></section>
+    <div class="footer">LINK VAULT • standalone web app</div>
+  </main>
+
+<script>
+const tools = [
+  {rank:10,name:"myNoise",short:"MN",category:"Focus",url:"https://mynoise.net/",replace:"Calm / Headspace",desc:"Customizable soundscapes for focus, relaxation, sleep and masking distractions.",tags:["Sound","Focus","No install"]},
+  {rank:9,name:"SuperCook",short:"SC",category:"Food",url:"https://www.supercook.com/",replace:"Meal-planning apps",desc:"Enter ingredients you already have and find recipes you can make without another grocery run.",tags:["Recipes","Pantry","Zero waste"]},
+  {rank:8,name:"Hemingway Editor",short:"HE",category:"Writing",url:"https://hemingwayapp.com/",replace:"Premium writing tools",desc:"Highlights hard-to-read sentences, passive voice and complexity while showing readability.",tags:["Writing","Editing","Readability"]},
+  {rank:7,name:"JustWatch",short:"JW",category:"Entertainment",url:"https://www.justwatch.com/",replace:"Opening every streaming app",desc:"Search a movie or show once and see where it is currently streaming, renting or buying.",tags:["Streaming","Search","Movies"]},
+  {rank:6,name:"Ninite",short:"NN",category:"Windows",url:"https://ninite.com/",replace:"Manual app installers",desc:"Choose multiple Windows apps and install or update them together with one streamlined installer.",tags:["Windows","Setup","Utilities"]},
+  {rank:5,name:"draw.io",short:"DI",category:"Design",url:"https://app.diagrams.net/",replace:"Microsoft Visio",desc:"Free diagramming for flowcharts, org charts, network maps, floor plans and more.",tags:["Diagrams","Flowcharts","Collaboration"]},
+  {rank:4,name:"Photopea",short:"PP",category:"Design",url:"https://www.photopea.com/",replace:"Photoshop for quick edits",desc:"Browser-based image editor that can work with PSD files, layers, masks and familiar editing tools.",tags:["Images","PSD","Browser"]},
+  {rank:3,name:"Bitwarden",short:"BW",category:"Security",url:"https://bitwarden.com/",replace:"Paid password managers",desc:"Password manager with cross-device vault access and an open-source security model.",tags:["Passwords","Security","Vault"]},
+  {rank:2,name:"Perplexity",short:"PX",category:"Research",url:"https://www.perplexity.ai/",replace:"Traditional web research",desc:"AI-assisted web research with linked sources and focused search modes.",tags:["AI","Research","Sources"]},
+  {rank:1,name:"Scribe",short:"SB",category:"Work",url:"https://scribe.com/",replace:"Manual SOP screenshots",desc:"Captures workflows and turns them into step-by-step documentation and training guides.",tags:["SOP","Training","Workflow"]}
+];
+
+const cats = ["All","Favorites",...new Set(tools.map(t=>t.category))];
+let active = "All";
+let favorites = JSON.parse(localStorage.getItem("linkVaultFavorites") || "[]");
+
+const grid = document.getElementById("grid");
+const chips = document.getElementById("chips");
+const search = document.getElementById("search");
+const visibleCount = document.getElementById("visibleCount");
+
+function saveFavs(){ localStorage.setItem("linkVaultFavorites", JSON.stringify(favorites)); }
+
+function renderChips(){
+  chips.innerHTML = cats.map(c=>`<button class="chip ${c===active?'active':''}" data-cat="${c}">${c}</button>`).join("");
+  chips.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{active=b.dataset.cat; renderChips(); render();});
+}
+
+function filtered(){
+  const q = search.value.trim().toLowerCase();
+  return tools.filter(t=>{
+    const byCat = active==="All" || (active==="Favorites" ? favorites.includes(t.name) : t.category===active);
+    const hay = [t.name,t.category,t.replace,t.desc,...t.tags].join(" ").toLowerCase();
+    return byCat && (!q || hay.includes(q));
+  });
+}
+
+function toggleFav(name){
+  favorites = favorites.includes(name) ? favorites.filter(x=>x!==name) : [...favorites,name];
+  saveFavs(); render();
+}
+
+function render(){
+  const list = filtered();
+  visibleCount.textContent = list.length;
+  if(!list.length){grid.innerHTML='<div class="empty">No matching links.</div>';return;}
+  grid.innerHTML = list.map(t=>`
+    <article class="card">
+      <div class="row">
+        <div class="icon">${t.short}</div>
+        <button class="fav ${favorites.includes(t.name)?'on':''}" aria-label="Favorite ${t.name}" data-fav="${t.name}">★</button>
+      </div>
+      <div class="rank">#${t.rank} • ${t.category}</div>
+      <div class="name">${t.name}</div>
+      <div class="desc">${t.desc}</div>
+      <div class="meta">
+        <span class="tag">Replaces: ${t.replace}</span>
+        ${t.tags.slice(0,2).map(x=>`<span class="tag">${x}</span>`).join("")}
+      </div>
+      <a class="open" href="${t.url}" target="_blank" rel="noopener noreferrer">
+        <span>Open site</span><span class="arrow">↗</span>
+      </a>
+    </article>
+  `).join("");
+  grid.querySelectorAll("[data-fav]").forEach(b=>b.onclick=()=>toggleFav(b.dataset.fav));
+}
+search.addEventListener("input", render);
+renderChips();
+render();
+</script>
+</body>
+</html>
