@@ -3,7 +3,7 @@
 I have a reusable agent-skills vault in my GitHub repository:
 
 - Repository: `ZeusGriffin/open-design`
-- Branch: `chatgpt/reusable-skills-vault`
+- Branch: `main`
 - Vault index: `SKILLS_VAULT.md`
 - Pinned upstream source: `vendor/openai-skills`
 - Claude router: `.claude/skills/shared-skills-router/SKILL.md`
@@ -23,4 +23,4 @@ Your job is to use this repository as my reusable skills source of truth.
 9. The original YouTube Short could not be independently transcribed when this vault was created. Do not claim the video named `openai/skills` unless you can verify that yourself. If you can identify a different exact GitHub skill pack from that Short, compare it with this vault, add any missing legitimate skills without deleting the verified OpenAI source, preserve licenses/provenance, and report what changed.
 10. For future work in this repository, automatically consult the reusable skills vault whenever a specialized skill could improve accuracy, consistency, verification, or execution.
 
-Start by reporting: (a) whether you can read the branch, (b) whether the submodule is initialized, (c) how many skills you can discover, and (d) the first five skill names you see. Then proceed with the task I give you.
+Start by reporting: (a) whether you can read `main`, (b) whether the submodule is initialized, (c) how many skills you can discover, and (d) the first five skill names you see. Then proceed with the task I give you.
