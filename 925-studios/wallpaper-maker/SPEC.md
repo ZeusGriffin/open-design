@@ -9,6 +9,9 @@ Tap Wallpaper Maker
 ## Credit
 Made by ZUZ
 
+## Source reference
+https://youtu.be/ijF3A3pl8NE
+
 ## Milestones
 
 1. **Project shell:** mobile-first canvas, project creation, presets, local save.
