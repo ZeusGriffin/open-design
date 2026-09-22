@@ -362,3 +362,8 @@ Run `pnpm install` after changing package manifests, workspace layout, command e
 ## Can I use Node 22 instead of Node 24?
 
 No. `package.json#engines` specifies `node: "~24"`, which is the only supported runtime. The current lockfile pins `better-sqlite3@11.10.0`; on Windows it has no prebuilt binary for Node 24 and is built from source via node-gyp (see the Windows native section). Older Node versions are not tested and may hit lockfile or dependency incompatibilities.
+
+
+## Jev decision router
+
+Before AI-assisted work that benefits from routing or verification, read `.ai/JEV_ROUTER.md`. Use `typesafe-ai/jev` only for typed routing/classification/scoring/verification; keep the main capable model for generation. Never commit `AI_GATEWAY_API_KEY`, and fall back to the existing workflow if Jev is unavailable.
