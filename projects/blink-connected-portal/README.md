@@ -58,3 +58,7 @@ The exact visual recreation is intentionally not locked here; preserve the refer
 ## Security
 
 Only apps listed in `config/apps.json` can be launched. Never expose a generic shell endpoint. Never commit `.env`, Spotify tokens, passwords, SSH keys, or API secrets.
+
+## Project hardware notes
+
+- [Xorytin HY300 Ultra — compatibility notes](docs/XORYTIN_HY300_ULTRA.md)
