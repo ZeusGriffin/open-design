@@ -1,0 +1,34 @@
+[
+  {
+    "id": "spotify",
+    "label": "Spotify",
+    "kind": "internal",
+    "icon": "♪"
+  },
+  {
+    "id": "youtube",
+    "label": "YouTube",
+    "kind": "url",
+    "url": "https://www.youtube.com/"
+  },
+  {
+    "id": "chatgpt",
+    "label": "ChatGPT",
+    "kind": "url",
+    "url": "https://chatgpt.com/"
+  },
+  {
+    "id": "files",
+    "label": "Files",
+    "kind": "local",
+    "command": "pcmanfm",
+    "args": []
+  },
+  {
+    "id": "terminal",
+    "label": "Terminal",
+    "kind": "local",
+    "command": "lxterminal",
+    "args": []
+  }
+]
