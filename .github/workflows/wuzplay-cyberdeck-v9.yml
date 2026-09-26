@@ -1,0 +1,57 @@
+name: Wuzplay Cyberdeck v9 DFU
+
+on:
+  push:
+    branches: ["wuzplay-cyberdeck-v9-build"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  build-dfu:
+    runs-on: ubuntu-latest
+    container: solosky/nrf52-sdk:latest
+    steps:
+      - name: Checkout build harness
+        uses: actions/checkout@v4
+
+      - name: Clone Pixl.js firmware base
+        run: |
+          git clone --branch 2.12.0 --depth 1 https://github.com/solosky/pixl.js.git pixljs-src
+          cd pixljs-src
+          git submodule update --init --recursive
+
+      - name: Apply Wuzplay Cyberdeck v9 changes
+        run: |
+          python3 wuzplay-cyberdeck-v9/apply_patch.py pixljs-src
+          python3 wuzplay-cyberdeck-v9/post_patch_fixes.py pixljs-src
+
+      - name: Build OLED DFU
+        run: |
+          cd pixljs-src/fw
+          make all BOARD=OLED RELEASE=1 APP_VERSION=900
+
+      - name: Record firmware size
+        run: |
+          arm-none-eabi-size pixljs-src/fw/_build/pixljs.out | tee firmware-size.txt
+
+      - name: Validate DFU and build end-to-end package
+        run: |
+          test -s pixljs-src/fw/_build/pixjs_ota_v900.zip
+          mkdir -p wuzplay-output
+          cp pixljs-src/fw/_build/pixjs_ota_v900.zip wuzplay-output/Wuzplay_Cyberdeck_v9_DFU_KEEP_ZIPPED.zip
+          python3 wuzplay-cyberdeck-v9/package_release.py \
+            wuzplay-output/Wuzplay_Cyberdeck_v9_DFU_KEEP_ZIPPED.zip \
+            --out wuzplay-output \
+            --repo-root .
+          cp firmware-size.txt wuzplay-output/firmware-size.txt
+          unzip -l wuzplay-output/Wuzplay_Cyberdeck_v9_DFU_KEEP_ZIPPED.zip
+          unzip -l wuzplay-output/Wuzplay_Cyberdeck_v9_Verified_Package.zip
+          sha256sum wuzplay-output/*.zip | tee wuzplay-output/SHA256.txt
+
+      - name: Upload verified Wuzplay package
+        uses: actions/upload-artifact@v4
+        with:
+          name: Wuzplay-Cyberdeck-v9-Verified-Package
+          path: wuzplay-output/
+          if-no-files-found: error
