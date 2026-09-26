@@ -1,0 +1,127 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #050505;
+  color: #f5f5f2;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 80% 5%, rgba(255,255,255,.08), transparent 24rem),
+    #050505;
+}
+
+button { font: inherit; }
+
+.shell {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 26px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+h1, h2, p { margin: 0; }
+h1 { letter-spacing: .22em; font-size: clamp(2rem, 7vw, 5rem); }
+h2 { font-size: clamp(1.25rem, 3vw, 2rem); }
+
+.eyebrow {
+  color: #a5a5a0;
+  font-size: .72rem;
+  letter-spacing: .22em;
+  margin-bottom: 8px;
+}
+
+.status {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: #b5b5b0;
+  font-size: .8rem;
+}
+
+.status span:first-child {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #777;
+  box-shadow: 0 0 16px currentColor;
+}
+
+.status.online span:first-child { background: #f4f4ef; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 12px;
+}
+
+.tile, .controls button {
+  border: 1px solid #2d2d2a;
+  background: rgba(255,255,255,.035);
+  color: #fff;
+}
+
+.tile {
+  min-height: 145px;
+  border-radius: 22px;
+  padding: 18px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.tile:active { transform: scale(.985); }
+.tile .icon { font-size: 2.2rem; }
+.tile .label { font-weight: 650; letter-spacing: .04em; }
+
+.player {
+  margin-top: 14px;
+  border: 1px solid #2d2d2a;
+  border-radius: 24px;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,.025);
+}
+
+#trackMeta {
+  color: #a5a5a0;
+  margin-top: 6px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.controls button {
+  min-height: 48px;
+  min-width: 56px;
+  border-radius: 999px;
+  padding: 0 16px;
+}
+
+.controls button:disabled { opacity: .35; }
+
+@media (max-width: 640px) {
+  .shell { padding: 16px; }
+  .player { align-items: stretch; flex-direction: column; }
+  .controls { justify-content: flex-start; }
+}
