@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <title>BLINK Portal</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <p class="eyebrow">BLINK / BY ZEUS</p>
+        <h1>PORTAL</h1>
+      </div>
+      <div class="status"><span id="netDot"></span><span id="netText">checking</span></div>
+    </header>
+
+    <section id="appGrid" class="grid" aria-label="Apps"></section>
+
+    <section class="player" id="spotifyPanel">
+      <div class="player-copy">
+        <p class="eyebrow">SPOTIFY CONNECT</p>
+        <h2 id="trackName">Not connected</h2>
+        <p id="trackMeta">Press connect once Spotify setup is complete.</p>
+      </div>
+      <div class="controls">
+        <button id="spotifyConnect">CONNECT</button>
+        <button id="prevBtn" disabled>◀</button>
+        <button id="playBtn" disabled>▶</button>
+        <button id="nextBtn" disabled>▶▶</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
