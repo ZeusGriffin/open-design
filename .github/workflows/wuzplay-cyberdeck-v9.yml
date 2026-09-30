@@ -25,11 +25,27 @@ jobs:
         run: |
           python3 wuzplay-cyberdeck-v9/apply_patch.py pixljs-src
           python3 wuzplay-cyberdeck-v9/post_patch_fixes.py pixljs-src
+          python3 wuzplay-cyberdeck-v9/apply_features.py pixljs-src
 
       - name: Build OLED DFU
         run: |
           cd pixljs-src/fw
-          make all BOARD=OLED RELEASE=1 APP_VERSION=900
+          set +e
+          make all BOARD=OLED RELEASE=1 APP_VERSION=900 > "$GITHUB_WORKSPACE/build.log" 2>&1
+          rc=$?
+          tail -n 60 "$GITHUB_WORKSPACE/build.log"
+          exit $rc
+
+      - name: Surface compiler errors as annotations
+        if: failure()
+        run: |
+          grep -nE "error:|undefined reference|overflowed|Error [0-9]+|No rule to make" build.log | head -40 | while IFS= read -r l; do echo "::error::$l"; done
+          echo "::error::build.log lines: $(wc -l < build.log)"
+
+      - name: Report warnings from new Cyberdeck code
+        if: always()
+        run: |
+          grep -nE "warning:" build.log | grep -E "wuz_|app_cyberdeck|cyberdeck_data|/wuz/|driver\.c|mui_list_view|chameleon_view|app_desktop" | head -30 | while IFS= read -r l; do echo "::warning::$l"; done || true
 
       - name: Record firmware size
         run: |
@@ -49,9 +65,24 @@ jobs:
           unzip -l wuzplay-output/Wuzplay_Cyberdeck_v9_Verified_Package.zip
           sha256sum wuzplay-output/*.zip | tee wuzplay-output/SHA256.txt
 
+      - name: Publish build facts as run annotations
+        run: |
+          echo "::notice title=Firmware size (text data bss dec)::$(tail -n 1 firmware-size.txt)"
+          unzip -p wuzplay-output/Wuzplay_Cyberdeck_v9_DFU_KEEP_ZIPPED.zip manifest.json | tr -d ' \n' | head -c 900 > manifest-compact.txt
+          echo "::notice title=DFU manifest::$(cat manifest-compact.txt)"
+          echo "::notice title=SHA256::$(tr '\n' ' ' < wuzplay-output/SHA256.txt)"
+
       - name: Upload verified Wuzplay package
         uses: actions/upload-artifact@v4
         with:
           name: Wuzplay-Cyberdeck-v9-Verified-Package
           path: wuzplay-output/
           if-no-files-found: error
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Wuzplay-Cyberdeck-v9-Build-Log
+          path: build.log
+          if-no-files-found: ignore
