@@ -52,6 +52,16 @@ jobs:
           grep -nE "error:|undefined reference|overflowed|Error [0-9]+|No rule to make" build.log | head -40 | while IFS= read -r l; do echo "::error::$l"; done
           echo "::error::build.log lines: $(wc -l < build.log)"
 
+      - name: Flash size diagnostics (largest objects and symbols)
+        if: always()
+        run: |
+          cd pixljs-src/fw/_build
+          OBJ=$(find . -name '*.o' | sort)
+          TOP=$(arm-none-eabi-size $OBJ | awk 'NR>1 {print $4, $6}' | sort -rn | head -25 | awk '{printf "%d %s | ", $1, $2}')
+          echo "::notice title=Largest objects (bytes)::$TOP"
+          SYM=$(arm-none-eabi-nm -A -S --size-sort -t d $OBJ 2>/dev/null | awk '$3 ~ /^[TtRrDd]$/ {print $2, $4, $1}' | sort -rn | head -25 | awk '{printf "%d %s | ", $1, $2}')
+          echo "::notice title=Largest flash symbols (bytes)::$SYM"
+
       - name: Report warnings from new Cyberdeck code
         if: always()
         run: |
