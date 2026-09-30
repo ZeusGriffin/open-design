@@ -51,7 +51,8 @@ README = '''WUZPLAY CYBERDECK v9 — READ ME FIRST
 1. Unzip THIS OUTER package.
 2. DO NOT unzip 01_INSTALL_WUZPLAY_DFU_KEEP_ZIPPED.zip.
 3. In Wuzplay Firmware Upgrade / Nordic DFU, select 01_INSTALL_WUZPLAY_DFU_KEEP_ZIPPED.zip.
-4. Transfer files from 02_COMPANION_FILES_UNZIP_FIRST/External_Storage to Wuzplay external storage separately.
+4. Nothing else needs to be copied to the device. The Cyberdeck text pages (Cyber Tools, etc.) are built into the firmware.
+   OPTIONAL: to replace a page with your own text, copy that file from 02_COMPANION_FILES_UNZIP_FIRST/External_Storage to Wuzplay external storage. A file on the device overrides the built-in one.
 5. Import NFC preset BIN files through Card Emulator / Tag Explorer. NFC files do NOT go in Firmware Upgrade.
 6. Phone-assisted actions such as Govee, Flashlight, Find Car, timers, and Meditation Cyber run on the phone. NFC launches them; Wuzplay itself has no Internet connection.
 

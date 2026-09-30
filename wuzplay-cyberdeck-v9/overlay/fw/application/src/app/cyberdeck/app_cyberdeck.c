@@ -158,7 +158,19 @@ static void cy_open_file(cyber_t *a, const char *title, const char *path, cy_scr
         n = d->read_file_data(path, a->buf, sizeof(a->buf) - 1);
     }
     if (n < 0) {
-        strcpy(a->buf, "FILE NOT FOUND");
+        /* Not on the device: use the built-in text that ships inside the firmware. */
+        const char *def = NULL;
+        for (uint8_t i = 0; i < CY_DEFAULT_COUNT; i++) {
+            if (strcmp(cy_defaults[i].path, path) == 0) {
+                def = cy_defaults[i].text;
+                break;
+            }
+        }
+        if (def) {
+            strncpy(a->buf, def, sizeof(a->buf) - 1);
+        } else {
+            strcpy(a->buf, "FILE NOT FOUND");
+        }
     } else if (n == 0) {
         strcpy(a->buf, "NO DATA");
     } else {

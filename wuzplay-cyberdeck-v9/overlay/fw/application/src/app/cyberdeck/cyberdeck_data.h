@@ -82,3 +82,30 @@ static const cy_file_t cy_tool_files[] = {
     {"govee.txt", "/govee.txt"},   {"todo.txt", "/todo.txt"},
 };
 #define CY_TOOL_COUNT ((uint8_t)(sizeof(cy_tool_files) / sizeof(cy_tool_files[0])))
+
+/* Built-in defaults for every companion file. They live in the DFU, so nothing has to be copied
+ * to the device. If a file with the same name exists on the device, the device file wins. */
+typedef struct {
+    const char *path;
+    const char *text;
+} cy_default_t;
+
+static const cy_default_t cy_defaults[] = {
+    {"/alerts.txt", "CYBER ALERTS\nNo alerts.\nPut short alerts in alerts.txt on the device to show them here."},
+    {"/calendar.txt", "CALENDAR\nNo events.\nPut short events in calendar.txt on the device."},
+    {"/commands.txt", "COMMANDS\nBACK,RIGHT,BACK,BACK = Meditation Cyber\nBACK x5 = Govee\nLEFT x5 = Find My Car\nRIGHT x6 = Flashlight\nHome screen only."},
+    {"/contacts.txt", "CONTACTS\nNo contacts.\nPut a short list in contacts.txt on the device."},
+    {"/cyber.txt", "CYBER DASHBOARD\nWuzplay Cyberdeck v9\nNFC + BLE companion ready"},
+    {"/emergency.txt", "EMERGENCY\nNothing stored.\nPut non-sensitive reference info in emergency.txt on the device."},
+    {"/govee.txt", "GOVEE\nMake Apple Shortcuts named like the Govee cards.\nNFC opens the phone Shortcut. Wuzplay has no Internet."},
+    {"/home.txt", "HOME\nNo notes.\nPut quick actions in home.txt on the device."},
+    {"/links.txt", "LINKS\nNo links.\nPut short URLs in links.txt on the device."},
+    {"/network.txt", "NETWORK\nNo notes.\nNon-secret info only. Never store passwords."},
+    {"/nfc.txt", "NFC CARDS\nImport card BIN files in Card Emulator / Tag Explorer, not Firmware Upgrade."},
+    {"/notes.txt", "NOTES\nNo notes.\nPut quick notes in notes.txt on the device."},
+    {"/quick.txt", "QUICK ACTIONS\nGovee / Flashlight / Find Car / Meditation Cyber"},
+    {"/system.txt", "SYSTEM\nWuzplay Cyberdeck v9\nBACK = one level up."},
+    {"/todo.txt", "TODO\nNothing yet.\nPut items in todo.txt on the device."},
+    {"/tools.txt", "CYBER TOOLS\nScreen test checks the display.\nOther files are notes you can edit."},
+};
+#define CY_DEFAULT_COUNT ((uint8_t)(sizeof(cy_defaults) / sizeof(cy_defaults[0])))
