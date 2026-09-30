@@ -158,6 +158,14 @@ replace(desk, 'void app_desktop_on_kill(mini_app_inst_t *p_app_inst) {\n',
 # ---------------------------------------------------------------- game list label
 replace('fw/application/src/app/game/scene/game_scene_game_list.c', '"NBA 2K - SOON"', '"NBA 2K - COMING SOON"')
 
+# Restore the three stock Pixl.js games the earlier list rebuild dropped (nothing stock is removed).
+replace('fw/application/src/app/game/scene/game_scene_game_list.c',
+        '    mui_list_view_add_item(app->p_list_view, ICON_FILE, "REACTION", wuz_reaction_run);\n',
+        '    mui_list_view_add_item(app->p_list_view, ICON_FILE, "REACTION", wuz_reaction_run);\n'
+        '    mui_list_view_add_item(app->p_list_view, ICON_FILE, "LANDER", tiny_lander_run);\n'
+        '    mui_list_view_add_item(app->p_list_view, ICON_FILE, "INVADERS", tiny_invaders_run);\n'
+        '    mui_list_view_add_item(app->p_list_view, ICON_FILE, "TETRIS", tiny_tris_run);\n')
+
 # Orientation check screen (direct-write path); its UI-path twin lives in Cyberdeck > Cyber Tools.
 replace('fw/application/src/app/game/port/wuz/wuz_games.h', 'void wuz_nba2k_run(void);',
         'void wuz_nba2k_run(void);\nvoid wuz_screentest_run(void);')
