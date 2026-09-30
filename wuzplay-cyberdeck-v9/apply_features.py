@@ -62,6 +62,9 @@ replace('fw/application/src/boards/board_oled.h', '#define OLED_SCREEN\n', '''#d
 /* Wuzplay screen orientation: single source of truth for the UI and the games.
  * 1 = rotated 180 degrees (Wuzplay), 0 = stock Pixl.js orientation. */
 #define WUZ_ROTATE_180 1
+/* The SH1106 RAM is 132 columns wide and the visible 128 start at column 2. u8g2 uses that
+ * offset for the UI, so the direct-write game path must use it too or games sit ~2 px off. */
+#define WUZ_OLED_COL_OFFSET 2
 #if WUZ_ROTATE_180
 #define WUZ_U8G2_ROT U8G2_R2
 #else
@@ -90,7 +93,7 @@ replace(drv, 'void JOY_OLED_end() { hal_spi_bus_release(mui_u8g2_get_spi_device(
         r'''void JOY_OLED_end() {
 #if WUZ_ROTATE_180
     /* tested on the host in CI: wuzplay-cyberdeck-v9/tests/rotation_test.c */
-    JOY_OLED_set_pos(0, wuz_rot_page_index(wuz_page_idx));
+    JOY_OLED_set_pos(WUZ_OLED_COL_OFFSET, wuz_rot_page_index(wuz_page_idx));
     for (int c = 0; c < 128; c++) {
         JOY_OLED_write_data(1, wuz_rot_page_byte(wuz_page_buf, wuz_page_n, c));
     }
