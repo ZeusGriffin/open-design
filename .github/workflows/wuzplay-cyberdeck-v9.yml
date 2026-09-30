@@ -3,12 +3,22 @@ name: Wuzplay Cyberdeck v9 DFU
 on:
   push:
     branches: ["wuzplay-cyberdeck-v9-build"]
-  pull_request:
-    branches: ["main"]
   workflow_dispatch:
 
 jobs:
+  rotation-test:
+    # Proves the game-path 180 degree rotation equals a true rotation of the 128x64 bitmap
+    # (not a mirror). Compiles the exact header the firmware uses. Blocks the DFU build on failure.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Host unit test - screen rotation
+        run: |
+          gcc -std=c99 -Wall -Wextra -Werror -o rotation_test wuzplay-cyberdeck-v9/tests/rotation_test.c
+          ./rotation_test
+
   build-dfu:
+    needs: rotation-test
     runs-on: ubuntu-latest
     container: solosky/nrf52-sdk:latest
     steps:

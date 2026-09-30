@@ -54,6 +54,24 @@ write('fw/application/src/app/game/port/wuz/wuz_font5x7.h',
       '/* Classic 5x7 GLCD font, ASCII 32..126. 5 column bytes per glyph, bit0 = top row. */\n'
       'static const uint8_t wuz_font5x7[95][5] = {\n' + '\n'.join(rows) + '\n};\n')
 
+# ---------------------------------------------------------------- 2b. ONE switch for screen orientation
+# Both display paths read this: the UI (u8g2 rotation) and direct-write games (JOY_OLED layer).
+# Set WUZ_ROTATE_180 to 0 to get stock orientation on BOTH paths at once.
+replace('fw/application/src/boards/board_oled.h', '#define OLED_SCREEN\n', '''#define OLED_SCREEN
+
+/* Wuzplay screen orientation: single source of truth for the UI and the games.
+ * 1 = rotated 180 degrees (Wuzplay), 0 = stock Pixl.js orientation. */
+#define WUZ_ROTATE_180 1
+#if WUZ_ROTATE_180
+#define WUZ_U8G2_ROT U8G2_R2
+#else
+#define WUZ_U8G2_ROT U8G2_R0
+#endif
+''')
+replace('fw/application/src/mui/mui_u8g2.c',
+        'u8g2_Setup_sh1106_128x64_noname_f(p_u8g2, U8G2_R2,',
+        'u8g2_Setup_sh1106_128x64_noname_f(p_u8g2, WUZ_U8G2_ROT,')
+
 # ---------------------------------------------------------------- 3/4a. game driver: rotation + BACK exit
 drv = 'fw/application/src/app/game/port/common/driver.c'
 replace(drv, 'void JOY_OLED_clear() {', r'''/* Wuzplay: every game streams one 128-byte page at a time through
@@ -65,21 +83,23 @@ void JOY_OLED_set_pos(uint8_t column, uint8_t page);
 static uint8_t wuz_page_buf[128];
 static uint8_t wuz_page_n;
 static uint8_t wuz_page_idx;
-static uint8_t wuz_bitrev(uint8_t b) {
-    b = (uint8_t)(((b & 0xF0) >> 4) | ((b & 0x0F) << 4));
-    b = (uint8_t)(((b & 0xCC) >> 2) | ((b & 0x33) << 2));
-    b = (uint8_t)(((b & 0xAA) >> 1) | ((b & 0x55) << 1));
-    return b;
-}
 
 void JOY_OLED_clear() {''')
+replace(drv, '#include "driver.h"\n', '#include "driver.h"\n#include "wuz_rotate.h"\n')
 replace(drv, 'void JOY_OLED_end() { hal_spi_bus_release(mui_u8g2_get_spi_device()); }',
         r'''void JOY_OLED_end() {
-    JOY_OLED_set_pos(0, (uint8_t)(7 - wuz_page_idx));
-    for (int i = 127; i >= 0; i--) {
-        uint8_t v = (i < wuz_page_n) ? wuz_page_buf[i] : 0;
-        JOY_OLED_write_data(1, wuz_bitrev(v));
+#if WUZ_ROTATE_180
+    /* tested on the host in CI: wuzplay-cyberdeck-v9/tests/rotation_test.c */
+    JOY_OLED_set_pos(0, wuz_rot_page_index(wuz_page_idx));
+    for (int c = 0; c < 128; c++) {
+        JOY_OLED_write_data(1, wuz_rot_page_byte(wuz_page_buf, wuz_page_n, c));
     }
+#else
+    JOY_OLED_set_pos(0, wuz_page_idx);
+    for (int c = 0; c < 128; c++) {
+        JOY_OLED_write_data(1, (c < wuz_page_n) ? wuz_page_buf[c] : 0);
+    }
+#endif
     hal_spi_bus_release(mui_u8g2_get_spi_device());
 }''')
 replace(drv, 'void JOY_OLED_send(uint8_t b) { JOY_OLED_write_data(1, b); }',
@@ -134,5 +154,13 @@ replace(desk, 'void app_desktop_on_kill(mini_app_inst_t *p_app_inst) {\n',
 
 # ---------------------------------------------------------------- game list label
 replace('fw/application/src/app/game/scene/game_scene_game_list.c', '"NBA 2K - SOON"', '"NBA 2K - COMING SOON"')
+
+# Orientation check screen (direct-write path); its UI-path twin lives in Cyberdeck > Cyber Tools.
+replace('fw/application/src/app/game/port/wuz/wuz_games.h', 'void wuz_nba2k_run(void);',
+        'void wuz_nba2k_run(void);\nvoid wuz_screentest_run(void);')
+replace('fw/application/src/app/game/scene/game_scene_game_list.c',
+        '    mui_list_view_add_item(app->p_list_view, ICON_FILE, "NBA 2K - COMING SOON", wuz_nba2k_run);\n',
+        '    mui_list_view_add_item(app->p_list_view, ICON_FILE, "NBA 2K - COMING SOON", wuz_nba2k_run);\n'
+        '    mui_list_view_add_item(app->p_list_view, ICON_FILE, "SCREEN TEST", wuz_screentest_run);\n')
 
 print('Wuzplay Cyberdeck v9 feature layer applied')

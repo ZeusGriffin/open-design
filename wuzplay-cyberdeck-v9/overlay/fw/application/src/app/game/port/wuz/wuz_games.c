@@ -432,3 +432,30 @@ void wuz_nba2k_run(void) {
         idle_ms(50);
     }
 }
+
+
+/* ================= SCREEN TEST (orientation check, direct-write path) =================
+ * Asymmetric on purpose: an 'F', an UP arrow and text pinned to opposite corners, so a wrong
+ * rotation or a mirror is obvious. Compare with Cyberdeck > Cyber Tools > Screen test, which
+ * draws the same layout through the UI path. Both must look identical and read normally. */
+void wuz_screentest_run(void) {
+    clear_fb();
+    frame(0, 0, W, H);
+    text(3, 3, "TOP LEFT");
+    text(W - 3 - text_w("BOTTOM RIGHT", 1), H - 10, "BOTTOM RIGHT");
+    text_s(16, 16, "F", 5);
+    for (int y = 6; y <= 24; y++) {
+        px(118, y);
+    }
+    for (int i = 1; i <= 5; i++) {
+        px(118 - i, 6 + i);
+        px(118 + i, 6 + i);
+    }
+    text(46, 22, "GAME PATH");
+    text(46, 33, "READS OK?");
+    text(46, 44, "SELECT/BACK");
+    flush_fb();
+    while (!exit_now()) {
+        idle_ms(50);
+    }
+}

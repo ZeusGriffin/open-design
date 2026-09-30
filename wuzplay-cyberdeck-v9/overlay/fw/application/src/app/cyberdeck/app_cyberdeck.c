@@ -22,7 +22,8 @@ typedef enum {
     CY_FILE,
     CY_NFC_LIST,
     CY_NFC_DETAIL,
-    CY_TOOLS
+    CY_TOOLS,
+    CY_SCREENTEST
 } cy_screen_t;
 
 typedef struct {
@@ -137,7 +138,9 @@ static void cy_draw_list(mui_canvas_t *c, const char *title, uint8_t count, uint
 }
 
 static const char *cy_main_label(uint8_t i) { return cy_main_items[i]; }
-static const char *cy_tool_label(uint8_t i) { return cy_tool_files[i].label; }
+/* Cyber Tools = every companion file + a "Screen test" row (orientation check, UI path) */
+#define CY_TOOL_ROWS ((uint8_t)(CY_TOOL_COUNT + 1))
+static const char *cy_tool_label(uint8_t i) { return i < CY_TOOL_COUNT ? cy_tool_files[i].label : "Screen test"; }
 static const char *cy_nfc_label(uint8_t i) {
     if (i < CY_NFC_COUNT) {
         return cy_nfc[i].name;
@@ -184,7 +187,23 @@ static void cy_on_draw(mui_view_t *v, mui_canvas_t *c) {
         cy_draw_list(c, "CYBERDECK", CY_MAIN_COUNT, a->main_sel, cy_main_label);
         break;
     case CY_TOOLS:
-        cy_draw_list(c, "CYBER TOOLS", CY_TOOL_COUNT, a->tool_sel, cy_tool_label);
+        cy_draw_list(c, "CYBER TOOLS", CY_TOOL_ROWS, a->tool_sel, cy_tool_label);
+        break;
+    case CY_SCREENTEST: /* same layout as Games > SCREEN TEST, drawn through the UI path */
+        mui_canvas_draw_line(c, 0, 0, 127, 0);
+        mui_canvas_draw_line(c, 0, 63, 127, 63);
+        mui_canvas_draw_line(c, 0, 0, 0, 63);
+        mui_canvas_draw_line(c, 127, 0, 127, 63);
+        mui_canvas_draw_utf8(c, 3, 11, "TOP LEFT");
+        mui_canvas_draw_utf8(c, 52, 62, "BOTTOM RIGHT");
+        mui_canvas_draw_box(c, 16, 16, 5, 35); /* F: stem */
+        mui_canvas_draw_box(c, 16, 16, 25, 5); /* F: top bar */
+        mui_canvas_draw_box(c, 16, 31, 20, 5); /* F: middle bar */
+        mui_canvas_draw_line(c, 118, 6, 118, 24); /* UP arrow */
+        mui_canvas_draw_line(c, 118, 6, 113, 11);
+        mui_canvas_draw_line(c, 118, 6, 123, 11);
+        mui_canvas_draw_utf8(c, 46, 30, "UI PATH");
+        mui_canvas_draw_utf8(c, 46, 41, "READS OK?");
         break;
     case CY_NFC_LIST:
         cy_draw_list(c, "NFC CARDS", CY_NFC_ROWS, a->nfc_sel, cy_nfc_label);
@@ -241,6 +260,9 @@ static bool cy_back(cyber_t *a) {
     case CY_FILE:
         a->screen = a->parent;
         a->page = 0;
+        break;
+    case CY_SCREENTEST:
+        a->screen = CY_TOOLS;
         break;
     default: /* CY_MED, CY_NFC_LIST, CY_TOOLS -> main */
         a->screen = CY_MAIN;
@@ -320,9 +342,18 @@ static void cy_on_input(mui_view_t *v, mui_input_event_t *e) {
         break;
     case CY_TOOLS:
         if (left || right) {
-            cy_step(&a->tool_sel, CY_TOOL_COUNT, right);
+            cy_step(&a->tool_sel, CY_TOOL_ROWS, right);
         } else if (ok) {
-            cy_open_file(a, cy_tool_files[a->tool_sel].label, cy_tool_files[a->tool_sel].path, CY_TOOLS);
+            if (a->tool_sel < CY_TOOL_COUNT) {
+                cy_open_file(a, cy_tool_files[a->tool_sel].label, cy_tool_files[a->tool_sel].path, CY_TOOLS);
+            } else {
+                a->screen = CY_SCREENTEST;
+            }
+        }
+        break;
+    case CY_SCREENTEST:
+        if (ok) {
+            cy_back(a);
         }
         break;
     case CY_NFC_LIST:
