@@ -174,4 +174,24 @@ replace('fw/application/src/app/game/scene/game_scene_game_list.c',
         '    mui_list_view_add_item(app->p_list_view, ICON_FILE, "NBA 2K - COMING SOON", wuz_nba2k_run);\n'
         '    mui_list_view_add_item(app->p_list_view, ICON_FILE, "SCREEN TEST", wuz_screentest_run);\n')
 
+# ---------------------------------------------------------------- SUBTRACT: language packs (flash room)
+# The app flash region (0x5B000) is nearly full. Keeping every stock game plus the Cyberdeck needs about 9 KB more
+# than fits, so these language packs are dropped from the build. The language slot is kept and points at English,
+# so selecting one can never dereference a missing table. To get a language back, delete it from this list.
+DROP_LANGUAGES = ['ru_RU', 'hu_HU', 'nl_NL']
+mk = root / 'fw/application/Makefile'
+mkb = mk.read_bytes()
+lang = root / 'fw/application/src/i18n/language.c'
+langb = lang.read_bytes()
+for code in DROP_LANGUAGES:
+    mkb, n = re.subn(rb'[ \t]*\$\(PROJ_DIR\)/i18n/' + code.encode() + rb'\.c \\\r?\n', b'', mkb)
+    if n != 1:
+        raise SystemExit(f'i18n Makefile entry not found exactly once for {code} (found {n})')
+    old = b'.strings = lang_' + code.encode() + b'}'
+    if old not in langb:
+        raise SystemExit(f'language table entry not found for {code}')
+    langb = langb.replace(old, b'.strings = lang_en_US}')
+mk.write_bytes(mkb)
+lang.write_bytes(langb)
+
 print('Wuzplay Cyberdeck v9 feature layer applied')
