@@ -57,6 +57,14 @@ Four buttons: 1 LEFT, 2 SELECT, 3 RIGHT, 4 BACK (assumed GPIO 8, not confirmed o
 
 Shortcuts (`wuz_shortcuts.c`): bounded buffer, 450 ms gap timeout, only armed on the home screen, slot activation is scheduled with `app_sched_event_put`, never run in interrupt context.
 
+## Flash budget (read before adding anything)
+
+The app flash region is 0x5B000 = 372,736 bytes and RAM is 0xD000 = 53,248 bytes (`ld/application.ld`). The linker fails with `region FLASH overflowed` when a build does not fit. At commit 796a938e the build was 371,588 bytes of flash (about 1.1 KB free) and 36,020 bytes of static RAM.
+
+To fit all stock games plus the Cyberdeck, `apply_features.py` subtracts the Russian, Hungarian and Dutch language packs (`DROP_LANGUAGES`). Their language slots point at English so selecting one cannot hit a null table. Edit that list to change what is subtracted.
+
+Sizes seen in CI (bytes): each language pack about 5,000; Tetris 6,061; Invaders 5,902; Cyberdeck app 9,588; siji icon font 10,529; amiibo database 30,013; Amiibo Link data 39,176. CI prints the largest objects and flash symbols on every run ("Flash size diagnostics" step), so measure before guessing.
+
 ## Embedded rules
 
 nRF52832 class: static or flash-resident data, bounded buffers, no dynamic allocation in game loops, no Internet libraries. Missing companion files must never crash: the Cyberdeck shows built-in defaults from `cyberdeck_data.h`; a file on the device overrides them. Only use fonts the firmware actually exports (`u8g2_font_wqy12_t_gb2312a` is known good).
