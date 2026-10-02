@@ -60,7 +60,7 @@ def initialize(root: Path) -> None:
 def record_run(root: Path, status: str, message: str) -> Path:
     runs = root / "pulse/runs"
     runs.mkdir(parents=True, exist_ok=True)
-    stamp = utc_now().strftime("%Y%m%dT%H%M%SZ")
+    stamp = utc_now().strftime("%Y%m%dT%H%M%S_%fZ")
     path = runs / f"{stamp}.json"
     path.write_text(json.dumps({
         "routine": "validate_memory",
