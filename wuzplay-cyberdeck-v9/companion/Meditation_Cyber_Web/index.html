@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#171717">
+<title>Meditation Cyber</title>
+<style>
+:root{--mx:0px;--my:0px}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#151515;color:#d7d7d2}body{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}.scene{position:fixed;inset:0;background:radial-gradient(circle at 35% 25%,#383838 0,#242424 28%,#171717 68%,#101010 100%);isolation:isolate}.stone{position:absolute;inset:-8%;opacity:.45;filter:contrast(1.15);background-image:radial-gradient(ellipse at 22% 30%,rgba(255,255,255,.045),transparent 30%),radial-gradient(ellipse at 76% 72%,rgba(255,255,255,.025),transparent 36%),linear-gradient(113deg,rgba(255,255,255,.018),transparent 35%,rgba(0,0,0,.12));transform:translate(calc(var(--mx)*.15),calc(var(--my)*.15)) scale(1.08)}.mist{position:absolute;inset:-20%;opacity:.13;filter:blur(22px);background:radial-gradient(circle at 20% 38%,#d0d0d0 0 4%,transparent 19%),radial-gradient(circle at 73% 27%,#b8b8b8 0 5%,transparent 22%),radial-gradient(circle at 56% 73%,#a9a9a9 0 4%,transparent 24%);animation:drift 18s ease-in-out infinite alternate;transform:translate(var(--mx),var(--my))}.mist.two{opacity:.08;filter:blur(35px);animation-duration:25s;animation-direction:alternate-reverse;transform:translate(calc(var(--mx)*-.6),calc(var(--my)*-.6))}.grain{position:absolute;inset:0;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E")}.phrase{position:absolute;max-width:min(78vw,33rem);font-size:clamp(15px,4.1vw,22px);line-height:1.55;letter-spacing:.025em;text-shadow:0 1px 12px #000;opacity:0;filter:blur(7px);transform:translateY(8px);transition:opacity 2.2s ease,filter 2.2s ease,transform 2.2s ease}.phrase.show{opacity:.92;filter:blur(0);transform:translateY(0)}.phrase.fade{opacity:0;filter:blur(5px);transform:translateY(-5px)}@keyframes drift{from{transform:translate(calc(var(--mx) - 1.5vw),calc(var(--my) - 1vh)) scale(1.02)}to{transform:translate(calc(var(--mx) + 2vw),calc(var(--my) + 1.4vh)) scale(1.08)}}@media(prefers-reduced-motion:reduce){.mist{animation:none}.phrase{transition:opacity 1s ease;filter:none;transform:none}}
+</style>
+</head>
+<body>
+<main class="scene" aria-live="polite">
+  <div class="stone"></div><div class="mist"></div><div class="mist two"></div><div class="grain"></div>
+  <div id="p1" class="phrase"></div><div id="p2" class="phrase"></div>
+</main>
+<script>
+const meditations=[
+  ["Your mind takes the shape of what you return to.","Return to what is worth becoming."],
+  ["You cannot command the day.","You can command the part of you that meets it."],
+  ["Do the work in front of you.","Leave applause and complaint outside the room."],
+  ["A difficult person is still part of the same human city.","Answer with discipline, not imitation."],
+  ["Time is already leaving.","Use the part still in your hands."],
+  ["What disturbs you is often the judgment added to the event.","Examine the judgment."],
+  ["Possession is temporary by design.","Practice gratitude without gripping."],
+  ["The obstacle can become material.","Build the next action from what remains."],
+  ["Do not borrow suffering from tomorrow.","Meet tomorrow when it arrives."],
+  ["A quiet mind is not an empty mind.","It is a mind that knows what deserves entry."]
+];
+const spots=[[[8,20],[48,62]],[[37,12],[9,69]],[[12,55],[53,23]],[[46,47],[7,16]],[[17,13],[42,70]],[[51,18],[14,57]]];
+const pick=meditations[Math.floor(Math.random()*meditations.length)];const pos=spots[Math.floor(Math.random()*spots.length)];
+const a=document.getElementById('p1'),b=document.getElementById('p2');
+function place(el,p){el.style.left=p[0]+'vw';el.style.top=p[1]+'vh'}place(a,pos[0]);place(b,pos[1]);a.textContent=pick[0];b.textContent=pick[1];
+setTimeout(()=>a.classList.add('show'),900);setTimeout(()=>b.classList.add('show'),5200);setTimeout(()=>a.classList.add('fade'),10500);setTimeout(()=>b.classList.add('fade'),12500);setTimeout(()=>document.body.style.opacity='0',14700);
+window.addEventListener('deviceorientation',e=>{const x=Math.max(-1,Math.min(1,(e.gamma||0)/35))*7;const y=Math.max(-1,Math.min(1,(e.beta||0)/45))*7;document.documentElement.style.setProperty('--mx',x+'px');document.documentElement.style.setProperty('--my',y+'px')},{passive:true});
+</script>
+</body>
+</html>
