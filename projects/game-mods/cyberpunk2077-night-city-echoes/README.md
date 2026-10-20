@@ -4,6 +4,8 @@
 
 An independently written **Cyberpunk 2077 PC single-player** prototype for persistent NPC memories and simulated reputation. Inspired by the general idea of a world that remembers what the player does, **not a copy, modification, or port of enRAGE**.
 
+> **Ready-to-install Windows kit:** See [INSTALL-KIT.md](./INSTALL-KIT.md) for the one-click installer, readiness check, safe uninstall, CET/RED4ext prerequisites, and verification steps. Install scripts are in [installer/](./installer/). The game installation has **not** been tested on the user's PC.
+
 ## What is implemented
 
 - [x] Cyber Engine Tweaks (CET) Lua mod entry point (`mod/init.lua`).
