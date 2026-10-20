@@ -14,7 +14,7 @@ An independently written **Cyberpunk 2077 PC single-player** prototype for persi
 - [x] Faction-score data model (v0.1 uses **unaffiliated**; automatic faction recognition is not implemented).
 - [x] Save/load JSON via CET sandbox, inside the mod directory.
 - [x] Bounded event and memory history.
-- [x] Local pure-Lua regression tests passed (11 assertions).
+- [x] Local pure-Lua regression tests passed (11 assertions) plus a mocked CET startup, capture, overlay and save test (9 checks).
 - [ ] **NOT YET:** Automatic encounter detection, AI reactions, revenge pursuit, faction wars, persistent actual NPC spawns, dialogue, voice, save-slot separation, or confirmed in-game runtime compatibility.
 
 The reputation affects this mod's **journal only** at v0.1. It **does not** modify NPC behavior in the running game. NPC IDs for generated pedestrians may not be stable across streaming/game restarts; this needs in-game verification.
@@ -55,7 +55,15 @@ texlua --luaonly ../tests/test_core.lua
 
 Expected: `PASS: 11 Lua core assertions (including bounded history and invalid-save handling)`
 
-**Evidence:** Local Lua core test passed on 2026-10-20; files committed to GitHub. CET actual gameplay integration, controls, target API, save serialization and game compatibility **have NOT been tested** on the user's Windows machine.
+To test a mock CET adapter without launching the game, from the `mod` folder:
+
+```bash
+texlua --luaonly ../tests/test_adapter.lua
+```
+
+Expected: `PASS: 9 mocked CET adapter checks (not tested inside Cyberpunk 2077)`
+
+**Evidence:** Local Lua core and mocked CET tests passed on 2026-10-20; files committed to GitHub. CET actual gameplay integration, controls, target API, save serialization and game compatibility **have NOT been tested** on the user's Windows machine.
 
 ## Roadmap toward real nemesis gameplay
 
