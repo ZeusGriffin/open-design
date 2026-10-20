@@ -4,7 +4,9 @@
 
 - Original Lua memory model constructed; does not import or reuse enRAGE.
 - Local Lua test runner output: `PASS: 11 Lua core assertions (including bounded history and invalid-save handling)`.
+- Mock CET script execution output: `PASS: 9 mocked CET adapter checks (not tested inside Cyberpunk 2077)`.
 - Tests cover positive and negative events, reputation bands, faction event counting, invalid event/save protection, maximum journal size and reputation clamping.
+- Mock test covers event registrations, no-target handling, capture, overlay display, journal write, and hiding when overlay closed.
 - CET interface created using documented callbacks: `registerForEvent`, `registerHotkey`, `ImGui` and CET-local `json` + `io`.
 
 ## Not verified — do not misrepresent
