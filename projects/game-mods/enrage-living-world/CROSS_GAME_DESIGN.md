@@ -48,4 +48,4 @@ Check (1) platform Windows PC, (2) game version/store, (3) Story/single-player m
 4. Wire ONE safe event and ONE observable NPC attitude change.
 5. Add factions and narrative consequence logic after validation.
 
-**Current status:** Design/reference only; no executable cross-game engine built or game compatibility established as of 2026-10-20.
+**Current status (2026-10-20):** A minimal, independently authored TypeScript [simulation core and six passing local tests](../portable-living-world/README.md) is committed. No in-game adapter or game compatibility has been established.
