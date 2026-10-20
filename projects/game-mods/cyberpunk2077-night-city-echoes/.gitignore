@@ -1,0 +1,5 @@
+# Never commit user-game data or CET runtime files
+night_city_echoes.json
+night_city_echoes.json.bak
+*.log
+.DS_Store
