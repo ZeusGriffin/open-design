@@ -63,3 +63,8 @@ See [CROSS_GAME_DESIGN.md](./CROSS_GAME_DESIGN.md) for a **separate original, ga
 v0.9.5 adds epilogue/John Marston support, New Austin and new post-1899 factions, expanded camp and town interactions, settings improvements, and fixes. This is a rapid-development early-access release; the latest version may change.
 
 **Source of truth:** [creator's Nexus description/changelog](https://www.nexusmods.com/reddeadredemption2/mods/10967?tab=description), checked 2026-10-20.
+
+## Independently written Cyberpunk counterpart
+
+- [Night City Echoes for Cyberpunk 2077 — original v0.1 CET Lua prototype](../cyberpunk2077-night-city-echoes/README.md)
+- Source is independently authored; it does **not** include, modify, mirror or port enRAGE files. Currently records manual NPC encounters and journal reputation; does **not** control NPC AI yet.
