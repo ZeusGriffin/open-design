@@ -1,5 +1,9 @@
 # NIGHT CITY ECHOES — Cyberpunk 2077 NPC Memory Prototype
 
+## Cyberpunk DLSS5 baseline correction (October 22, 2026)
+
+**User correction:** The most recent Cyberpunk graphics project is **Cyberpunk DLSS5** (October 17), not the older Luke Ross VR setup. DLSS5/RenoDX/ReShade/OptiScaler is a graphics modification; VR must be identified and verified separately. **Before any install, use the non-destructive [Cyberpunk DLSS5 baseline audit](./CYBERPUNK_DLSS5_BASELINE.md)**: inspect the exact active files and versions, preserve backups/hashes, and verify the existing stack on patch 2.5. Do not run a graphics/DLSS installer or overwrite `dxgi.dll`, Streamline, ReShade, or existing profiles until their provenance and compatibility are established. Neither DLSS5 nor active VR functionality has been tested on the user's current machine through this chat.
+
 > [!CAUTION]
 > **Cyberpunk 2077 patch 2.5 (October 22, 2026): installation on the updated game is NOT yet verified.** CET v1.38.0 explicitly supports patch 2.5, but RED4ext v1.30.0 does not yet have verified 2.5 support in its release notes, and this custom mod has no real in-game test. The GitHub installer now blocks detected patch 2.5 builds. **Do not use a pre-update v0.2 ZIP installer.** [Read the current patch status and checklist](./PATCH_2_5_STATUS.md).
 
