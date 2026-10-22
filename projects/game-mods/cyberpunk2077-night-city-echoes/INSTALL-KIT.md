@@ -1,5 +1,8 @@
 # One-click Windows install kit — v0.2 (October 20, 2026)
 
+> [!CAUTION]
+> **Cyberpunk 2077 patch 2.5 (October 22, 2026): installation on the updated game is NOT yet verified.** CET v1.38.0 explicitly supports patch 2.5, but RED4ext v1.30.0 does not yet have verified 2.5 support in its release notes, and this custom mod has no real in-game test. The GitHub installer now blocks detected patch 2.5 builds. **Do not use a pre-update v0.2 ZIP installer.** [Read the current patch status and checklist](./PATCH_2_5_STATUS.md).
+
 This kit packages the independently authored **Night City Echoes** mod (CET Lua scripts), not the original enRAGE mod. It does **not** include game files, copyrighted enRAGE assets, CET or RED4ext binaries.
 
 ## What is ready
