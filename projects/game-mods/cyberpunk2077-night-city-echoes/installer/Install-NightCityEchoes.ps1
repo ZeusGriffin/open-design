@@ -91,6 +91,21 @@ if ($Uninstall) {
   exit 0
 }
 
+# Patch 2.5 safety gate, added October 22, 2026.
+# CET 1.38.0 explicitly supports patch 2.5; RED4ext 2.5 support and this mod are NOT live-verified.
+# Do not treat existing DLL/ASI files as evidence of game-patch compatibility.
+$gameExe = Join-Path $GamePath "bin\x64\Cyberpunk2077.exe"
+$exeMeta = (Get-Item -LiteralPath $gameExe).VersionInfo
+$versionText = [string]$exeMeta.FileVersion + " " + [string]$exeMeta.ProductVersion
+$normalizedVersion = $versionText -replace "[,\s]+", "."
+Write-Host "Game executable version metadata: $versionText"
+if ($normalizedVersion -match "3\.0\.88\.46235|(^|[^0-9])2\.5([^0-9]|$)") {
+  Fail "Cyberpunk 2077 patch 2.5 detected. Installation is intentionally blocked until RED4ext and this mod are verified on patch 2.5. CET 1.38.0 alone does not verify the entire stack. Read PATCH_2_5_STATUS.md in GitHub."
+}
+if ([string]::IsNullOrWhiteSpace($versionText.Trim())) {
+  Fail "Game version could not be verified. Do not install until the Cyberpunk game version is established."
+}
+
 if (-not (Test-Path -LiteralPath $source -PathType Container)) { Fail "ZIP not fully extracted; missing payload folder." }
 foreach ($file in @("init.lua", "core.lua")) {
   if (-not (Test-Path -LiteralPath (Join-Path $source $file) -PathType Leaf)) {
