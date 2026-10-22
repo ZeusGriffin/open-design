@@ -26,6 +26,11 @@ status: ready-for-desktop-verification
 > [!important] Installation status
 > Source and installer files are in GitHub. The Windows installation and in-game tests have NOT been verified. The current project is a manual NPC memory journal, not autonomous revenge AI.
 
+> [!CAUTION]
+> **Cyberpunk 2077 patch 2.5 (October 22, 2026): installation on the updated game is NOT yet verified.** CET v1.38.0 explicitly supports patch 2.5, but RED4ext v1.30.0 does not yet have verified 2.5 support in its release notes, and this custom mod has no real in-game test. The GitHub installer now blocks detected patch 2.5 builds. **Do not use a pre-update v0.2 ZIP installer.** [Read the current patch status and checklist](./PATCH_2_5_STATUS.md).
+
+**Patch 2.5 decision rule:** First read [PATCH_2_5_STATUS.md](./PATCH_2_5_STATUS.md). Do not install on patch 2.5 until the official RED4ext support state is checked, CET v1.38.0 loads on that exact game build, and the actual NPC journal test passes. The installer's 2.5 safety gate must not be bypassed. If the PC is updated, perform only non-destructive inspection and backups until prerequisites are confirmed.
+
 ### OBJECTIVE
 
 Connect to my Windows desktop and finish setting up **Night City Echoes**, an original Cyberpunk 2077 NPC memory and reputation mod inspired by the general concept of enRAGE for Red Dead Redemption 2.
