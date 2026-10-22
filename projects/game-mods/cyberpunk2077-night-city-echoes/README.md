@@ -1,5 +1,8 @@
 # NIGHT CITY ECHOES — Cyberpunk 2077 NPC Memory Prototype
 
+> [!CAUTION]
+> **Cyberpunk 2077 patch 2.5 (October 22, 2026): installation on the updated game is NOT yet verified.** CET v1.38.0 explicitly supports patch 2.5, but RED4ext v1.30.0 does not yet have verified 2.5 support in its release notes, and this custom mod has no real in-game test. The GitHub installer now blocks detected patch 2.5 builds. **Do not use a pre-update v0.2 ZIP installer.** [Read the current patch status and checklist](./PATCH_2_5_STATUS.md).
+
 **By 9 to 5 Studios / ZeusGriffin | v0.1 | 2026-10-20**
 
 An independently written **Cyberpunk 2077 PC single-player** prototype for persistent NPC memories and simulated reputation. Inspired by the general idea of a world that remembers what the player does, **not a copy, modification, or port of enRAGE**.
