@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://cdn.cloudflare.steamstatic.com https://shared.fastly.steamstatic.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"/>
+<title>Z Launcher</title><link rel="stylesheet" href="./style.css"/><script src="./app.js" defer></script>
+</head><body><div class="app">
+<aside class="sidebar">
+ <div class="brand"><div class="logo">Z</div><div>Z LAUNCHER<small>REVERSE ENGINEER EDITION</small></div></div>
+ <div class="label">DISCOVER</div>
+ <nav id="nav">
+ <button class="nav-item active" data-view="all">◈ <span>Home</span></button>
+ <button class="nav-item" data-view="steam">▣ <span>Steam Library</span></button>
+ <button class="nav-item" data-view="local">⌘ <span>My PC Games</span></button>
+ <button class="nav-item" data-view="favorites">♡ <span>Favorites</span></button>
+ <button class="nav-item" data-view="recent">◷ <span>Recently Played</span></button>
+ </nav>
+ <div class="label stores-label">GAME STORES</div>
+ <div class="stores"><button data-store="steam">Steam ↗</button><button data-store="epic">Epic Games ↗</button><button data-store="gog">GOG ↗</button></div>
+ <div class="side-bottom"><span class="dot"></span> YOUR LIBRARY, YOUR RULES<small>Local-first · No account required</small></div>
+</aside>
+<main class="main">
+<header class="topbar"><div class="breadcrumbs">THE LIBRARY <span>/</span> <b id="crumb">Discover</b></div>
+<div class="top-actions"><input id="search" placeholder="⌕  Search your games..." aria-label="Search games"/><button id="rescan" class="outline-btn">↻ Sync Steam</button><button id="addGame" class="primary-btn">+ Add game</button></div>
+</header>
+<section class="hero"><div class="hero-content"><div class="eyebrow">✦ WELCOME TO YOUR UNIVERSE</div>
+<h1>EVERY GAME.<br/><em>ONE LAUNCHER.</em></h1>
+<p>One cinematic home for the games you own. Discover what to play next and launch instantly.</p>
+<div class="hero-controls"><button class="primary-btn big" id="heroPlay">▶ Launch featured</button><span class="count" id="gameCount">0 GAMES IN LIBRARY</span></div>
+</div><div class="hero-art"><div class="orbit"></div><div class="giant-z">Z</div></div></section>
+<section class="content">
+<div class="section-heading"><div><div class="eyebrow subtle">YOUR COLLECTION</div><h2 id="sectionTitle">Ready to play</h2></div><span class="count" id="sectionCount">0 TITLES</span></div>
+<div class="chips"><button class="chip active" data-filter="all">All games</button><button class="chip" data-filter="steam">Steam</button><button class="chip" data-filter="local">My PC</button><button class="chip" data-filter="favorites">Favorites</button></div>
+<div id="grid" class="game-grid" aria-live="polite"></div>
+<div id="empty" class="empty" hidden><div class="empty-icon">⌁</div><h3>Your next adventure starts here.</h3><p>Add a local game or sync Steam to build your personal game universe.</p><button id="emptyAdd" class="primary-btn">+ Add game</button><button id="emptyScan" class="outline-btn">↻ Scan Steam</button></div>
+</section><footer><span>Z LAUNCHER ◈ REVERSE ENGINEER EDITION</span><span>V0.1.0 · BUILT TO PLAY</span></footer>
+</main></div><div class="toast" id="toast" role="status"></div></body></html>
