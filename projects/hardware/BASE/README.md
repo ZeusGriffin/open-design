@@ -34,7 +34,7 @@ Design assumptions: initial 0.5mm clearance per side, 2mm TPU shell walls, provi
 Suggested note in existing master vault:
 `Projects/Hardware/BASE/BASE - iPhone 15 Case.md`.
 
-The separate [BASE project ZIP](sandbox:/mnt/data/BASE_iPhone15_Project_Kit.zip) produced in ChatGPT contains generated, verified STLs, the Obsidian-ready Markdown note, and `Install-to-Obsidian.ps1`. A sandbox URL is session-bound; this repository source is canonical.
+Generated prototype STLs and preview files are available in the conversation's project-kit ZIP. This repository contains the canonical editable CAD and Obsidian source.
 
 ## Sources
 - https://www.pamir.ai/
