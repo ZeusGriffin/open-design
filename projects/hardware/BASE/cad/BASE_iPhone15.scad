@@ -31,7 +31,7 @@ cam_h = 36.0;
 // Rear Lapis-inspired module, oriented beneath camera clearance.
 wedge_w = 65.0;
 wedge_y0 = -5.0;
-wedge_y1 = 39.0;
+wedge_y1 = 36.0;
 wedge_z0 = 0.0; // sits flush on case rear, avoids assembly interference
 wedge_front = -5.0;
 wedge_rear = -11.0;
