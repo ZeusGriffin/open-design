@@ -1,0 +1,3 @@
+# Never commit local AnythingLLM user data, documents, models or secrets.
+/data/
+*.log
