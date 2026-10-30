@@ -1,0 +1,17 @@
+name: anythingllm-standalone
+
+services:
+  anythingllm:
+    image: mintplexlabs/anythingllm:latest
+    container_name: anythingllm-standalone
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3001:3001"
+    environment:
+      STORAGE_DIR: /app/server/storage
+      ENABLE_BUILT_IN_LLM: "true"
+    volumes:
+      - ./data:/app/server/storage
+      - ./data/.env:/app/server/.env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
