@@ -32,7 +32,7 @@ cam_h = 36.0;
 wedge_w = 65.0;
 wedge_y0 = -5.0;
 wedge_y1 = 39.0;
-wedge_z0 = -1.0; // bonding surface; rises outward toward top
+wedge_z0 = 0.0; // sits flush on case rear, avoids assembly interference
 wedge_front = -5.0;
 wedge_rear = -11.0;
 win_y = 17;
@@ -70,7 +70,7 @@ module shell() {
                     rr3(inner_w,inner_h,body_z+1,10.7);
             }
             // Decorative white lower-body raised step, following Lapis One's shape.
-            translate([0,-36,-2.5]) rr3(65,71,2.5,7.8);
+            translate([0,-38.8,-2.5]) rr3(65,66,2.5,7.8);
         }
         // Large rear-camera cutout. The actual bumper must be measured.
         translate([cam_x,cam_y,-3.1]) rr3(cam_w,cam_h,6.0,5.0);
