@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111318">
+  <title>Video Build · Reference Workbench</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color-scheme:dark;background:#101217;color:#eef0f5}
+    *{box-sizing:border-box}
+    body{margin:0}
+    button,input,textarea{font:inherit}
+    button{cursor:pointer}
+    header{padding:20px clamp(16px,4vw,48px);border-bottom:1px solid #2d3038;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .eyebrow{font-size:11px;font-weight:750;letter-spacing:.18em;color:#a5abbb;text-transform:uppercase}
+    h1{font-size:clamp(22px,3vw,35px);line-height:1.15;margin:5px 0 8px}
+    h2{font-size:18px;margin:0 0 14px}
+    p{color:#b3bbc8;line-height:1.5}
+    .pill{border:1px solid #666051;background:#26241e;color:#f5cf8b;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:650}
+    .layout{max-width:1440px;margin:auto;padding:clamp(14px,3vw,34px);display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,1fr);gap:18px}
+    .panel{background:#191c23;border:1px solid #343944;border-radius:15px;padding:20px;min-width:0}
+    .stack{display:grid;gap:18px;align-content:start}
+    .video{width:100%;aspect-ratio:16/9;background:#08090b;border:0;border-radius:10px}
+    a{color:#bdcfff}
+    .small{font-size:12px;color:#a8b0be}
+    .actions{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0}
+    .btn,.file-label{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#f1f3f8;color:#151922;border:1px solid #f1f3f8;padding:10px 14px;border-radius:9px;text-decoration:none;font-size:13px;font-weight:700}
+    .btn.alt,.file-label{background:#292e38;color:#f0f2f7;border-color:#424957}
+    .btn:focus-visible,.file-label:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #a5c2ff;outline-offset:2px}
+    input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+    .shot{position:relative;background:#0b0d12;border:1px dashed #5a6475;border-radius:12px;overflow:hidden;min-height:210px;display:grid;place-items:center}
+    .shot img{width:100%;height:auto;max-height:580px;object-fit:contain;display:block;cursor:crosshair}
+    .placeholder{text-align:center;padding:50px 20px;color:#858f9f}
+    .placeholder strong{display:block;color:#c3cbd8}
+    .pin{position:absolute;width:28px;height:28px;display:grid;place-items:center;transform:translate(-50%,-50%);border:2px solid #fff;background:#ec9a63;color:#151515;border-radius:50%;font-size:12px;font-weight:900;box-shadow:0 3px 12px #000a;pointer-events:none}
+    .list{display:grid;gap:8px;max-height:380px;overflow:auto}
+    .entry{display:flex;gap:10px;align-items:start;padding:11px;border:1px solid #38404d;border-radius:9px;background:#222732}
+    .num{background:#ec9a63;color:#17130e;border-radius:50%;width:24px;height:24px;display:grid;place-items:center;flex:none;font-size:12px;font-weight:800}
+    .entry div{min-width:0;flex:1}
+    .entry strong{font-size:13px;overflow-wrap:anywhere}
+    .entry p{margin:3px 0 0;font-size:12px;overflow-wrap:anywhere}
+    .del{background:transparent;color:#e8aa9b;border:0;font-size:12px}
+    textarea,input[type=text]{width:100%;border:1px solid #414958;background:#13171e;color:#f1f3f8;border-radius:9px;padding:11px;outline:none}
+    textarea{min-height:100px;resize:vertical}
+    label.field{display:block;font-weight:700;font-size:13px;margin:14px 0 7px}
+    footer{padding:0 32px 30px;color:#7f8796;font-size:12px;max-width:1440px;margin:auto}
+    .status{min-height:18px;color:#b5d7b3}
+    @media(max-width:870px){.layout{grid-template-columns:1fr}.panel{padding:16px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="eyebrow">Made by Zeus · Source-first build kit</div>
+      <h1>Video Build Workbench</h1>
+      <div class="small">Reference: XtNmiTohUcs · <a href="https://youtu.be/XtNmiTohUcs" target="_blank" rel="noopener noreferrer">Open original video</a></div>
+    </div>
+    <span class="pill">Reference stage · Not yet a replica</span>
+  </header>
+  <main class="layout">
+    <section class="stack" aria-label="Source media">
+      <div class="panel">
+        <h2>01 / Watch the reference</h2>
+        <iframe class="video" title="Source YouTube video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen src="https://www.youtube-nocookie.com/embed/XtNmiTohUcs"></iframe>
+        <p class="small">If the embed is blocked, use the original-video link above. This project has not extracted or verified the video content.</p>
+      </div>
+      <div class="panel">
+        <h2>02 / Annotate an actual screenshot</h2>
+        <p class="small">Choose a screenshot from the video, then tap an element to label what it is and what it does. Nothing is sent to a server.</p>
+        <div class="actions">
+          <label class="file-label" for="screenshot">Choose screenshot</label>
+          <input id="screenshot" type="file" accept="image/png,image/jpeg,image/webp,image/avif">
+          <button class="btn alt" id="clear" type="button">Clear markers</button>
+        </div>
+        <div class="shot" id="shot" aria-label="Screenshot annotation area">
+          <div id="placeholder" class="placeholder"><strong>No screenshot loaded</strong>Import one still from the actual tutorial.</div>
+          <img id="reference" alt="User-selected screenshot for annotation" hidden>
+        </div>
+        <p class="small" id="fileName">Screenshot not selected</p>
+      </div>
+    </section>
+    <aside class="stack">
+      <section class="panel">
+        <h2>03 / Build specification</h2>
+        <label class="field" for="project">Project name / what the video makes</label>
+        <input id="project" type="text" placeholder="Add after viewing the video">
+        <label class="field" for="behavior">Required behavior</label>
+        <textarea id="behavior" placeholder="Describe what should work, not only how it looks."></textarea>
+        <label class="field" for="target">Target device / environment</label>
+        <input id="target" type="text" placeholder="Windows, iPhone, firmware, web, etc.">
+      </section>
+      <section class="panel">
+        <h2>04 / Visible elements <span id="count" class="small">(0)</span></h2>
+        <div class="list" id="markers" aria-live="polite"></div>
+        <p id="empty" class="small">No elements captured yet. Click on an imported screenshot to add one.</p>
+      </section>
+      <section class="panel">
+        <h2>05 / Hand off the verified blueprint</h2>
+        <p class="small">Exports only notes and marker positions; does not include or upload screenshot files.</p>
+        <div class="actions">
+          <button class="btn" id="export" type="button">Export blueprint JSON</button>
+          <button class="btn alt" id="copy" type="button">Copy build brief</button>
+        </div>
+        <div id="status" class="small status" role="status"></div>
+      </section>
+    </aside>
+  </main>
+  <footer>Reference first → approved design → build → inspect → device test. No third-party code or imagery is copied by this workbench.</footer>
+  <script>
+    "use strict";
+    const VIDEO_ID = "XtNmiTohUcs";
+    const KEY = "zeus-video-build-" + VIDEO_ID;
+    const $ = id => document.getElementById(id);
+    const defaults = {videoId: VIDEO_ID, sourceUrl:"https://youtu.be/" + VIDEO_ID, project:"", behavior:"", target:"", screenshotName:"", markers:[]};
+    let state;
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || "{}");
+      state = {...defaults, ...saved, videoId:VIDEO_ID, sourceUrl:defaults.sourceUrl,
+        markers: Array.isArray(saved.markers) ? saved.markers.filter(m=>Number.isFinite(m.x)&&Number.isFinite(m.y)) : []};
+    } catch { state = {...defaults}; }
+    function save(){
+      try{localStorage.setItem(KEY, JSON.stringify(state));$("status").textContent="Saved in this browser."}
+      catch{$("status").textContent="Local save unavailable. Export your blueprint to keep a copy."}
+    }
+    function syncFields(){
+      ["project","behavior","target"].forEach(id=>{$(id).value=state[id]||"";$(id).addEventListener("input",()=>{state[id]=$(id).value;save()})});
+    }
+    function render(){
+      const list=$("markers");
+      const shot=$("shot");
+      list.replaceChildren();
+      shot.querySelectorAll(".pin").forEach(p=>p.remove());
+      $("empty").hidden=state.markers.length>0;
+      $("count").textContent="("+state.markers.length+")";
+      state.markers.forEach((m,i)=>{
+        const row=document.createElement("div");
+        row.className="entry";
+        const num=document.createElement("span");num.className="num";num.textContent=i+1;
+        const info=document.createElement("div");
+        const title=document.createElement("strong");title.textContent=m.label||"Untitled element";
+        const desc=document.createElement("p");desc.textContent=m.behavior||"Behavior not entered";
+        info.append(title,desc);
+        const del=document.createElement("button");del.className="del";del.type="button";del.textContent="Remove";
+        del.setAttribute("aria-label","Remove "+(m.label||"element"));
+        del.addEventListener("click",()=>{state.markers.splice(i,1);save();render()});
+        row.append(num,info,del);
+        list.append(row);
+        if(!$("reference").hidden){
+          const pin=document.createElement("span");
+          pin.className="pin";pin.style.left=(m.x*100)+"%";pin.style.top=(m.y*100)+"%";
+          pin.textContent=i+1;pin.setAttribute("aria-hidden","true");shot.append(pin);
+        }
+      });
+    }
+    function fileLoad(file){
+      if(!file || !file.type.startsWith("image/"))return;
+      const reader=new FileReader();
+      reader.onload=()=>{
+        const img=$("reference");
+        img.onload=()=>{$("placeholder").hidden=true;img.hidden=false;render()};
+        img.src=reader.result;
+        if(state.screenshotName!==file.name){state.markers=[]}
+        state.screenshotName=file.name;
+        $("fileName").textContent="Selected: "+file.name+" (image stays only in this tab)";
+        save();
+      };
+      reader.readAsDataURL(file);
+    }
+    $("screenshot").addEventListener("change",e=>fileLoad(e.target.files[0]));
+    $("shot").addEventListener("dragover",e=>{e.preventDefault()});
+    $("shot").addEventListener("drop",e=>{e.preventDefault();fileLoad(e.dataTransfer.files[0])});
+    $("reference").addEventListener("click",e=>{
+      const bounds=e.currentTarget.getBoundingClientRect();
+      const x=(e.clientX-bounds.left)/bounds.width;
+      const y=(e.clientY-bounds.top)/bounds.height;
+      if(x<0||x>1||y<0||y>1)return;
+      const label=prompt("Name this visible element (Cancel to skip)");
+      if(!label || !label.trim())return;
+      const behavior=prompt("What should this element do?")||"";
+      state.markers.push({x:+x.toFixed(4),y:+y.toFixed(4),label:label.trim(),behavior:behavior.trim()});
+      save();render();
+    });
+    $("clear").addEventListener("click",()=>{
+      if(!state.markers.length)return;
+      if(!confirm("Remove all annotations from this screenshot?"))return;
+      state.markers=[];save();render();
+    });
+    function blueprint(){return {...state,stage:"reference-only",videoVerified:false,exportedAt:new Date().toISOString()}}
+    $("export").addEventListener("click",()=>{
+      const blob=new Blob([JSON.stringify(blueprint(),null,2)],{type:"application/json"});
+      const u=URL.createObjectURL(blob);const a=document.createElement("a");
+      a.href=u;a.download="XtNmiTohUcs-blueprint.json";document.body.append(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(u),2000);
+      $("status").textContent="Blueprint JSON exported.";
+    });
+    $("copy").addEventListener("click",async()=>{
+      const lines=[
+        "Source video: "+state.sourceUrl,
+        "Status: source video not independently verified; do not invent details.",
+        "Project: "+(state.project||"Not yet identified"),
+        "Target: "+(state.target||"Not yet identified"),
+        "Required behavior: "+(state.behavior||"Not yet described"),
+        "Visible elements from screenshot:",
+        ...state.markers.map((m,i)=>`${i+1}. ${m.label}: ${m.behavior||"Behavior TBD"} [x=${m.x},y=${m.y}]`),
+        "Rebuild only the verified design and behavior. Test on the target device."
+      ];
+      const text=lines.join("\n");
+      try{await navigator.clipboard.writeText(text);$("status").textContent="Build brief copied."}
+      catch{$("status").textContent="Copy not available; use Export blueprint JSON."}
+    });
+    $("fileName").textContent=state.screenshotName?"Re-select "+state.screenshotName+" to see saved markers.":"Screenshot not selected";
+    syncFields();render();
+  </script>
+</body>
+</html>
