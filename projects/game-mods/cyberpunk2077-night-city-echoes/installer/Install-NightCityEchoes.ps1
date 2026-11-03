@@ -82,6 +82,30 @@ if (-not (Is-GameRoot $GamePath)) { Fail "Cannot verify bin\x64\Cyberpunk2077.ex
 $GamePath = (Resolve-Path -LiteralPath $GamePath).Path
 $destination = Join-Path $GamePath $modRel
 Write-Host "Game directory: $GamePath"
+# Read-only on-PC status check, even when preparing a fresh install.
+$installedInit = Join-Path $destination 'init.lua'
+$installedCore = Join-Path $destination 'core.lua'
+if ((Test-Path -LiteralPath $installedInit -PathType Leaf) -and
+    (Test-Path -LiteralPath $installedCore -PathType Leaf)) {
+  $initHash = (Get-FileHash -LiteralPath $installedInit -Algorithm SHA256).Hash.ToLowerInvariant()
+  $coreHash = (Get-FileHash -LiteralPath $installedCore -Algorithm SHA256).Hash.ToLowerInvariant()
+  if ($initHash -eq $expected['init.lua'] -and $coreHash -eq $expected['core.lua']) {
+    Write-Host 'INSTALL STATUS: Night City Echoes prototype is ALREADY PRESENT (both files match).' -ForegroundColor Green
+  } else {
+    Write-Host 'INSTALL STATUS: Existing NightCityEchoes files found, but version/hashes differ; review before overwriting.' -ForegroundColor Yellow
+  }
+} elseif ((Test-Path -LiteralPath $installedInit -PathType Leaf) -or
+          (Test-Path -LiteralPath $installedCore -PathType Leaf)) {
+  Write-Host 'INSTALL STATUS: PARTIAL NightCityEchoes install detected; one Lua file is missing.' -ForegroundColor Yellow
+} else {
+  Write-Host 'INSTALL STATUS: Night City Echoes is NOT found in this game installation.' -ForegroundColor Yellow
+}
+$journalPath = Join-Path $destination 'night_city_echoes.json'
+if (Test-Path -LiteralPath $journalPath -PathType Leaf) {
+  Write-Host 'EXISTING JOURNAL: present (will be preserved and backed up during update).'
+}
+Write-Host 'NOTE: Files present does not prove CET loaded the mod inside the game.'
+
 
 $running = @(Get-Process -Name "Cyberpunk2077" -ErrorAction SilentlyContinue)
 if ($running.Count -gt 0) { Fail "Close Cyberpunk 2077 before copying or removing scripts." }
@@ -142,29 +166,6 @@ Write-Host "RED4ext is optional for this CET-only prototype. Existing RED4ext fi
 Write-Host "Recommended official patch 2.5 frameworks: CET v1.38.1; RED4ext v1.31.0 only if other mods need it."
 Write-Host "The game and framework versions must match. Check the CET log if the mod does not load."
 Write-Host "Target: $destination"
-# Read-only on-PC status check, even when preparing a fresh install.
-$installedInit = Join-Path $destination 'init.lua'
-$installedCore = Join-Path $destination 'core.lua'
-if ((Test-Path -LiteralPath $installedInit -PathType Leaf) -and
-    (Test-Path -LiteralPath $installedCore -PathType Leaf)) {
-  $initHash = (Get-FileHash -LiteralPath $installedInit -Algorithm SHA256).Hash.ToLowerInvariant()
-  $coreHash = (Get-FileHash -LiteralPath $installedCore -Algorithm SHA256).Hash.ToLowerInvariant()
-  if ($initHash -eq $expected['init.lua'] -and $coreHash -eq $expected['core.lua']) {
-    Write-Host 'INSTALL STATUS: Night City Echoes prototype is ALREADY PRESENT (both files match).' -ForegroundColor Green
-  } else {
-    Write-Host 'INSTALL STATUS: Existing NightCityEchoes files found, but version/hashes differ; review before overwriting.' -ForegroundColor Yellow
-  }
-} elseif ((Test-Path -LiteralPath $installedInit -PathType Leaf) -or
-          (Test-Path -LiteralPath $installedCore -PathType Leaf)) {
-  Write-Host 'INSTALL STATUS: PARTIAL NightCityEchoes install detected; one Lua file is missing.' -ForegroundColor Yellow
-} else {
-  Write-Host 'INSTALL STATUS: Night City Echoes is NOT found in this game installation.' -ForegroundColor Yellow
-}
-$journalPath = Join-Path $destination 'night_city_echoes.json'
-if (Test-Path -LiteralPath $journalPath -PathType Leaf) {
-  Write-Host 'EXISTING JOURNAL: present (will be preserved and backed up during update).'
-}
-Write-Host 'NOTE: Files present does not prove CET loaded the mod inside the game.'
 if ($Preview) {
   Write-Host "[PREVIEW] Would create a timestamped backup and copy only init.lua and core.lua."
   exit 0
