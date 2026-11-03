@@ -22,6 +22,17 @@ local function saveWorld()
   return success
 end
 
+-- Keep an unreadable save: the first recorded action would otherwise overwrite it.
+local function keepUnreadableSave(raw)
+  local kept = pcall(function()
+    local file, openErr = io.open(SAVE_FILE .. '.bak', 'w')
+    if not file then error(openErr or 'cannot open backup file') end
+    file:write(raw)
+    file:close()
+  end)
+  return kept and ' Old file kept as ' .. SAVE_FILE .. '.bak.' or ' Backup failed; old file will be overwritten.'
+end
+
 local function loadWorld()
   local file = io.open(SAVE_FILE, 'r')
   if not file then return end
@@ -31,9 +42,9 @@ local function loadWorld()
   if ok then
     local restored, err = Core.restore(decoded)
     if restored then world = restored; return end
-    notice = 'Save rejected: ' .. tostring(err)
+    notice = 'Save rejected: ' .. tostring(err) .. '.' .. keepUnreadableSave(raw)
   else
-    notice = 'Save corrupt: previous data not overwritten until new action.'
+    notice = 'Save corrupt.' .. keepUnreadableSave(raw)
   end
   print('[Night City Echoes] ' .. notice)
 end
@@ -60,10 +71,12 @@ local function captureNPC()
   end)
   if not ok then
     notice = 'Target API unavailable: ' .. tostring(outcome)
+    print('[Night City Echoes] ' .. notice) -- overlay is closed during play; log the exact error.
     return
   end
   if not outcome then
     notice = 'No NPC targeted. Aim directly at a person in Story Mode.'
+    print('[Night City Echoes] ' .. notice)
     return
   end
   selected = outcome
