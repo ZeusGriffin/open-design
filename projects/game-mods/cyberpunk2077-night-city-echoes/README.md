@@ -1,5 +1,17 @@
 # NIGHT CITY ECHOES — Cyberpunk 2077 NPC Memory Prototype
 
+## First-test update — November 3, 2026
+
+**Current status:** Patch 2.5 installer v0.3 and read-only installation-status preview are on branch `night-city-echoes-patch25-first-test-20261103`. On Windows, run `installer/CHECK_MY_PC.cmd` from a complete checkout of this branch (or use the prepared chat ZIP) to report whether NightCityEchoes Lua files exist and whether their hashes match the original source. **This check has not been run on the gaming PC; actual installation is unknown.**
+
+- CET v1.38.1 is available for patch 2.5: https://github.com/maximegmd/CyberEngineTweaks/releases/tag/v1.38.1
+- RED4ext v1.31.0 supports patch 2.5, but is not required for this CET-only Lua prototype: https://github.com/WopsS/RED4ext/releases/tag/v1.31.0
+- Installer verifies patch 2.5 and original Lua SHA-256 hashes, backs up existing NightCityEchoes files, and requires the operator to confirm CET overlay operation before writes.
+- When working from a repository checkout, it uses `mod/init.lua` and `mod/core.lua`; when working from the standalone ZIP, it uses `payload/bin/x64/plugins/cyber_engine_tweaks/mods/NightCityEchoes/`.
+- It does not install CET, change game files, touch DLSS5/graphics injection DLLs, or modify unrelated mods.
+- No successful in-game NPC capture, journal test, or restart persistence has been observed on the user's gaming PC. Existing dated October 22 safety notes below are historical; do not interpret them as a successful in-game test.
+
+
 ## Cyberpunk DLSS5 baseline correction (October 22, 2026)
 
 **User correction:** The most recent Cyberpunk graphics project is **Cyberpunk DLSS5** (October 17), not the older Luke Ross VR setup. DLSS5/RenoDX/ReShade/OptiScaler is a graphics modification; VR must be identified and verified separately. **Before any install, use the non-destructive [Cyberpunk DLSS5 baseline audit](./CYBERPUNK_DLSS5_BASELINE.md)**: inspect the exact active files and versions, preserve backups/hashes, and verify the existing stack on patch 2.5. Do not run a graphics/DLSS installer or overwrite `dxgi.dll`, Streamline, ReShade, or existing profiles until their provenance and compatibility are established. Neither DLSS5 nor active VR functionality has been tested on the user's current machine through this chat.
