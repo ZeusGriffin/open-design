@@ -1,0 +1,34 @@
+WUZPLAY CYBERDECK v9 — iPHONE SHORTCUTS SETUP
+
+Phone-assisted actions run on the iPhone. Wuzplay does not have Internet access.
+
+Create Apple Shortcuts with the exact names used by the NFC presets you import. Suggested names:
+
+Govee On
+Govee Off
+Govee Blue
+Govee Bright
+Govee Movie
+Govee Red
+Govee Relax
+Flashlight
+Find My Car
+Quick Note
+Timer 10m
+Meditation Cyber
+Meditations Tap
+
+GOVEE
+Each Govee Shortcut should perform the corresponding Govee action using the phone-side integration available to you.
+
+FLASHLIGHT
+The Flashlight Shortcut should toggle or turn on the iPhone flashlight. iOS permissions/automation behavior may require confirmation depending on the setup.
+
+FIND MY CAR
+Use a phone-side Shortcut that opens or navigates to the saved/parked-car location available on the phone. Behavior depends on the phone's permissions and available location data.
+
+MEDITATION CYBER
+Deploy the included Meditation_Cyber_Web/index.html to a public HTTPS URL. Encode that real URL in the Meditation Cyber NFC card. Do not use a fake URL.
+
+IMPORTANT NFC LIMITATION
+A Wuzplay button shortcut can select/activate an NFC preset, but NFC still requires the phone to be physically close enough to read the emulated tag. Arbitrary button-only remote triggering over Bluetooth requires a separately tested iOS BLE receiver path and is not claimed by this build.
