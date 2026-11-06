@@ -82,7 +82,7 @@ local function talkToNPC()
   end
   local saved = world.npcs[selected.key]
   local respect = saved and saved.respect or 0
-  if not VoiceBridge.request(voiceState, selected, respect, Core.disposition(respect)) then
+  if not VoiceBridge.request(voiceState, selected, respect, Core.disposition(respect), saved and saved.memories or nil) then
     notice = voiceState.status
   end
 end
