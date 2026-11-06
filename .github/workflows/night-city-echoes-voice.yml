@@ -32,3 +32,25 @@ jobs:
           lua5.4 ../tests/test_core.lua
           lua5.4 ../tests/test_adapter.lua
           lua5.4 ../tests/test_voice_bridge.lua
+
+  windows-powershell-parser:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse voice PowerShell installer and manager without executing them
+        shell: pwsh
+        run: |
+          $scriptPaths = @(
+            'projects/game-mods/cyberpunk2077-night-city-echoes/voice/Install-VoiceBridge.ps1',
+            'projects/game-mods/cyberpunk2077-night-city-echoes/voice/Manage-Voice.ps1'
+          )
+          foreach ($path in $scriptPaths) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path $path).Path, [ref]$tokens, [ref]$errors) | Out-Null
+            if ($errors.Count -gt 0) {
+              foreach ($errorItem in $errors) { Write-Host "$path : $errorItem" }
+              throw "PowerShell parser errors: $path"
+            }
+            Write-Host "PASS: $path parsed."
+          }
