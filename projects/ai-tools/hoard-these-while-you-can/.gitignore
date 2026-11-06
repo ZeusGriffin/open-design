@@ -11,3 +11,6 @@ payload/
 *.zip
 *.exe
 *.msi
+
+# Cloned upstream source trees (reproducible from manifest)
+upstream/
