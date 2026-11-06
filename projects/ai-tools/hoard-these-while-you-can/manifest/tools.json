@@ -1,0 +1,40 @@
+{
+  "project": "Emergency AI Kit",
+  "source_video": "https://youtu.be/w48AF0xgWQY",
+  "source_title": "The Emergency AI Kit Everyone Should Build",
+  "exact_video_tool_match": "pending transcript verification",
+  "baseline": [
+    {
+      "name": "Ollama",
+      "job": "local LLM runtime",
+      "official_repo": "https://github.com/ollama/ollama",
+      "windows_download": "https://ollama.com/download/OllamaSetup.exe",
+      "status": "verified official"
+    },
+    {
+      "name": "Hugging Face Hub",
+      "job": "model snapshot/archive source",
+      "docs": "https://huggingface.co/docs/huggingface_hub/en/guides/download",
+      "status": "verified official"
+    },
+    {
+      "name": "whisper.cpp",
+      "job": "offline speech-to-text",
+      "official_repo": "https://github.com/ggml-org/whisper.cpp",
+      "asset_pattern_windows_x64": "whisper-bin-x64.zip",
+      "status": "verified official"
+    },
+    {
+      "name": "ComfyUI",
+      "job": "local image generation",
+      "official_repo": "https://github.com/Comfy-Org/ComfyUI",
+      "status": "verified official"
+    },
+    {
+      "name": "Kiwix",
+      "job": "offline Wikipedia and web archives",
+      "official_repo": "https://github.com/kiwix/kiwix-desktop",
+      "status": "verified official"
+    }
+  ]
+}
