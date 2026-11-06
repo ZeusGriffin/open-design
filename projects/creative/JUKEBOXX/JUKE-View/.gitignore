@@ -1,0 +1,15 @@
+# Don't publish original unreleased media or secrets
+assets/source/
+assets/working/
+*.wav
+*.flac
+*.aiff
+*.mp4
+*.mov
+*.psd
+*.ai
+*.key
+.env
+.env.*
+.DS_Store
+Thumbs.db
