@@ -1,0 +1,72 @@
+{
+  "project": "Emergency AI Kit",
+  "updated": "2026-11-06",
+  "sources": [
+    "https://youtu.be/w48AF0xgWQY",
+    "https://youtu.be/LYYs_jIFPZ4"
+  ],
+  "clone_targets": [
+    {
+      "name": "Ollama",
+      "repo": "https://github.com/ollama/ollama.git",
+      "role": "local LLM runtime"
+    },
+    {
+      "name": "whisper.cpp",
+      "repo": "https://github.com/ggml-org/whisper.cpp.git",
+      "role": "offline speech-to-text"
+    },
+    {
+      "name": "ComfyUI",
+      "repo": "https://github.com/Comfy-Org/ComfyUI.git",
+      "role": "local image generation"
+    },
+    {
+      "name": "Kiwix Desktop",
+      "repo": "https://github.com/kiwix/kiwix-desktop.git",
+      "role": "offline knowledge reader"
+    },
+    {
+      "name": "DeepSeek Harness",
+      "repo": "https://github.com/deepseek-ai/deepseek-harness.git",
+      "role": "local agent harness"
+    },
+    {
+      "name": "Playwright",
+      "repo": "https://github.com/microsoft/playwright.git",
+      "role": "browser automation / authorized app testing"
+    },
+    {
+      "name": "Firecrawl",
+      "repo": "https://github.com/firecrawl/firecrawl.git",
+      "role": "web extraction infrastructure"
+    },
+    {
+      "name": "Firecrawl for DeepSeek Harness",
+      "repo": "https://github.com/firecrawl/dsh-firecrawl.git",
+      "role": "DeepSeek Harness web provider"
+    },
+    {
+      "name": "Nuclei",
+      "repo": "https://github.com/projectdiscovery/nuclei.git",
+      "role": "authorized defensive security checks"
+    }
+  ],
+  "download_only_or_non_repo": [
+    {
+      "name": "LM Studio",
+      "role": "local model GUI/runtime",
+      "note": "Use official installer; do not assume the desktop application is open source."
+    },
+    {
+      "name": "Hugging Face model snapshots",
+      "role": "model archive",
+      "note": "Pin exact model revision and record license + hashes."
+    }
+  ],
+  "pending": [
+    "Exact six-tool identity from the first video's unavailable transcript",
+    "Laptop-sized model selection after hardware profile",
+    "Any creator-specific paid prompt packs or proprietary files"
+  ]
+}
