@@ -7,11 +7,19 @@ $ErrorActionPreference = "Stop"
 $Destination = [System.IO.Path]::GetFullPath($Destination)
 
 function New-Folder([string]$Path) {
-  if (-not (Test-Path $Path)) { New-Item -ItemType Directory -Path $Path | Out-Null }
+  if (-not (Test-Path $Path)) {
+    New-Item -ItemType Directory -Path $Path | Out-Null
+  }
 }
 
 function Download-File([string]$Url, [string]$OutFile) {
   New-Folder (Split-Path $OutFile -Parent)
+
+  if ((Test-Path $OutFile) -and ((Get-Item $OutFile).Length -gt 0)) {
+    Write-Host "Already present, skipping: $OutFile"
+    return
+  }
+
   Write-Host "Downloading: $Url"
   Invoke-WebRequest -Uri $Url -OutFile $OutFile -UseBasicParsing
 }
@@ -26,7 +34,7 @@ Download-File "https://ollama.com/download/OllamaSetup.exe" (Join-Path $Destinat
 # 2) Kiwix Desktop — known stable Windows x64 release
 Download-File "https://download.kiwix.org/release/kiwix-desktop/kiwix-desktop_windows_x64_2.5.1.zip" (Join-Path $Destination "installers\kiwix-desktop_windows_x64_2.5.1.zip")
 
-# 3) whisper.cpp — resolve newest GitHub release asset that contains whisper-bin-x64.zip
+# 3) whisper.cpp — newest GitHub release containing the Windows x64 asset
 $release = Invoke-RestMethod -Uri "https://api.github.com/repos/ggml-org/whisper.cpp/releases/latest" -Headers @{"User-Agent"="Emergency-AI-Kit"}
 $asset = $release.assets | Where-Object { $_.name -eq "whisper-bin-x64.zip" } | Select-Object -First 1
 if (-not $asset) {
