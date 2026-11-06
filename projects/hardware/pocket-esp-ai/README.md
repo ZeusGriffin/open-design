@@ -4,6 +4,11 @@
 
 Huy Vector Tiny Pocket AI Assistant from [this video](https://youtu.be/25RGnr407PM). The custom build is **ESP32-C3 SuperMini** + 0.96-inch SSD1306 OLED + INMP441 mic + MAX98357A amplifier, built on XiaoZhi. **Do not flash this to an ESP32-S3, ESP32-C6, Cardputer ADV, or Raspberry Pi.**
 
+## Editable source for multiple ESP32 boards (added 2026-11-06)
+The creator's **complete original project ZIP** is now preserved in this repository as ten verified source-archive parts, plus a SHA-256 checked reassembly script. See [SOURCE-CODE.md](SOURCE-CODE.md) for extraction and per-chip ESP-IDF builds, including C3, C6, and S3 target selection. Source is adaptable; **the same prebuilt binary cannot be flashed to arbitrary boards.**
+
+The new Obsidian reference is [Pocket ESP AI - Source and Multi-Board Build](obsidian/Pocket%20ESP%20AI%20-%20Source%20and%20Multi-Board%20Build.md); the note can be imported into the master vault using [SAVE_SOURCE_NOTE_TO_OBSIDIAN.ps1](scripts/SAVE_SOURCE_NOTE_TO_OBSIDIAN.ps1).
+
 ## Original sources
 - Creator instructions/wiring: https://www.huyvector.org/robots-kinetic/pocket-ai-assistant
 - Author's merged firmware: https://drive.google.com/file/d/17c_fR2NngYaQpYxT_LWSCMmulzYWSW7z/view
@@ -14,7 +19,7 @@ Huy Vector Tiny Pocket AI Assistant from [this video](https://youtu.be/25RGnr407
 ## One-image firmware
 The author's firmware image is **3,541,630 bytes**, SHA-256 **3d9dc6d68cc0eebaacb05f20fb4cc49fda7802eda21400483f1d9fcf2a01cf98**. Checked: identical to the firmware copy inside the original source archive. Target: ESP32-C3, write one merged image at **0x0**. No separate bootloader or partition files are needed for this specific published image.
 
-The image itself and full source archive remain available via the original creator's links. This repository keeps setup/verification files separately, and an offline kit copy was created with firmware + source + scripts. If re-downloaded, always verify SHA-256 before flashing.
+The firmware and complete source remain available via the original creator's links, and the original source archive is additionally mirrored here as verified GitHub parts. The source-only kit and repository scripts make it possible to compile separate builds for suitable ESP32 boards. Always check the appropriate image SHA-256 before flashing.
 
 ## Flash it later on Windows
 1. Confirm the exact physical ESP32-C3 SuperMini board, peripherals and 4 MB+ flash; disconnect other ESP boards.
