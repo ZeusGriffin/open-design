@@ -1,0 +1,170 @@
+%PDF-1.4
+%ASCII
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 2 /Kids [ 4 0 R 6 0 R ] >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 1511 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+54 756 Td
+(PHONE CLUSTER AI LAB - CHECKPOINT 2026-11-06) Tj
+T*
+(Overall readiness: 55%  [###########---------]) Tj
+T*
+() Tj
+T*
+(WHAT WE FOUND) Tj
+T*
+(- The video shows distributed LLM inference, not a general-purpose wireless GPU.) Tj
+T*
+(- Best first open-source route: Pooled \(WebGPU + WebRTC in browser tabs\).) Tj
+T*
+(- Current Pooled docs show iPhone Safari can join and hold model layers.) Tj
+T*
+(- Devices without WebGPU can remain ask-only/controller devices.) Tj
+T*
+(- Local API bridge: OpenAI/Anthropic compatible on 127.0.0.1:8080.) Tj
+T*
+(- Starter baseline: Qwen3 1.7B; about 4 GB room memory at 8K context,) Tj
+T*
+(  about 5.6 GB at 16K context.) Tj
+T*
+() Tj
+T*
+(ALREADY BUILT) Tj
+T*
+(- GitHub project structure and research notes.) Tj
+T*
+(- Windows preflight, Pooled bootstrap, API serve, and verification scripts.) Tj
+T*
+(- Pinned Pooled upstream baseline for reproducibility.) Tj
+T*
+(- Worker vs Controller mobile design.) Tj
+T*
+(- Z Cluster mobile compatibility/PWA shell.) Tj
+T*
+(- Progress tracker and hardware benchmark template.) Tj
+T*
+() Tj
+T*
+(MOBILE EXPERIENCE) Tj
+T*
+(GPU Worker Candidate: browser exposes WebGPU and returns a usable GPU adapter.) Tj
+T*
+(Controller: WebGPU unavailable; device still handles chat/control workflows.) Tj
+T*
+() Tj
+T*
+(FIRST REAL TEST) Tj
+T*
+(PC + one iPhone/iPad -> same Pooled room -> Qwen3 1.7B -> ask:) Tj
+T*
+(Reply with exactly: PHONE-CLUSTER-OK) Tj
+T*
+(Do not mark hardware tested until this passes on the actual devices.) Tj
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 1352 >>
+stream
+BT
+/F1 10 Tf
+12 TL
+54 756 Td
+(BUILD METHOD AND RESUME POINT) Tj
+T*
+() Tj
+T*
+(KARPATHY / EVIDENCE-FIRST) Tj
+T*
+(- Start with the smallest measurable baseline.) Tj
+T*
+(- Change one variable at a time.) Tj
+T*
+(- Verify every change and preserve a rollback path.) Tj
+T*
+(- Never replace a real test with an 'it should work' claim.) Tj
+T*
+() Tj
+T*
+(CAVEMAN MODE) Tj
+T*
+(- One objective per step.) Tj
+T*
+(- Simple language, obvious buttons/commands, visible PASS/FAIL.) Tj
+T*
+(- When troubleshooting, reduce the system until the failure is isolated.) Tj
+T*
+() Tj
+T*
+(ENGAGEMENT) Tj
+T*
+(- Always show device role, model, download state, room/API status, and next action.) Tj
+T*
+(- Avoid dead screens and unexplained waiting.) Tj
+T*
+() Tj
+T*
+(RESUME - DO NOT RESTART RESEARCH) Tj
+T*
+(1. Run PC + one iPhone/iPad baseline and get PHONE-CLUSTER-OK.) Tj
+T*
+(2. Run local API bridge and verify chat/completions.) Tj
+T*
+(3. Connect AnythingLLM or a coding agent.) Tj
+T*
+(4. Add a second mobile device and benchmark.) Tj
+T*
+(5. Test a larger model only after baseline stability.) Tj
+T*
+(6. Expand the Z Cluster dashboard.) Tj
+T*
+() Tj
+T*
+(GITHUB) Tj
+T*
+(ZeusGriffin/open-design/projects/hardware/phone-cluster-ai) Tj
+T*
+() Tj
+T*
+(SOURCES) Tj
+T*
+(https://github.com/Nehanth/pooled) Tj
+T*
+(https://pooled.run) Tj
+T*
+(https://www.youtube.com/watch?v=reOeczuEzOA) Tj
+ET
+endstream
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000016 00000 n 
+0000000065 00000 n 
+0000000130 00000 n 
+0000000200 00000 n 
+0000000326 00000 n 
+0000001888 00000 n 
+0000002014 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+3417
+%%EOF
