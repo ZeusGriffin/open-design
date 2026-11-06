@@ -2,6 +2,8 @@
 package.path = './?.lua;' .. package.path
 json = {
   encode = function(value)
+    assert(type(value.encounters)=='table' and #value.encounters == 2)
+    assert(value.encounters[1] == 'helped' and value.encounters[2] == 'threatened')
     return '{"schema":1,"id":"' .. value.id .. '","encounters":["helped"]}'
   end,
   decode = function(_)
