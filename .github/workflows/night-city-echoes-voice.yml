@@ -1,0 +1,34 @@
+name: Night City Echoes voice offline checks
+on:
+  push:
+    branches:
+      - night-city-echoes-ai-voice-20261106
+    paths:
+      - "projects/game-mods/cyberpunk2077-night-city-echoes/**"
+      - ".github/workflows/night-city-echoes-voice.yml"
+  pull_request:
+    paths:
+      - "projects/game-mods/cyberpunk2077-night-city-echoes/**"
+      - ".github/workflows/night-city-echoes-voice.yml"
+jobs:
+  local-scripting-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Syntax check voice Python
+        run: |
+          python -m py_compile projects/game-mods/cyberpunk2077-night-city-echoes/voice/bridge_service.py
+          python -m py_compile projects/game-mods/cyberpunk2077-night-city-echoes/voice/send_text_test.py
+      - name: Run offline Python bridge tests (no microphone or API)
+        run: python -m unittest discover -s projects/game-mods/cyberpunk2077-night-city-echoes/voice/tests -v
+      - name: Install Lua 5.4 test runtime
+        run: sudo apt-get update && sudo apt-get install -y lua5.4
+      - name: Run offline Lua regression and CET mock tests
+        working-directory: projects/game-mods/cyberpunk2077-night-city-echoes/mod
+        run: |
+          lua5.4 ../tests/test_core.lua
+          lua5.4 ../tests/test_adapter.lua
+          lua5.4 ../tests/test_voice_bridge.lua
