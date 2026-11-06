@@ -117,7 +117,7 @@ class TestOfflineVoice(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             p = Path(folder)
             save_json_atomic(p / REQUEST_NAME, REQ)
-            reply = {"schema": 1, "id": REQ["id"], "status": "ok", "reply": "Yes"}
+            reply = {"schema": 1, "id": REQ["id"], "status": "ok", "npc_name": REQ["npc_name"], "reply": "Yes"}
             history = {REQ["npc_key"]: [{"role": "assistant", "content": "Yes"}]}
             with mock.patch("bridge_service.handle_request", return_value=(reply, history)), \
                     mock.patch("bridge_service.time.sleep", side_effect=KeyboardInterrupt):
