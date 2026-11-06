@@ -1,5 +1,12 @@
 # NIGHT CITY ECHOES — Cyberpunk 2077 NPC Memory Prototype
 
+## Experimental local AI voice branch — November 6, 2026
+
+**Development only; not installed or game-tested.** The opt-in microphone → local Whisper → Ollama conversation → Windows spoken reply implementation is in [voice/README.md](./voice/README.md), with the CET integration in `mod/voice_bridge.lua` and a separate backup-first Windows installer in `voice/Install-VoiceBridge.ps1`. Review [CLAUDE_COWORK_HANDOFF.md](./CLAUDE_COWORK_HANDOFF.md) before the eventual Windows PC session. **No game-engine NPC lip-sync or autonomous behavior is implemented.**
+
+**Framework correction:** Although Night City Echoes itself is a CET Lua script, the official **CET 1.38.1** documentation requires **RED4ext** as a runtime prerequisite. The earlier October 22 compatibility notes are historical; verify patch 2.5 framework versions and a working overlay on the real computer before installing the voice build.
+
+
 ## Cyberpunk DLSS5 baseline correction (October 22, 2026)
 
 **User correction:** The most recent Cyberpunk graphics project is **Cyberpunk DLSS5** (October 17), not the older Luke Ross VR setup. DLSS5/RenoDX/ReShade/OptiScaler is a graphics modification; VR must be identified and verified separately. **Before any install, use the non-destructive [Cyberpunk DLSS5 baseline audit](./CYBERPUNK_DLSS5_BASELINE.md)**: inspect the exact active files and versions, preserve backups/hashes, and verify the existing stack on patch 2.5. Do not run a graphics/DLSS installer or overwrite `dxgi.dll`, Streamline, ReShade, or existing profiles until their provenance and compatibility are established. Neither DLSS5 nor active VR functionality has been tested on the user's current machine through this chat.

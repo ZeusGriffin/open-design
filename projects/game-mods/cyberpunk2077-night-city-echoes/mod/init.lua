@@ -1,6 +1,8 @@
 -- Night City Echoes v0.1 - manually records encounters for targeted NPCs.
 -- A Cyber Engine Tweaks mod. Only use in single-player Story Mode.
 local Core = require('core')
+local VoiceBridge = require('voice_bridge')
+local voiceState = VoiceBridge.new()
 local SAVE_FILE = 'night_city_echoes.json' -- CET io sandbox is relative to this mod folder.
 local world = Core.new()
 local selected = nil
@@ -72,6 +74,19 @@ local function captureNPC()
   print('[Night City Echoes] ' .. notice)
 end
 
+local function talkToNPC()
+  if not selected then captureNPC() end
+  if not selected then
+    notice = 'Cannot talk yet: aim at an NPC and capture one first.'
+    return
+  end
+  local saved = world.npcs[selected.key]
+  local respect = saved and saved.respect or 0
+  if not VoiceBridge.request(voiceState, selected, respect, Core.disposition(respect), saved and saved.memories or nil) then
+    notice = voiceState.status
+  end
+end
+
 local function logAction(action)
   if not selected then
     notice = 'Capture an NPC before recording an event.'
@@ -96,6 +111,14 @@ registerHotkey('nightCityEchoesCapture', 'Night City Echoes: Capture NPC', funct
   captureNPC()
 end)
 
+registerHotkey('nightCityEchoesTalk', 'Night City Echoes: Talk to selected NPC', function()
+  talkToNPC()
+end)
+
+registerForEvent('onUpdate', function(delta)
+  VoiceBridge.poll(voiceState, delta)
+end)
+
 registerForEvent('onOverlayOpen', function() uiOpen = true end)
 registerForEvent('onOverlayClose', function() uiOpen = false end)
 registerForEvent('onDraw', function()
@@ -108,6 +131,7 @@ registerForEvent('onDraw', function()
     ImGui.Separator()
     ImGui.Text('NPC: ' .. selected.name)
     ImGui.Text('Identifier: ' .. selected.key)
+    if ImGui.Button('Talk to selected NPC (microphone)') then talkToNPC() end
     local saved = world.npcs[selected.key]
     local respect = saved and saved.respect or 0
     ImGui.Text('Reputation: ' .. tostring(respect) .. ' / ' .. Core.disposition(respect))
@@ -135,5 +159,6 @@ registerForEvent('onDraw', function()
   if ImGui.Button('Save journal') then
     if saveWorld() then notice = 'Journal saved.' end
   end
+  VoiceBridge.draw(voiceState)
   ImGui.End()
 end)
