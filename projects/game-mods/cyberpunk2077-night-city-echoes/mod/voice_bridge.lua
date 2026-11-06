@@ -30,7 +30,7 @@ local function readJson(name)
   return nil
 end
 
-function M.request(state, npc, respect, disposition)
+function M.request(state, npc, respect, disposition, memories)
   if not npc or type(npc.key) ~= 'string' then
     state.status = 'Aim at an NPC, capture it, then press Talk.'
     return false
@@ -41,9 +41,19 @@ function M.request(state, npc, respect, disposition)
   end
   sequence = sequence + 1
   local id = tostring(os.time()) .. '-' .. tostring(sequence) .. '-' .. tostring(math.random(100000,999999))
+  local encounters = {}
+  if type(memories) == 'table' then
+    for i = math.max(1, #memories - 5), #memories do
+      local item = memories[i]
+      if type(item) == 'table' and type(item.action) == 'string' then
+        table.insert(encounters, item.action)
+      end
+    end
+  end
   local packet = {
     schema = 1, id = id, npc_key = npc.key, npc_name = tostring(npc.name or npc.key),
-    reputation = respect or 0, disposition = disposition or 'neutral', mode = 'microphone'
+    reputation = respect or 0, disposition = disposition or 'neutral',
+    encounters = encounters, mode = 'microphone'
   }
   local ok, err = writeJson(REQUEST_FILE, packet)
   if not ok then
