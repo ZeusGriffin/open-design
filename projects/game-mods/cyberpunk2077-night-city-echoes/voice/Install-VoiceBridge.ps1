@@ -1,5 +1,6 @@
-# Night City Echoes — opt-in voice prototype installer (source-verified, v0.1).
-# The DEFAULT action is read-only Preview. No unrelated mods/graphics files touched.
+# Night City Echoes — safe voice prototype installer (patch 2.5 only).
+# Default action is READ-ONLY preview. Only installs 3 NightCityEchoes Lua files.
+# No graphics, game executable, CET/RED4ext binaries, other mods or saves are modified.
 [CmdletBinding()]
 param([Parameter(Mandatory=$true)][string]$GamePath, [switch]$Install)
 $ErrorActionPreference = 'Stop'
@@ -12,60 +13,93 @@ $version = ([string]$meta.FileVersion + ' ' + [string]$meta.ProductVersion) -rep
 if ($version -notmatch '3\.0\.88\.46235|(^|[^0-9])2\.5([^0-9]|$)') {
   throw "Voice prototype install blocked for unverified game patch: $version"
 }
+
 $cet = Join-Path $root 'bin\x64\plugins\cyber_engine_tweaks.asi'
 $red = Join-Path $root 'red4ext\RED4ext.dll'
-if (-not (Test-Path -LiteralPath $cet) -or -not (Test-Path -LiteralPath $red)) {
-  throw 'CET and its RED4ext prerequisite must already be installed and working. This helper does not modify frameworks.'
+if (-not (Test-Path -LiteralPath $cet -PathType Leaf) -or
+    -not (Test-Path -LiteralPath $red -PathType Leaf)) {
+  throw 'Required CET/RED4ext files not detected. Inspect working framework installation first; this installer never modifies frameworks.'
 }
 $modDir = Join-Path $root 'bin\x64\plugins\cyber_engine_tweaks\mods\NightCityEchoes'
-$modSrc = Join-Path $PSScriptRoot '..\mod'
-$coreTarget = Join-Path $modDir 'core.lua'
-$initTarget = Join-Path $modDir 'init.lua'
-$voiceTarget = Join-Path $modDir 'voice_bridge.lua'
-$baselineInitHash = '297d1820a7032c267941a91c414439256350cbfd212a153245e0f69bfb26c7b2'
-$baselineCoreHash = '2a58ca6281ea64baa29d38811087f72e2702323c5e49428bbbc709dec7cef4ef'
-if (-not (Test-Path -LiteralPath $coreTarget) -or -not (Test-Path -LiteralPath $initTarget)) {
-  throw 'Install and test the original Night City Echoes memory journal before attempting voice.'
+$modSrc = (Resolve-Path (Join-Path $PSScriptRoot '..\mod')).Path
+$expectedCore = '2a58ca6281ea64baa29d38811087f72e2702323c5e49428bbbc709dec7cef4ef'
+$baselineInit = '297d1820a7032c267941a91c414439256350cbfd212a153245e0f69bfb26c7b2'
+$allowed = @('init.lua','core.lua','voice_bridge.lua')
+$sourceHashes = @{}
+foreach ($f in $allowed) {
+  $src = Join-Path $modSrc $f
+  if (-not (Test-Path -LiteralPath $src -PathType Leaf)) { throw "Voice project source missing: $src" }
+  $sourceHashes[$f] = (Get-FileHash -LiteralPath $src -Algorithm SHA256).Hash.ToLowerInvariant()
 }
-$coreHash = (Get-FileHash -LiteralPath $coreTarget -Algorithm SHA256).Hash.ToLowerInvariant()
-if ($coreHash -ne $baselineCoreHash) {
-  throw 'Existing core.lua differs from baseline. Stopping to protect installed custom modifications.'
+if ($sourceHashes['core.lua'] -ne $expectedCore) {
+  throw 'Unexpected core.lua source. Stop to protect the original memory journal baseline.'
 }
-$sourceInit = Join-Path $modSrc 'init.lua'
-$sourceBridge = Join-Path $modSrc 'voice_bridge.lua'
-foreach ($f in @($sourceInit,$sourceBridge)) {
-  if (-not (Test-Path -LiteralPath $f -PathType Leaf)) { throw "Missing voice source: $f" }
+
+$present = @()
+$missing = @()
+$matching = @()
+foreach ($f in $allowed) {
+  $target = Join-Path $modDir $f
+  if (-not (Test-Path -LiteralPath $target -PathType Leaf)) {
+    $missing += $f
+    continue
+  }
+  $present += $f
+  $actual = (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash.ToLowerInvariant()
+  if ($actual -eq $sourceHashes[$f]) {
+    $matching += $f
+  } elseif ($f -eq 'init.lua' -and $actual -eq $baselineInit) {
+    Write-Host 'Original memory-only init.lua detected. Voice update is compatible with this baseline.' -ForegroundColor Yellow
+  } else {
+    throw "Existing $f has unknown/custom changes. Stop instead of overwriting: $target"
+  }
 }
-$current = (Get-FileHash -LiteralPath $initTarget -Algorithm SHA256).Hash.ToLowerInvariant()
-$newHash = (Get-FileHash -LiteralPath $sourceInit -Algorithm SHA256).Hash.ToLowerInvariant()
-if ($current -ne $baselineInitHash -and $current -ne $newHash) {
-  throw 'Installed init.lua has third-party edits. Do not overwrite; review and merge manually.'
+$journalPath = Join-Path $modDir 'night_city_echoes.json'
+$journalPresent = Test-Path -LiteralPath $journalPath -PathType Leaf
+Write-Host "Game: $root"
+Write-Host "Build: $version"
+Write-Host 'CET and RED4ext: detected (runtime compatibility still requires in-game verification).'
+Write-Host "NightCityEchoes folder: $modDir"
+Write-Host ("Present: " + ($present -join ', '))
+Write-Host ("Already up to date: " + ($matching -join ', '))
+Write-Host ("Missing: " + ($missing -join ', '))
+Write-Host "Journal exists: $journalPresent (will be preserved)"
+if (-not $Install) {
+  Write-Host 'PREVIEW COMPLETE: no files changed. Run again with -Install only after CET actually opens in game.'
+  exit 0
 }
-Write-Host "Game patch: $version"
-Write-Host "Existing baseline memory journal: present; core hash verified."
-Write-Host "CET + RED4ext: present (check actual versions and overlay independently)."
-Write-Host "Voice bridge target: $voiceTarget"
-Write-Host "Voice implementation already installed: $($current -eq $newHash)"
-Write-Host "PREVIEW: will back up NightCityEchoes Lua files and journal, then copy ONLY init.lua and voice_bridge.lua."
-if (-not $Install) { Write-Host 'Preview only; no files changed.'; exit 0 }
 if (Get-Process -Name Cyberpunk2077 -ErrorAction SilentlyContinue) { throw 'Exit Cyberpunk before installing.' }
-$choice = Read-Host 'Type INSTALL_VOICE to confirm the two-file update (otherwise cancel)'
-if ($choice -cne 'INSTALL_VOICE') { Write-Host 'Cancelled, nothing changed.'; exit 0 }
+$confirmation = Read-Host 'Type CET_OK only after confirming the CET overlay worked in game on patch 2.5'
+if ($confirmation -cne 'CET_OK') { Write-Host 'Cancelled; no files changed.'; exit 0 }
+$choice = Read-Host 'Type INSTALL_VOICE to backup and install the three Lua mod files'
+if ($choice -cne 'INSTALL_VOICE') { Write-Host 'Cancelled; no files changed.'; exit 0 }
+
 $backup = Join-Path ([Environment]::GetFolderPath('MyDocuments')) ('NightCityEchoes-Backups\voice-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
 New-Item -ItemType Directory -Path $backup -Force | Out-Null
-foreach ($f in @('init.lua','core.lua','voice_bridge.lua','night_city_echoes.json','voice_history.json')) {
+foreach ($f in @('init.lua','core.lua','voice_bridge.lua','night_city_echoes.json','voice_request.json','voice_response.json','voice_history.json')) {
   $existing = Join-Path $modDir $f
   if (Test-Path -LiteralPath $existing -PathType Leaf) {
     Copy-Item -LiteralPath $existing -Destination (Join-Path $backup $f) -Force
   }
 }
-Copy-Item -LiteralPath $sourceInit -Destination $initTarget -Force
-Copy-Item -LiteralPath $sourceBridge -Destination $voiceTarget -Force
-foreach ($entry in @(@($sourceInit,$initTarget),@($sourceBridge,$voiceTarget))) {
-  if ((Get-FileHash -LiteralPath $entry[0] -Algorithm SHA256).Hash -ne
-      (Get-FileHash -LiteralPath $entry[1] -Algorithm SHA256).Hash) {
-    throw "Copy verification failed. Restore from backup folder: $backup"
+$receipt = [ordered]@{
+  gamePath=$root
+  backupPath=$backup
+  existingFiles=@($present)
+  installedAt=(Get-Date).ToString('o')
+  sourceHashes=$sourceHashes
+  version='voice-0.1-first-test'
+}
+($receipt | ConvertTo-Json -Depth 5) | Set-Content -LiteralPath (Join-Path $backup 'manifest.json') -Encoding UTF8
+New-Item -ItemType Directory -Path $modDir -Force | Out-Null
+foreach ($f in $allowed) {
+  $src = Join-Path $modSrc $f
+  $dst = Join-Path $modDir $f
+  Copy-Item -LiteralPath $src -Destination $dst -Force
+  $dstHash = (Get-FileHash -LiteralPath $dst -Algorithm SHA256).Hash.ToLowerInvariant()
+  if ($dstHash -ne $sourceHashes[$f]) {
+    throw "Copy hash verification failed for $f. Restore existing files from backup: $backup"
   }
 }
-Write-Host "Voice bridge Lua files installed; backups at $backup" -ForegroundColor Green
-Write-Host "Next, start Python companion manually, then bind Talk in CET. No game test has run yet."
+Write-Host "INSTALLED: Night City Echoes memory + voice Lua files. Backup: $backup" -ForegroundColor Green
+Write-Host 'This is not yet a successful game/voice test. Start the local Python companion before using Talk.'
