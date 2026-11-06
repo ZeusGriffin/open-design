@@ -1,12 +1,15 @@
 """Offline bridge tests. No microphone, Ollama, Windows or game required."""
 import sys
+import io
+import json
+from unittest import mock
 import tempfile
 import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from bridge_service import (load_json, save_json_atomic, validate_request,
-                            handle_request, cli)
+                            handle_request, cli, local_chat, serve, REQUEST_NAME, RESPONSE_NAME, HISTORY_NAME)
 
 REQ = {
     "schema": 1,
@@ -94,6 +97,34 @@ class TestOfflineVoice(unittest.TestCase):
     def test_rejects_unknown_encounter(self):
         with self.assertRaises(ValueError):
             validate_request({**REQ, "encounters": ["unknown-action"]})
+
+    def test_local_ollama_http_protocol_mock(self):
+        raw = json.dumps({"message": {"content": "I remember the favor."}}).encode("utf-8")
+        fake_response = io.BytesIO(raw)
+        with mock.patch("bridge_service.urllib.request.urlopen", return_value=fake_response) as urlopen:
+            reply = local_chat(
+                "fake", "Test NPC", 18, "neutral", [], "Remember me?",
+                encounters=["helped"],
+            )
+            request = urlopen.call_args.args[0]
+            body = json.loads(request.data.decode("utf-8"))
+        self.assertEqual(reply, "I remember the favor.")
+        self.assertIn("helped", body["messages"][0]["content"])
+        self.assertEqual(body["messages"][-1]["content"], "Remember me?")
+        self.assertEqual(request.full_url, "http://127.0.0.1:11434/api/chat")
+
+    def test_file_worker_roundtrip_with_mock_response(self):
+        with tempfile.TemporaryDirectory() as folder:
+            p = Path(folder)
+            save_json_atomic(p / REQUEST_NAME, REQ)
+            reply = {"schema": 1, "id": REQ["id"], "status": "ok", "reply": "Yes"}
+            history = {REQ["npc_key"]: [{"role": "assistant", "content": "Yes"}]}
+            with mock.patch("bridge_service.handle_request", return_value=(reply, history)), \
+                    mock.patch("bridge_service.time.sleep", side_effect=KeyboardInterrupt):
+                serve(p, model="fake", whisper_model="base", device="cpu",
+                      mic_seconds=1, enable_tts=False, poll_seconds=0.1)
+            self.assertEqual(load_json(p / RESPONSE_NAME)["reply"], "Yes")
+            self.assertEqual(load_json(p / HISTORY_NAME)[REQ["npc_key"]][0]["content"], "Yes")
 
     def test_cli_rejects_microphone_too_long(self):
         with self.assertRaises(SystemExit):
