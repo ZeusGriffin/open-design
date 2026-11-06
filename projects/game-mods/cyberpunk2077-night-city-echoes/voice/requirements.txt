@@ -1,0 +1,6 @@
+# Windows opt-in microphone / local speech support.
+# The companion's typed-text mode uses Python standard library only.
+numpy>=1.26,<3
+sounddevice>=0.5,<1
+faster-whisper>=1.2,<2
+pyttsx3>=2.90,<3
