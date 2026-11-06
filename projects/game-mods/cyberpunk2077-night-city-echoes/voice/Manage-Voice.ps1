@@ -41,7 +41,8 @@ if ($Action -eq 'Setup') {
   if (-not (Test-Path $req)) { throw 'requirements.txt missing; download complete repo.' }
   $py = Get-PythonCommand
   Write-Host "Creating local Python environment in $voiceDir\.venv"
-  & $py.Path @($py.Prefix) -m venv (Join-Path $voiceDir '.venv')
+  $launchArgs = @($py.Prefix)
+  & $py.Path @launchArgs -m venv (Join-Path $voiceDir '.venv')
   if ($LASTEXITCODE -ne 0) { throw 'Creating the virtual environment failed.' }
   & $venvPy -m pip install --upgrade pip
   if ($LASTEXITCODE -ne 0) { throw 'pip upgrade failed.' }
