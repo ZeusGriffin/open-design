@@ -2,6 +2,20 @@
 
 Recreate the **behavior** shown in the video **"I Turned My Spare Phones Into a Wireless GPU for AI Agents (It Actually Works)"** using open-source components.
 
+## Current checkpoint
+
+**Overall readiness: 55%**
+
+`[███████████░░░░░░░░░] 55%`
+
+- Progress tracker: [PROGRESS.md](./PROGRESS.md)
+- Dated checkpoint: [CHECKPOINT_2026-11-06.md](./CHECKPOINT_2026-11-06.md)
+- GitHub checkpoint PDF: [docs/Phone_Cluster_AI_Checkpoint_2026-11-06.pdf](./docs/Phone_Cluster_AI_Checkpoint_2026-11-06.pdf)
+- Mobile compatibility PWA shell: [app/index.html](./app/index.html)
+- Hardware benchmark record: [BENCHMARK_TEMPLATE.md](./BENCHMARK_TEMPLATE.md)
+
+The next unverified milestone is still **PC + one iPhone/iPad + Qwen3 1.7B -> PHONE-CLUSTER-OK**. Do not restart research when resuming.
+
 ## Goal
 
 Pool compute and memory across a Windows PC plus phones/tablets so one open-weight LLM can be split across devices, then expose the cluster through a local OpenAI-compatible API for tools such as AnythingLLM, coding agents, and custom apps.
