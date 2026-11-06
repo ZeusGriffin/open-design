@@ -14,7 +14,11 @@ $files = Get-ChildItem -Path $Payload -File -Recurse | Where-Object { $_.FullNam
 
 $lines = foreach ($file in $files) {
   $hash = (Get-FileHash -Algorithm SHA256 -Path $file.FullName).Hash.ToLowerInvariant()
-  $relative = [System.IO.Path]::GetRelativePath($Payload, $file.FullName)
+
+  # Compatible with Windows PowerShell 5.1 and PowerShell 7.
+  $relative = $file.FullName.Substring($Payload.Length)
+  $relative = $relative.TrimStart([char[]]@('\','/'))
+
   "$hash  $relative"
 }
 
