@@ -62,7 +62,14 @@ def validate_request(value: Any) -> dict:
     reputation = value.get("reputation", 0)
     if not isinstance(reputation, (int, float)) or isinstance(reputation, bool):
         raise ValueError("Invalid reputation")
+    encounters = value.get("encounters", [])
+    permitted = {"helped", "spared", "threatened", "robbed", "betrayed", "reconciled"}
+    if not isinstance(encounters, list) or len(encounters) > 8 or any(
+        not isinstance(action, str) or action not in permitted for action in encounters
+    ):
+        raise ValueError("Invalid NPC encounter history")
     return {
+        "encounters": list(encounters),
         "id": req_id,
         "npc_key": key,
         "npc_name": name,
@@ -100,7 +107,8 @@ def capture_microphone(seconds: float, whisper_model: str, device: str) -> str:
 
 
 def local_chat(model: str, npc_name: str, reputation: int, disposition: str,
-               memory: list[dict], player_line: str, endpoint: str = "http://127.0.0.1:11434/api/chat") -> str:
+               memory: list[dict], player_line: str, endpoint: str = "http://127.0.0.1:11434/api/chat",
+               encounters: list[str] | None = None) -> str:
     """Calls *only* a loopback Ollama endpoint. No uploaded game telemetry."""
     system = (
         "You are a fictional Night City resident for a fan-made Cyberpunk 2077 mod. "
@@ -112,6 +120,8 @@ def local_chat(model: str, npc_name: str, reputation: int, disposition: str,
         "Avoid claiming you can see or hear the player beyond the conversation text. "
         "No labels or stage directions."
     )
+    if encounters:
+        system += " Earlier player encounters logged for this NPC (oldest first): " + ", ".join(encounters[-8:]) + "."
     messages = [{"role": "system", "content": system}]
     for row in memory[-MAX_HISTORY_LINES:]:
         if isinstance(row, dict) and row.get("role") in ("user", "assistant"):
@@ -161,7 +171,7 @@ def handle_request(value: dict, history: dict, *, model: str, whisper_model: str
     line = req["player_line"]
     if req["mode"] == "microphone":
         line = microphone_fn(mic_seconds, whisper_model, device)
-    reply = chat_fn(model, req["npc_name"], req["reputation"], req["disposition"], rows, line, endpoint)
+    reply = chat_fn(model, req["npc_name"], req["reputation"], req["disposition"], rows, line, endpoint, encounters=req["encounters"])
     updated = dict(history)
     updated[key] = (rows + [
         {"role": "user", "content": line},
