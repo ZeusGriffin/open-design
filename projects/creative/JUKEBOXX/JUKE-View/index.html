@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="theme-color" content="#151916"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="JUKE View"><link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg"><link rel="apple-touch-icon" href="./icon.svg"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>JUKE View | JUKEBOXX Studio</title>
 <style>
 :root{color-scheme:dark;--ink:#f4f2e8;--muted:#9a9d97;--line:#30332f;--bg:#101311;--panel:#1a1e1b;--lime:#d3ef69;--amber:#ffa45d}
@@ -69,5 +69,5 @@ $('exportPng').addEventListener('click',()=>{if(active.kind!=='image')return say
 new ResizeObserver(resize).observe(stage);select(demo);
 })();
 </script>
-</body>
+<script>if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}))}</script></body>
 </html>
