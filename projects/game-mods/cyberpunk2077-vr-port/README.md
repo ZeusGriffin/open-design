@@ -40,3 +40,12 @@ No PC access or live game test in this session. No installation performed. Obsid
 - New: immersive physical weapon holsters, dual wielding, hands-only avatar, optional OpenXR finger tracking and Vive tracker full-body tracking, improved steering and stereo performance.
 - Release notes state v0.2.0 reduced mandatory framework dependencies to RED4ext 1.31.0; verify current README and requirements again before installing.
 - Keep Night City Echoes installation isolated until compatibility and rollback checks pass. No local installation or testing performed.
+
+## Preferred installer: MrSurviv0r's VR HUB (2026-11-08)
+- User-selected workflow: use MrSurviv0r's VR HUB to install/manage dariulone CyberpunkVR Port with motion-controlled hands on Quest 3.
+- Hub repository/releases: https://github.com/MrSurviv0r/MRSURVIV0R-S-VR-HUB/releases
+- Official website: https://mrsurvivor-installers.com/
+- Upstream VR mod: https://github.com/dariulone/cyberpunk-vr-port/releases
+- Hub website says it integrates Cyberpunk VR Port and handles downloads, verification and updates. Verify exact port version selected by HUB at install time; it may lag upstream.
+- Safety: keep Night City Echoes and existing mod installation backed up; check game version 2.5, installed dependencies, other VR injectors, and HUB compatibility before running installer. Prefer an isolated install/backup. No local installation or testing performed.
+- Acceptance test: Quest 3 connects, independent hands track, weapon aiming/reload work, and Night City Echoes is not damaged.
