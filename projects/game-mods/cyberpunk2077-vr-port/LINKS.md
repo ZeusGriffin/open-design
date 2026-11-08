@@ -10,3 +10,7 @@
 - Source video: https://youtu.be/AZ6WODDIH3Q
 
 Use official release assets; no unofficial mirrors or redistributed game/mod binaries. Verify release version and hub support on installation day.
+
+## Official HUB release source — 2026-11-08
+User-supplied official installer release page: https://github.com/MrSurviv0r/MRSURVIV0R-S-VR-HUB/releases
+Before running: confirm the current release tag, included CyberpunkVR Port version, supported Cyberpunk patch and dependencies from official release notes. Download only official release assets; do not run automatically. Compatibility and PC installation remain unverified.
