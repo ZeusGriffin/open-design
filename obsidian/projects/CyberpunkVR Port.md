@@ -34,3 +34,9 @@ Existing custom Night City Echoes install kit: https://github.com/ZeusGriffin/op
 
 ## Blockers
 No PC access or live game test in this session. No installation performed. Obsidian note is stored as Markdown in GitHub for import/sync; this is not confirmation of a write to the local Obsidian vault.
+
+## Release verification — 2026-11-08
+- Official latest: **v0.2.2**, released 2026-11-05: https://github.com/dariulone/cyberpunk-vr-port/releases/tag/v0.2.2
+- New: immersive physical weapon holsters, dual wielding, hands-only avatar, optional OpenXR finger tracking and Vive tracker full-body tracking, improved steering and stereo performance.
+- Release notes state v0.2.0 reduced mandatory framework dependencies to RED4ext 1.31.0; verify current README and requirements again before installing.
+- Keep Night City Echoes installation isolated until compatibility and rollback checks pass. No local installation or testing performed.
