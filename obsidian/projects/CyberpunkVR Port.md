@@ -49,3 +49,10 @@ No PC access or live game test in this session. No installation performed. Obsid
 - Hub website says it integrates Cyberpunk VR Port and handles downloads, verification and updates. Verify exact port version selected by HUB at install time; it may lag upstream.
 - Safety: keep Night City Echoes and existing mod installation backed up; check game version 2.5, installed dependencies, other VR injectors, and HUB compatibility before running installer. Prefer an isolated install/backup. No local installation or testing performed.
 - Acceptance test: Quest 3 connects, independent hands track, weapon aiming/reload work, and Night City Echoes is not damaged.
+
+## Installation kit — GitHub source of truth (2026-11-08)
+- [All source and release links](https://github.com/ZeusGriffin/open-design/blob/main/projects/game-mods/cyberpunk2077-vr-port/LINKS.md)
+- [Reusable full installation prompt](https://github.com/ZeusGriffin/open-design/blob/main/projects/game-mods/cyberpunk2077-vr-port/INSTALL-PROMPT.md)
+- [Read-only Windows preflight script](https://github.com/ZeusGriffin/open-design/blob/main/projects/game-mods/cyberpunk2077-vr-port/scripts/Check-CyberpunkVR.ps1)
+
+Run script after downloading it from GitHub with: `powershell -NoProfile -File .\Check-CyberpunkVR.ps1 -GamePath "C:\path\to\Cyberpunk 2077"`. Replace the placeholder with the actual game folder. Script inventories only; no installation performed. Obsidian local vault sync remains pending.
