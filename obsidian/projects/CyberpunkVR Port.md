@@ -56,3 +56,7 @@ No PC access or live game test in this session. No installation performed. Obsid
 - [Read-only Windows preflight script](https://github.com/ZeusGriffin/open-design/blob/main/projects/game-mods/cyberpunk2077-vr-port/scripts/Check-CyberpunkVR.ps1)
 
 Run script after downloading it from GitHub with: `powershell -NoProfile -File .\Check-CyberpunkVR.ps1 -GamePath "C:\path\to\Cyberpunk 2077"`. Replace the placeholder with the actual game folder. Script inventories only; no installation performed. Obsidian local vault sync remains pending.
+
+## Official HUB release source — 2026-11-08
+User-supplied official installer release page: https://github.com/MrSurviv0r/MRSURVIV0R-S-VR-HUB/releases
+Before running: confirm the current release tag, included CyberpunkVR Port version, supported Cyberpunk patch and dependencies from official release notes. Download only official release assets; do not run automatically. Compatibility and PC installation remain unverified.
