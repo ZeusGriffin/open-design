@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "profiles": [
+    {
+      "id": "pi-zero-2w",
+      "label": "Whisplay Pi",
+      "host": "pi.local",
+      "port": 22,
+      "username": "YOUR_PI_USER",
+      "auth_method": "ssh_key",
+      "key_reference": "keychain://YOUR_KEY_ID",
+      "terminal_type": "xterm-256color",
+      "keepalive_seconds": 30
+    },
+    {
+      "id": "windows-pc",
+      "label": "Windows PC",
+      "host": "YOUR_PC_LAN_IP",
+      "port": 22,
+      "username": "YOUR_WINDOWS_USER",
+      "auth_method": "ssh_key",
+      "key_reference": "keychain://YOUR_KEY_ID",
+      "terminal_type": "xterm-256color",
+      "keepalive_seconds": 30
+    }
+  ]
+}
