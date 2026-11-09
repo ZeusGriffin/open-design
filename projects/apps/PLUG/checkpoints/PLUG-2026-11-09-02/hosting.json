@@ -1,8 +1,6 @@
 {
   "d1": null,
-  "r2": {
-    "binding": "BUCKET"
-  },
+  "r2": "BUCKET",
   "project_id": "appgprj_6af24a0776b08191bc17915e98f462d1",
   "capabilities": [
     "mcp"
