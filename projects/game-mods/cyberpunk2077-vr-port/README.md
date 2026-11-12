@@ -1,51 +1,75 @@
 # CyberpunkVR Port — Quest 3 motion-controller VR
 
-Status: Research / install pending (2026-11-08)
+Status: **PC quick-update kit ready; installation pending** (2026-11-11)
+Source video: https://youtu.be/6sDvHXDF1yM
 Upstream: https://github.com/dariulone/cyberpunk-vr-port
 Releases: https://github.com/dariulone/cyberpunk-vr-port/releases
 Nexus: https://www.nexusmods.com/cyberpunk2077/mods/30093
-Hardware target: Meta Quest 3 + Windows PC + RTX 4070 Super
+Preferred manager: https://github.com/MrSurviv0r/MRSURVIV0R-S-VR-HUB/releases
+Hardware target: Meta Quest 3 + Windows PC + RTX 4070 Super + Steam Cyberpunk 2077
 
 ## Goal
-Play Cyberpunk 2077 in PCVR with tracked hand/controller movement, aiming, physical reload interactions and immersive driving. This is NOT the older Luke Ross head-aimed VR mod.
+Play Cyberpunk 2077 in PCVR with real stereo rendering, 6-DoF head tracking, full-body VRIK, tracked motion-controlled hands, weapon aiming, physical reloads, motion melee and physical holsters. This is **not** the older Luke Ross head-aimed VR mod.
+
+## Current verified stack — 2026-11-11
+- Cyberpunk 2077: **2.5** (current PC patch).
+- CyberpunkVR Port: **0.2.3**, released 2026-11-08.
+- Mandatory VR dependency: **RED4ext 1.31.0 or newer**.
+- OpenXR runtime must be started before the game.
+- CET, ArchiveXL, TweakXL, Input Loader, Codeware and redscript are **not required by the VR port anymore**. Keep them only if other installed mods need them.
+- v0.2.3 adds built-in holsters, shotgun shell handling, walkable mirrors and scene-camera smoothing.
+- The port is experimental. Back up before changing an existing modded install.
+
+## Fastest update path — preferred
+If MrSurviv0r's VR HUB is already installed:
+1. Close Cyberpunk 2077.
+2. Open the newest VR HUB.
+3. Open the **Cyberpunk 2077** card.
+4. Choose **Install Update**.
+5. Let the HUB detect/download the stable CyberpunkVR Port + RED4ext stack and migrate the previous VR setup.
+6. Start your OpenXR runtime (Quest Link / SteamVR / Virtual Desktop VDXR).
+7. Launch Cyberpunk.
+8. Calibrate in the VR lobby.
+9. Verify hands, aiming, reload, holsters, driving, saves and existing non-VR mods.
+
+The HUB release notes say the Cyberpunk update flow backs up and migrates older verified VR files while preserving settings, saves and shared mods. It also checks GitHub for newer stable CyberpunkVR Port releases.
+
+## Direct official fallback
+If the HUB is unavailable, use the official upstream release:
+1. Install/update RED4ext 1.31.0+.
+2. Download CyberpunkVR Port 0.2.3 from the upstream GitHub Releases page.
+3. Follow upstream README/UNINSTALL guidance for any legacy <=0.1.9 files.
+4. Extract the release into the Cyberpunk game root (the folder containing `bin\`, `r6\` and `red4ext\`).
+5. Start OpenXR first, then launch `bin\x64\Cyberpunk2077.exe`.
+
+Use `scripts/Stage-CyberpunkVR-Update.ps1` to download the pinned official packages into a staging folder without modifying the game.
+
+## Controls / quick reference
+- Hold **L3 + R3**: VR menu.
+- **F10 / Insert**: in-headset VR settings overlay.
+- **F7**: recenter.
+- Start the OpenXR runtime **before** the game.
 
 ## Existing baseline — preserve
-Existing custom Night City Echoes install kit: [INSTALL-KIT](../cyberpunk2077-night-city-echoes/INSTALL-KIT.md). Its current status warns against installing unverified combinations on Cyberpunk patch 2.5. Do not overwrite or install over an active mod stack without compatibility verification.
+Existing custom Night City Echoes install kit: [INSTALL-KIT](../cyberpunk2077-night-city-echoes/INSTALL-KIT.md).
 
-## Before installation
-1. Check upstream release README, requirements and supported game version on installation day; do not assume current versions are compatible.
-2. Record Cyberpunk game build, RED4ext and CET versions, Steam/GOG/Epic location, OpenXR runtime and existing mod list.
-3. Back up saves and relevant mod directories; preserve Night City Echoes and rollback route.
-4. Compare VR mod hooks/plugins with existing VR injectors, graphics mods and Night City Echoes.
-5. Test first with a clean or isolated profile; avoid modifying working installation until verified.
-6. Install official release only after checks, launch via Quest 3 PCVR, verify tracked hands, weapon aiming, reload, driving, performance and save loading.
-7. Log results and revert if any test fails.
+Do not remove Night City Echoes just to install the VR port. The new VR port no longer needs CET itself, but Night City Echoes may still rely on CET and other frameworks. Keep those frameworks if another mod needs them.
 
-## Verification
-- [ ] Official upstream requirements reviewed
-- [ ] Game/mod version compatibility checked
-- [ ] Backup and rollback documented
-- [ ] VR mod installed on PC
-- [ ] Quest 3 headset connects
+## Verification checklist
+- [ ] Cyberpunk reports patch 2.5
+- [ ] RED4ext 1.31.0+ present
+- [ ] CyberpunkVR Port 0.2.3 installed
+- [ ] OpenXR runtime starts before game
+- [ ] Quest 3 connects
 - [ ] Both hands track independently
-- [ ] Aim/reload/driving work
-- [ ] Night City Echoes still works (if combined)
-- [ ] No critical crashes; rollback tested
+- [ ] Weapon aiming works
+- [ ] Physical reload works
+- [ ] Holsters work
+- [ ] Driving works
+- [ ] Save loads successfully
+- [ ] Night City Echoes / other mods still work
+- [ ] No competing old VR injector remains active
+- [ ] Rollback files/backups exist
 
-## Blockers
-No PC access or live game test in this session. No installation performed. Obsidian note is stored as Markdown in GitHub for import/sync; this is not confirmation of a write to the local Obsidian vault.
-
-## Release verification — 2026-11-08
-- Official latest: **v0.2.2**, released 2026-11-05: https://github.com/dariulone/cyberpunk-vr-port/releases/tag/v0.2.2
-- New: immersive physical weapon holsters, dual wielding, hands-only avatar, optional OpenXR finger tracking and Vive tracker full-body tracking, improved steering and stereo performance.
-- Release notes state v0.2.0 reduced mandatory framework dependencies to RED4ext 1.31.0; verify current README and requirements again before installing.
-- Keep Night City Echoes installation isolated until compatibility and rollback checks pass. No local installation or testing performed.
-
-## Preferred installer: MrSurviv0r's VR HUB (2026-11-08)
-- User-selected workflow: use MrSurviv0r's VR HUB to install/manage dariulone CyberpunkVR Port with motion-controlled hands on Quest 3.
-- Hub repository/releases: https://github.com/MrSurviv0r/MRSURVIV0R-S-VR-HUB/releases
-- Official website: https://mrsurvivor-installers.com/
-- Upstream VR mod: https://github.com/dariulone/cyberpunk-vr-port/releases
-- Hub website says it integrates Cyberpunk VR Port and handles downloads, verification and updates. Verify exact port version selected by HUB at install time; it may lag upstream.
-- Safety: keep Night City Echoes and existing mod installation backed up; check game version 2.5, installed dependencies, other VR injectors, and HUB compatibility before running installer. Prefer an isolated install/backup. No local installation or testing performed.
-- Acceptance test: Quest 3 connects, independent hands track, weapon aiming/reload work, and Night City Echoes is not damaged.
+## Current state
+Research and repository prep are complete. No claim is made that the files are already installed on the Windows PC. The next PC action is the HUB **Install Update** flow or the staged direct-official fallback.
