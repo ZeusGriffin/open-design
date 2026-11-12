@@ -1,16 +1,32 @@
-# Verified project links
+# Verified project links — 2026-11-11
 
+## Source / reference
+- Source video — VR Modders Are Getting Out of Control: https://youtu.be/6sDvHXDF1yM
+- Earlier reference video: https://youtu.be/AZ6WODDIH3Q
+
+## Cyberpunk VR
 - CyberpunkVR Port source: https://github.com/dariulone/cyberpunk-vr-port
 - CyberpunkVR Port releases: https://github.com/dariulone/cyberpunk-vr-port/releases
+- CyberpunkVR Port v0.2.3: https://github.com/dariulone/cyberpunk-vr-port/releases/tag/v0.2.3
+- Nexus listing: https://www.nexusmods.com/cyberpunk2077/mods/30093
+
+## Preferred updater
 - MrSurviv0r VR HUB releases: https://github.com/MrSurviv0r/MRSURVIV0R-S-VR-HUB/releases
 - Hub website: https://mrsurvivor-installers.com/
+
+## Dependency
 - RED4ext releases: https://github.com/WopsS/RED4ext/releases
+- RED4ext v1.31.0: https://github.com/WopsS/RED4ext/releases/tag/v1.31.0
 - RED4ext install docs: https://docs.red4ext.com/getting-started/installing-red4ext
-- Existing Night City Echoes: https://github.com/ZeusGriffin/open-design/tree/main/projects/game-mods/cyberpunk2077-night-city-echoes
-- Source video: https://youtu.be/AZ6WODDIH3Q
 
-Use official release assets; no unofficial mirrors or redistributed game/mod binaries. Verify release version and hub support on installation day.
+## Existing local project
+- Night City Echoes: https://github.com/ZeusGriffin/open-design/tree/main/projects/game-mods/cyberpunk2077-night-city-echoes
 
-## Official HUB release source — 2026-11-08
-User-supplied official installer release page: https://github.com/MrSurviv0r/MRSURVIV0R-S-VR-HUB/releases
-Before running: confirm the current release tag, included CyberpunkVR Port version, supported Cyberpunk patch and dependencies from official release notes. Download only official release assets; do not run automatically. Compatibility and PC installation remain unverified.
+## Current pinned compatibility
+- Cyberpunk 2077: 2.5
+- CyberpunkVR Port: 0.2.3
+- RED4ext: 1.31.0+
+- Quest 3/OpenXR runtime: required
+- CET/ArchiveXL/TweakXL/Input Loader/Codeware/redscript: optional for the VR port itself; keep if other mods use them.
+
+Use official release assets only. Do not rehost Nexus binaries in this repo.
