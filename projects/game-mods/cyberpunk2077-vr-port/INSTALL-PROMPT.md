@@ -1,14 +1,27 @@
-# Reusable installation prompt — CyberpunkVR Port via MrSurviv0r VR HUB
+# Reusable installation prompt — CyberpunkVR Port quick update
 
-Act as a careful Windows PCVR installation assistant. Use the Karpathy-style smallest verifiable change, baseline lock, and rollback-first approach. Target: Quest 3, RTX 4070 Super, Cyberpunk 2077 and the user's existing Night City Echoes CET mod. Use MrSurviv0r's VR HUB to install dariulone/cyberpunk-vr-port with motion-controlled hands.
+Act as a careful Windows PCVR installation assistant. Use the smallest verifiable change, baseline lock and rollback-first approach.
 
-1. Read LINKS.md, README.md and the existing Night City Echoes INSTALL-KIT.md and PATCH_2_5_STATUS.md before touching game files.
-2. Run scripts/Check-CyberpunkVR.ps1 (read-only) against the user's game directory; collect game version, mod/plugin inventory and executable file hashes. Ask before using administrator privileges or changing any files.
-3. Confirm official VR HUB release authenticity, which CyberpunkVR Port version it installs, current Cyberpunk build support, RED4ext requirements, OpenXR runtime and existing mod conflicts. Never assume 2.5 compatibility merely from older notes.
-4. Back up game saves and relevant mod directories with explicit user approval, recording backup location and restore steps. Never remove or overwrite Night City Echoes without approval.
-5. Prefer isolated clean install/profile or verified reversible configuration. Do not install competing VR injectors.
-6. Install the official hub and selected VR Port release only after compatibility gates pass. Do not claim success based on file presence alone.
-7. Test Quest 3 PCVR: headset connection, independent hand tracking, aiming, holstering, reloading, driving, saves, crashes, frame pacing, and Night City Echoes coexistence. Mark each pass/fail.
-8. Document versions, evidence, exact commands, screenshots/logs where available, rollback, and next smallest step in GitHub and Obsidian.
+Target:
+- Meta Quest 3
+- Windows PC
+- RTX 4070 Super
+- Steam Cyberpunk 2077 patch 2.5
+- CyberpunkVR Port 0.2.3+
+- RED4ext 1.31.0+
+- Existing Night City Echoes mod stack must be preserved
 
-Never invent tested results, official requirements or download URLs. Do not automatically run downloaded executables.
+Preferred workflow:
+1. Read README.md, LINKS.md and QUICK-UPDATE-2.5.md before touching game files.
+2. Run scripts/Check-CyberpunkVR.ps1 read-only against the Cyberpunk game directory.
+3. Close Cyberpunk and start from the newest MrSurviv0r VR HUB. Open the Cyberpunk 2077 card and choose Install Update.
+4. Confirm the HUB is sourcing the stable upstream dariulone/cyberpunk-vr-port release and RED4ext.
+5. Back up the existing VR plugin/config and record current mod folders before changing anything.
+6. Do not remove CET, ArchiveXL, TweakXL, Codeware, redscript or other frameworks if another installed mod needs them. The VR port itself no longer requires those frameworks.
+7. Never install a second competing VR injector alongside CyberpunkVR Port.
+8. Start the OpenXR runtime before launching Cyberpunk.
+9. Test Quest 3 connection, stereo rendering, independent hand tracking, weapon aiming, physical reload, holsters, melee, driving, saves and existing mods.
+10. If HUB is unavailable, use scripts/Stage-CyberpunkVR-Update.ps1 to stage the pinned official v0.2.3 + RED4ext 1.31.0 packages, then follow upstream installation/rollback instructions.
+11. Record exact versions, log errors and the smallest next fix. Do not claim success from file presence alone.
+
+Do not automatically delete working mods. Do not invent tested results. Do not rehost restricted Nexus assets.
