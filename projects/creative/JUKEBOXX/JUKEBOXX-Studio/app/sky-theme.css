@@ -1,0 +1,27 @@
+.boot{background:#246cc3;color:#eaf9ff}
+.boot:before{content:'';position:absolute;z-index:-1;inset:-3%;background:linear-gradient(180deg,#10265b33,transparent 65%,#61a9d011),url('./sky.png') center/cover no-repeat;image-rendering:pixelated;transform-origin:50% 64%}
+.boot.running:before{animation:sky-flight 10.5s linear forwards}
+.boot.dark{background:#246cc3;color:#f0faff}
+.boot.dark:before{filter:brightness(.85)}
+.boot-screen{background:transparent}
+.boot-white{justify-content:flex-end;padding-bottom:140px}
+.boot-studio{font:bold 13px 'Courier New',monospace;letter-spacing:4px;font-style:normal;color:#eaf5ff;text-shadow:1px 2px #1a408c}
+.boot-category{font:8px/1.6 'Courier New',monospace;text-align:center;letter-spacing:3px;color:#e4f5ff;text-shadow:1px 2px #225a9d}
+.boot-black .boot-monogram{filter:drop-shadow(5px 7px #164b9266);width:clamp(125px,30vw,205px)}
+.boot-title{color:#ecfcff!important;text-shadow:3px 4px #154d9f!important}
+.boot-credit,.boot-subtitle{color:#effaff;text-shadow:1px 2px #1d4f92}
+.boot-hint{color:#f0fbff;opacity:1;text-shadow:1px 2px #164489}
+.boot-control{background:#163c83d9;border-color:#a1d3f1;color:#e1f7ff;box-shadow:inset 1px 1px #c7e9fa33,2px 3px #0c306b55}
+.cloud-near{position:absolute;width:54%;height:34%;bottom:-10%;background:#e3edf6;z-index:-1;opacity:.72;clip-path:polygon(0 43%,18% 40%,22% 17%,42% 25%,55% 0,78% 18%,81% 38%,100% 50%,100% 100%,0 100%);box-shadow:inset 0 25px #c7d9ee}
+.cloud-left{left:-23%;transform:rotate(-10deg)}.cloud-right{right:-23%;transform:rotate(10deg);background:#cddded}
+.boot.running .cloud-left{animation:cloud-left 10.5s linear forwards}.boot.running .cloud-right{animation:cloud-right 10.5s linear forwards}
+.world img{object-position:center;filter:saturate(.82) contrast(1.04)}
+.world:after{background:linear-gradient(90deg,#0b2b6b20,transparent 42%,#112b57aa 68%,#11203adb),linear-gradient(0deg,#13294de8,transparent 80%)}
+.scene-title h1{color:#f1fcff;text-shadow:3px 4px #164d9a,5px 6px #102e6b}.scene-title h1 em{color:#b2f0f7}
+.coordinate{color:#f1faff;text-shadow:1px 2px #12407c}.coordinate:before{border-color:#e1f9ff}
+.location-tag{border-color:#b4e6f9}.scene{background:#377bc1}
+@keyframes sky-flight{from{transform:scale(1.02) translateY(0)}to{transform:scale(1.29) translateY(2%)}}
+@keyframes cloud-left{from{translate:0 0;scale:.8}to{translate:-28% 30%;scale:1.45}}
+@keyframes cloud-right{from{translate:0 0;scale:.8}to{translate:28% 30%;scale:1.45}}
+@media(max-width:600px){.world{height:350px}.world img{object-position:center}.world:after{background:linear-gradient(0deg,#152131,transparent 85%),linear-gradient(90deg,#154c7b00,#112f5555)}.scene-title{margin-top:95px}.boot-white{padding-bottom:145px}}
+@media(prefers-reduced-motion:reduce){.boot:before,.cloud-near{animation:none!important}.cloud-near{display:none}}

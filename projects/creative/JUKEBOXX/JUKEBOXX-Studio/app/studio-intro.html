@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#192b4a"><title>JUKE / Sky System</title><link rel="icon" href="./icon.svg"><style>[hidden]{display:none!important}
+body.booting{overflow:hidden;background:#000}
+body.booting:after{display:none}
+.boot{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:#f8f8f6;color:#174480;font-family:Arial,Helvetica,sans-serif;isolation:isolate;transition:background .65s ease,color .65s ease}
+.boot:after{content:'';position:absolute;inset:0;pointer-events:none;z-index:3;background:repeating-linear-gradient(transparent 0 3px,#000 3px 4px);opacity:.035}
+.boot-screen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:70px 24px;opacity:0;transition:opacity .7s ease;pointer-events:none}
+.boot-screen.active{opacity:1}
+.boot-studio{font-family:Georgia,'Times New Roman',serif;font-weight:bold;font-size:clamp(27px,6vw,46px);letter-spacing:.06em;margin:0 0 26px}
+.boot-emblem{width:clamp(108px,24vw,180px);height:clamp(108px,24vw,180px);overflow:visible;margin:0 0 25px;filter:drop-shadow(0 0 12px #ffb00018)}
+.boot-white.active .boot-emblem{animation:emblem-arrive 2.6s ease-out both}
+.boot-category{font-size:clamp(16px,3vw,22px);font-weight:400;letter-spacing:-.03em;line-height:.97;text-align:left;margin:0}
+.boot-category span{font-size:.74em;letter-spacing:.03em}
+.boot.dark{background:#000;color:#e7e7eb}
+.boot-monogram{width:clamp(130px,30vw,220px);height:auto;filter:drop-shadow(0 0 10px #ffa9000c);margin-bottom:16px}
+.boot-black.active .boot-monogram{animation:logo-arrive 1.5s ease-out both}
+.boot-title{font-weight:normal;font-size:clamp(34px,7vw,51px);letter-spacing:-.07em;margin:0 0 30px;line-height:1}
+.boot-title sup{font-size:9px;letter-spacing:0;vertical-align:top;margin:5px 0 0 5px;display:inline-block}
+.boot-credit{font-size:clamp(10px,2vw,13px);line-height:1.7;letter-spacing:.14em;margin:0 0 14px}
+.boot-subtitle{font-size:10px;letter-spacing:.35em;margin:0;color:#a0a3ad}
+.boot-controls{position:absolute;z-index:5;bottom:max(24px,env(safe-area-inset-bottom));left:24px;right:24px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.boot-control{color:inherit;background:transparent;border:1px solid currentColor;border-radius:0;padding:10px 14px;font-family:Consolas,'Courier New',monospace;font-size:10px;letter-spacing:.08em;cursor:pointer;min-height:40px}
+.boot-control:hover{background:#7772}.boot-control:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+.boot-hint{position:absolute;left:0;right:0;bottom:88px;font:9px Consolas,'Courier New',monospace;letter-spacing:.15em;text-align:center;opacity:.65}
+.boot-progress{height:2px;position:absolute;bottom:0;left:0;background:currentColor;width:0;opacity:.3}
+.boot.running .boot-progress{animation:boot-progress 10.5s linear forwards}
+.boot-replay{display:block;margin:22px 0 0 auto;font:10px Consolas,'Courier New',monospace;letter-spacing:.1em;color:#a9bedc;border:1px solid #52688d;background:#101a2b;padding:10px 14px;cursor:pointer}
+.boot-replay:focus-visible{outline:2px solid #a4e8ec;outline-offset:4px}
+.boot-static{margin-top:30px;color:#b7c9e1;font-size:10px;letter-spacing:.08em;line-height:1.8}
+@keyframes emblem-arrive{from{opacity:0;transform:scale(.76);filter:blur(12px)}35%{opacity:1}to{opacity:1;transform:scale(1);filter:blur(0)}}
+@keyframes logo-arrive{from{opacity:0;transform:translateY(6px);filter:blur(4px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes boot-progress{to{width:100%}}
+@media(prefers-reduced-motion:reduce){.boot,.boot-screen{transition:none}.boot *{animation:none!important}.boot-progress{display:none}}
+@media(max-width:400px){.boot-studio{letter-spacing:.02em}.boot-credit{letter-spacing:.08em}.boot-controls{left:16px;right:16px}.boot-control{font-size:9px;padding:9px 11px}}
+
+:root{color-scheme:dark;--blue:#2057dc;--cyan:#8be1ea;--steel:#263445;--muted:#9baabb;--white:#eef6ff}
+*{box-sizing:border-box}body{margin:0;min-height:100svh;background:#0b1016;color:var(--white);font-family:'Trebuchet MS',Arial,sans-serif;background-image:repeating-linear-gradient(90deg,#0000 0 59px,#202a3338 59px 60px);padding:clamp(12px,3vw,36px)}button,a{-webkit-tap-highlight-color:transparent}button{cursor:pointer}a{color:inherit}button:focus-visible,a:focus-visible{outline:3px solid #bcf5ff;outline-offset:4px}[hidden]{display:none!important}body:after{content:'';position:fixed;z-index:40;inset:0;pointer-events:none;background:repeating-linear-gradient(transparent 0 3px,#000 3px 4px);opacity:.055}
+.game-shell{max-width:1200px;margin:0 auto;border:2px solid;border-color:#4e627d #090f16 #080e15 #5a6a7b;background:#141e2b;box-shadow:0 20px 70px #0008,inset 0 0 0 4px #172432;overflow:hidden}
+.topbar{min-height:77px;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;background:linear-gradient(180deg,#263c63,#192b4a);border-bottom:3px solid #0a101c;box-shadow:inset 0 2px #708bab66;position:relative;z-index:2}.brand{display:flex;align-items:center;gap:13px}.brand-mark{width:35px;height:39px;background:#2864e9;clip-path:polygon(20% 0,85% 8%,100% 70%,60% 100%,0 80%,0 20%);box-shadow:inset 8px 4px #82e3f1;display:grid;place-items:center;font:bold italic 27px Arial;color:#a8eff6;text-shadow:2px 3px #133578}.brand strong{font:bold 22px Arial;letter-spacing:-1px;color:#e1eaff;text-shadow:2px 2px #0a162b}.brand small{display:block;font:8px 'Courier New',monospace;letter-spacing:2px;margin-top:5px;color:#8daccc}.system-info{font:9px/1.8 'Courier New',monospace;color:#9aacc3;text-align:right;letter-spacing:1px}.system-info b{color:#93e0e7;font-weight:normal}.live-dot{display:inline-block;height:5px;width:5px;background:#8be1ea;margin-right:5px;box-shadow:0 0 5px #8be1ea66}
+.scene{position:relative;isolation:isolate;min-height:575px;padding:38px;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:36px;background:linear-gradient(180deg,#141c20,#233139 65%,#566064)}
+.world{position:absolute;inset:0;z-index:-2;overflow:hidden;background:linear-gradient(165deg,#131f22 0 46%,#414d4c 46% 48%,#232f32 48% 62%,#6a7472 62% 100%)}.world img{width:100%;height:100%;object-fit:cover;object-position:center;image-rendering:pixelated;filter:saturate(.85) contrast(1.08);display:block}.world:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#0a14223b 0%,#0b142108 40%,#0c16229c 64%,#0b1422dc 100%),linear-gradient(0deg,#0b1425bd,transparent 50%,#0c15272b)}
+.scene-intro{display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;min-height:490px;position:relative}.coordinate{font:9px 'Courier New',monospace;letter-spacing:2px;margin:0;color:#e4edf3;text-shadow:1px 2px #000;display:flex;align-items:center;gap:8px}.coordinate:before{content:'';height:8px;width:8px;border:2px solid #8be1ea}
+.scene-title{margin-top:220px;max-width:350px}.scene-title h1{font:900 italic clamp(45px,7vw,83px)/.8 Arial,sans-serif;letter-spacing:-5px;color:#f3f6ff;margin:0 0 18px;text-shadow:3px 4px #123f9e,5px 6px #081426}.scene-title h1 em{color:#89e0ec;font-style:inherit}.scene-title p{font:11px/1.65 'Courier New',monospace;color:#e4ebf2;margin:0;text-shadow:1px 2px #000}.location-tag{border-left:3px solid #4b89e9;margin-top:25px;padding-left:12px;font:8px/1.8 'Courier New',monospace;color:#c0cbd6;letter-spacing:1px;text-shadow:1px 1px #000}
+.menu-panel{align-self:center;padding:20px;background:linear-gradient(125deg,#283b54ef,#141e2eee);border:2px solid;border-color:#6e8aa5 #080f1b #080f1b #49627c;box-shadow:inset 0 0 0 3px #111e2d,6px 8px #03091255;position:relative}.menu-panel:before,.menu-panel:after{content:'';position:absolute;width:4px;height:4px;background:#738799;box-shadow:inset 1px 1px #c5d9dc;top:7px;left:7px}.menu-panel:after{left:auto;right:7px}.menu-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0b1422;padding:0 0 14px;margin-bottom:16px;box-shadow:0 1px #5c728951;font:9px 'Courier New',monospace;letter-spacing:1px;color:#88b2d9}.menu-head h2{font:900 17px Arial;margin:0;letter-spacing:-.3px;color:#dae9f8;text-shadow:1px 2px #111d2d}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}.tile{border:2px solid;border-color:#637b94 #0b1525 #0b1525 #455e77;background:linear-gradient(145deg,#344a64,#1f2e41);padding:14px;color:inherit;text-decoration:none;box-shadow:inset 0 0 0 2px #1b293b,2px 3px #050a1266;position:relative}.tile:after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(118deg,transparent 0 25px,#a5d5ff06 25px 26px)}.tile.selected{grid-column:1/-1;min-height:196px;background:linear-gradient(125deg,#1e57ca,#183c8a);border-color:#87cced #101f45 #0b1b3c #4b85de;box-shadow:inset 0 0 0 2px #18439c,3px 4px #060e21;display:grid;grid-template-columns:80px 1fr;gap:6px 18px;align-items:center;transition:transform .12s,background .12s}.tile.selected:hover,.tile.selected:focus-visible{transform:translateY(-3px);background:linear-gradient(125deg,#2b69eb,#1a4396);outline:2px solid #baf2f6;outline-offset:3px}.slot{grid-column:1/-1;font:8px 'Courier New',monospace;letter-spacing:1px;color:#a0c4f0}.tile.selected:before{content:'';position:absolute;left:-9px;top:47%;border-left:10px solid #99eaf3;border-top:6px solid transparent;border-bottom:6px solid transparent;filter:drop-shadow(1px 2px #152f67)}.tile h3{font:900 italic 26px/.92 Arial;margin:4px 0 10px;letter-spacing:-1px;color:#effbff;text-shadow:2px 3px #102d69}.tile p{font:9px/1.7 'Courier New',monospace;color:#b6ceec;margin:0}.disc{width:77px;height:77px;border-radius:50%;background:conic-gradient(#74dae5,#234998,#a8d9e2,#2e65ca,#a4cad0,#244e9c,#74dae5);border:2px solid #78a7cc;box-shadow:3px 4px #0c275d,inset 0 0 0 6px #b9deef30,inset 0 0 0 8px #14376b55;transform:rotate(-15deg);display:grid;place-items:center}.disc:after{content:'';width:20px;height:20px;border:6px solid #1d4caa;background:#131f35;border-radius:50%;box-shadow:0 0 0 3px #8bdce8}.tile.disabled{min-height:125px;display:flex;flex-direction:column;justify-content:space-between;gap:10px}.disabled .slot{font-size:7px;letter-spacing:.5px;color:#8397ac}.disabled h3{font-size:13px;font-style:normal;letter-spacing:0;color:#aabacb;text-shadow:1px 2px #172232;margin:0 0 5px}.disabled p{font-size:8px;color:#8095aa;line-height:1.5}.asset-icon{width:26px;height:29px;background:#7188a0;clip-path:polygon(0 0,82% 0,100% 19%,100% 100%,0 100%);border-left:5px solid #9cb0c2;position:relative}.asset-icon:after{content:'';position:absolute;left:4px;right:4px;top:5px;height:12px;background:#233c53;box-shadow:0 15px #455e72}.cube{width:30px;height:30px;background:#456393;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);box-shadow:inset 15px 2px #7497bc}.menu-status{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:17px;font:8px/1.6 'Courier New',monospace;color:#91a9c3}.menu-status strong{font-size:9px;color:#90e0e7;letter-spacing:.5px}.start-key{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}.button-x{display:grid;place-items:center;background:#111b29;border:1px solid #56728f;color:#89b9f5;width:22px;height:22px;border-radius:50%;font:18px Arial}
+.controlbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:17px 28px;background:#162236;border-top:2px solid #5c759164;box-shadow:inset 0 2px #09111e}.boot-replay{font:9px 'Courier New',monospace;letter-spacing:1px;padding:9px 12px;color:#aec8e1;background:#273b56;border:2px solid;border-color:#5e7791 #0a1423 #09121e #455f7c;cursor:pointer}.controller-symbols{display:flex;gap:14px;font:bold 19px Arial}.controller-symbols span:nth-child(1){color:#71cfc2}.controller-symbols span:nth-child(2){color:#da7b90}.controller-symbols span:nth-child(3){color:#7ca4ec}.controller-symbols span:nth-child(4){color:#bb96ce}.footer-label{font:8px 'Courier New',monospace;letter-spacing:1px;color:#7e92ac}
+.boot{background:#0f1a2a;color:#addfeb}.boot.dark{background:#070e18;color:#d9edfc}.boot-white.active .boot-emblem{filter:drop-shadow(0 0 12px #1a75e850)}.boot-studio{color:#d8e8ff;font-family:Arial;font-weight:900;font-style:italic;letter-spacing:-1px;text-shadow:2px 3px #194b9b}.boot-category{color:#92c7e8;font:12px/1.25 'Courier New',monospace;letter-spacing:2px}.boot-title{font-style:italic!important;font-weight:900;letter-spacing:-2px;color:#a2e7f2}.boot-control{color:#9ac2e5;border-color:#45658a;background:#152947;font-size:9px}.boot-replay:hover{color:#d2f4ff;background:#305185}.boot-hint{color:#8aa2bd}
+@media(max-width:800px){.scene{grid-template-columns:minmax(0,1fr) 320px;padding:28px 24px;gap:20px}.menu-panel{padding:17px}.scene-title h1{font-size:63px}.scene-title{margin-top:250px}.tile.selected{gap:5px 12px;grid-template-columns:69px 1fr}.disc{height:67px;width:67px}.tile h3{font-size:24px}.topbar{padding:16px 22px}.footer-label{display:none}}
+@media(max-width:600px){body{padding:10px}.topbar{min-height:66px;padding:13px 15px;gap:12px}.brand{gap:9px}.brand strong{font-size:19px}.brand small{font-size:6px;letter-spacing:1.5px}.brand-mark{width:28px;height:33px;font-size:23px}.system-info{font-size:7px;letter-spacing:.5px}.scene{display:flex;flex-direction:column;min-height:0;padding:0 14px 20px;gap:0}.world{height:350px}.world img{object-position:25% center}.world:after{background:linear-gradient(0deg,#152131 0,transparent 75%),linear-gradient(90deg,#07152c22,#111c2f22)}.scene-intro{min-height:255px;padding:19px 4px 14px}.coordinate{font-size:7px;letter-spacing:1px}.scene-title{align-self:flex-end;text-align:right;margin-top:95px;max-width:160px}.scene-title h1{font-size:49px;letter-spacing:-3px;line-height:.82;margin-bottom:10px}.scene-title p{font-size:8px;line-height:1.5}.location-tag{display:none}.menu-panel{width:100%;padding:16px;align-self:stretch;background:linear-gradient(125deg,#2a3b53f5,#141f30f7)}.menu-head{padding-bottom:11px;margin-bottom:13px}.menu-head h2{font-size:15px}.menu-head>span{font-size:7px}.tile{padding:12px}.tile.selected{min-height:151px;grid-template-columns:65px 1fr;gap:8px 14px}.slot{font-size:7px}.disc{width:64px;height:64px}.tile h3{font-size:26px}.tile p{font-size:8px}.tile.disabled{min-height:110px;padding:11px;gap:8px}.disabled h3{font-size:11px}.disabled p{font-size:7px}.disabled .slot{font-size:6px}.asset-icon{height:23px;width:21px}.cube{height:24px;width:24px}.menu-status{font-size:7px;margin-top:14px}.menu-status strong{font-size:8px}.controlbar{padding:13px 15px;gap:10px}.boot-replay{font-size:7px;padding:9px;letter-spacing:.5px}.controller-symbols{font-size:16px;gap:11px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.tile.selected{transition:none}.tile.selected:hover{transform:none}}
+</style><style>.boot{background:#246cc3;color:#eaf9ff}
+.boot:before{content:'';position:absolute;z-index:-1;inset:-3%;background:linear-gradient(180deg,#10265b33,transparent 65%,#61a9d011),url('./sky.png') center/cover no-repeat;image-rendering:pixelated;transform-origin:50% 64%}
+.boot.running:before{animation:sky-flight 10.5s linear forwards}
+.boot.dark{background:#246cc3;color:#f0faff}
+.boot.dark:before{filter:brightness(.85)}
+.boot-screen{background:transparent}
+.boot-white{justify-content:flex-end;padding-bottom:140px}
+.boot-studio{font:bold 13px 'Courier New',monospace;letter-spacing:4px;font-style:normal;color:#eaf5ff;text-shadow:1px 2px #1a408c}
+.boot-category{font:8px/1.6 'Courier New',monospace;text-align:center;letter-spacing:3px;color:#e4f5ff;text-shadow:1px 2px #225a9d}
+.boot-black .boot-monogram{filter:drop-shadow(5px 7px #164b9266);width:clamp(125px,30vw,205px)}
+.boot-title{color:#ecfcff!important;text-shadow:3px 4px #154d9f!important}
+.boot-credit,.boot-subtitle{color:#effaff;text-shadow:1px 2px #1d4f92}
+.boot-hint{color:#f0fbff;opacity:1;text-shadow:1px 2px #164489}
+.boot-control{background:#163c83d9;border-color:#a1d3f1;color:#e1f7ff;box-shadow:inset 1px 1px #c7e9fa33,2px 3px #0c306b55}
+.cloud-near{position:absolute;width:54%;height:34%;bottom:-10%;background:#e3edf6;z-index:-1;opacity:.72;clip-path:polygon(0 43%,18% 40%,22% 17%,42% 25%,55% 0,78% 18%,81% 38%,100% 50%,100% 100%,0 100%);box-shadow:inset 0 25px #c7d9ee}
+.cloud-left{left:-23%;transform:rotate(-10deg)}.cloud-right{right:-23%;transform:rotate(10deg);background:#cddded}
+.boot.running .cloud-left{animation:cloud-left 10.5s linear forwards}.boot.running .cloud-right{animation:cloud-right 10.5s linear forwards}
+.world img{object-position:center;filter:saturate(.82) contrast(1.04)}
+.world:after{background:linear-gradient(90deg,#0b2b6b20,transparent 42%,#112b57aa 68%,#11203adb),linear-gradient(0deg,#13294de8,transparent 80%)}
+.scene-title h1{color:#f1fcff;text-shadow:3px 4px #164d9a,5px 6px #102e6b}.scene-title h1 em{color:#b2f0f7}
+.coordinate{color:#f1faff;text-shadow:1px 2px #12407c}.coordinate:before{border-color:#e1f9ff}
+.location-tag{border-color:#b4e6f9}.scene{background:#377bc1}
+@keyframes sky-flight{from{transform:scale(1.02) translateY(0)}to{transform:scale(1.29) translateY(2%)}}
+@keyframes cloud-left{from{translate:0 0;scale:.8}to{translate:-28% 30%;scale:1.45}}
+@keyframes cloud-right{from{translate:0 0;scale:.8}to{translate:28% 30%;scale:1.45}}
+@media(max-width:600px){.world{height:350px}.world img{object-position:center}.world:after{background:linear-gradient(0deg,#152131,transparent 85%),linear-gradient(90deg,#154c7b00,#112f5555)}.scene-title{margin-top:95px}.boot-white{padding-bottom:145px}}
+@media(prefers-reduced-motion:reduce){.boot:before,.cloud-near{animation:none!important}.cloud-near{display:none}}
+</style><style id="view-highlight-style">/* Keep both title words on one shared alignment rail. */
+.scene-title{text-align:left}
+.scene-title h1{display:grid;justify-items:start;gap:.04em;line-height:.92;margin-left:-.12em;margin-bottom:18px}
+.scene-title .title-word{display:block;position:relative;width:max-content;max-width:100%;padding:.04em .14em .09em .12em;border:1px solid transparent;font-style:inherit;isolation:isolate}
+.scene-title h1 .title-view{color:#dcfcff;border-color:#8eeafa80;background:linear-gradient(100deg,#164e9da6,#296aa04d);text-shadow:-1px 0 #759bff,1px 0 #9affda,2px 3px #164b9e,0 0 9px #81e5f890,0 0 22px #3282d35e;box-shadow:inset 0 0 12px #8beaff19,0 0 14px #75dfff20;animation:view-phosphor 3.6s ease-in-out infinite}
+.title-view:before,.title-view:after{content:'';position:absolute;width:10px;height:10px;pointer-events:none;border-color:#c0f6ff;filter:drop-shadow(0 0 3px #6ac8fb)}
+.title-view:before{top:-4px;left:-4px;border-top:2px solid;border-left:2px solid}
+.title-view:after{right:-4px;bottom:-4px;border-right:2px solid;border-bottom:2px solid}
+.scene-title .title-view{background-image:repeating-linear-gradient(0deg,#bceeff0a 0 1px,transparent 1px 4px),linear-gradient(100deg,#164e9da6,#296aa04d)}
+@keyframes view-phosphor{0%,100%{box-shadow:inset 0 0 12px #8beaff19,0 0 14px #75dfff20;filter:brightness(1)}50%{box-shadow:inset 0 0 15px #8beaff29,0 0 19px #75dfff40;filter:brightness(1.08)}}
+@media(max-width:600px){.scene-title{text-align:left;max-width:170px}.scene-title h1{font-size:46px;letter-spacing:-3px;margin-bottom:10px}.title-view:before,.title-view:after{width:7px;height:7px}}
+@media(prefers-reduced-motion:reduce){.scene-title h1 .title-view{animation:none;filter:none}}
+</style></head>
+<body class="booting"><section class="boot" id="boot" aria-label="JUKE sky startup intro"><div class="cloud-near cloud-left" aria-hidden="true"></div><div class="cloud-near cloud-right" aria-hidden="true"></div>
+  <div class="boot-screen boot-white active" id="bootWhite">
+    <p class="boot-studio">JUKEBOXX PRESENTS</p>
+    
+    <p class="boot-category">A NEW CREATIVE SESSION<br><span>YOUR WORLD. YOUR IDEAS.</span></p>
+  </div>
+  <div class="boot-screen boot-black" id="bootBlack" aria-hidden="true">
+    <svg class="boot-monogram" viewBox="0 0 260 220" aria-hidden="true">
+      <path d="M28 170 93 142 157 158 92 190Z" fill="#74d9e4"/>
+      <path d="m28 170 64 20v13l-64-20Z" fill="#185c96"/>
+      <path d="m92 190 65-32v13l-65 32Z" fill="#164a7e"/>
+      <path d="m97 143 67-28 68 24-70 33-28-10 42-21-19-6-42 17Z" fill="#2584c2"/>
+      <path d="m162 172 70-33v13l-70 34Z" fill="#164c88"/>
+      <path d="m94 181 40-19 28 10v14l-41-15-27 13Z" fill="#18a38e"/>
+      <path d="m127 23 43 17v103c0 40-24 45-53 31l-28-14v-35l30 13c7 3 8 0 8-7Z" fill="#2463db"/>
+      <path d="m170 40 12-7v111c0 22-12 34-29 35 12-6 17-17 17-36Z" fill="#123788"/>
+      <path d="m127 23 12-7 43 17-12 7Z" fill="#78cfef"/>
+    </svg>
+    <h1 class="boot-title">JUKE View<sup>TM</sup></h1>
+    <p class="boot-credit">Created by<br>JUKEBOXX Studio</p>
+    <p class="boot-subtitle">VISUAL FEEDBACK SYSTEM</p>
+  </div>
+  <p class="boot-hint" id="bootHint">PRESS ENTER OR ESC TO SKIP</p>
+  <div class="boot-controls"><button type="button" class="boot-control" id="bootSound" aria-pressed="false">SOUND OFF</button><button type="button" class="boot-control" id="bootSkip">SKIP INTRO</button></div>
+  <div class="boot-progress" aria-hidden="true"></div>
+</section>
+<main class="game-shell" hidden>
+ <header class="topbar"><div class="brand"><div class="brand-mark" aria-hidden="true">J</div><div><strong>JUKEBOXX</strong><small>CREATIVE ENTERTAINMENT SYSTEM</small></div></div><div class="system-info"><b><span class="live-dot"></span>ONLINE</b><br>SLOT 01</div></header>
+ <section class="scene" aria-label="Creative workshop">
+  <div class="world" aria-hidden="true"><img src="./sky.png" alt=""></div>
+  <div class="scene-intro"><p class="coordinate">WORLD 01 / OPEN SKY</p><div class="scene-title"><h1 aria-label="JUKE VIEW"><span class="title-word title-juke">JUKE</span><em class="title-word title-view">VIEW</em></h1><p>Your next creative session<br>starts here.</p><div class="location-tag">VISUAL FEEDBACK SYSTEM<br>WORKSTATION READY</div></div></div>
+  <nav class="menu-panel" aria-label="Applications"><div class="menu-head"><h2>MAIN MENU</h2><span>SELECT / 01</span></div><div class="tiles">
+   <a class="tile selected" id="launch" href="./character-select.html"><span class="slot">01 / CREATIVE DISC</span><div class="disc" aria-hidden="true"></div><div><h3>JUKE VIEW</h3><p>Open your boards.<br>Mark up. Make notes.</p></div></a>
+   <div class="tile disabled"><span class="slot">02 / MEMORY CARD</span><div class="asset-icon" aria-hidden="true"></div><div><h3>REVIEW ARCHIVE</h3><p>Coming soon</p></div></div>
+   <div class="tile disabled"><span class="slot">03 / EXPANSION</span><div class="cube" aria-hidden="true"></div><div><h3>EMPTY SLOT</h3><p>More tools to come</p></div></div>
+  </div><div class="menu-status"><div><strong>JUKE VIEW</strong><br>Ready to launch</div><span class="start-key"><span class="button-x">×</span> ENTER TO START</span></div></nav>
+ </section>
+ <footer class="controlbar"><button type="button" class="boot-replay" id="bootReplay">↻ REPLAY STARTUP</button><span class="footer-label">JUKEBOXX STUDIO / CREATIVE SYSTEM 01</span><div class="controller-symbols" aria-hidden="true"><span>△</span><span>○</span><span>×</span><span>□</span></div></footer>
+</main>
+<script>(() => {
+  'use strict';
+  const boot = document.getElementById('boot');
+  const menu = document.querySelector('main');
+  const white = document.getElementById('bootWhite');
+  const black = document.getElementById('bootBlack');
+  const skip = document.getElementById('bootSkip');
+  const sound = document.getElementById('bootSound');
+  const replay = document.getElementById('bootReplay');
+  const launch = document.getElementById('launch');
+  const hint = document.getElementById('bootHint');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const storageKey = 'juke-view-boot-seen-v1';
+  let timers = [], audio, master, voices = [], audible = false, running = false, phase = 'white';
+  function cancelTimers() { timers.forEach(clearTimeout); timers = []; }
+  function later(fn, delay) { timers.push(setTimeout(fn, delay)); }
+  function silence() {
+    if (master && audio) master.gain.setValueAtTime(0, audio.currentTime);
+    voices.forEach(osc => { try { osc.stop(); } catch (_) {} });
+    voices = [];
+  }
+  function tone(frequency, offset, duration, level, type = 'sine', endFrequency) {
+    const at = audio.currentTime + offset;
+    const osc = audio.createOscillator(), gain = audio.createGain();
+    osc.type = type; osc.frequency.setValueAtTime(frequency, at);
+    if (endFrequency) osc.frequency.exponentialRampToValueAtTime(endFrequency, at + duration);
+    gain.gain.setValueAtTime(0, at);
+    gain.gain.linearRampToValueAtTime(level, at + .18);
+    gain.gain.exponentialRampToValueAtTime(.0001, at + duration);
+    osc.connect(gain); gain.connect(master); osc.start(at); osc.stop(at + duration + .05);
+    voices.push(osc);
+  }
+  // An original synthesized boot chord; no downloaded video or audio is needed.
+  function chime() {
+    if (!audible || !audio || audio.state !== 'running') return;
+    silence(); master.gain.setValueAtTime(.22, audio.currentTime);
+    if (phase === 'white') {
+      tone(66, 0, 4, .5, 'sine', 55);
+      [130.81,196,261.63,392].forEach((f,i)=>tone(f,.08+i*.1,3.5,.14));
+      tone(1200,.05,2.4,.025,'sine',350);
+    } else {
+      [261.63,329.63,392,523.25].forEach((f,i)=>tone(f,i*.11,3.1,.13,'sine'));
+      tone(65.41,0,3.6,.3);
+    }
+  }
+  async function enableSound() {
+    audible = !audible;
+    sound.setAttribute('aria-pressed', String(audible));
+    sound.textContent = audible ? 'SOUND ON' : 'SOUND OFF';
+    if (!audible) { silence(); return; }
+    try {
+      const Audio = window.AudioContext || window.webkitAudioContext;
+      if (!Audio) throw Error('Audio unavailable');
+      if (!audio) { audio = new Audio(); master = audio.createGain(); master.gain.value = 0; master.connect(audio.destination); }
+      await audio.resume();
+      if (running && audible) chime();
+    } catch (_) { audible = false; sound.textContent = 'SOUND UNAVAILABLE'; sound.setAttribute('aria-pressed','false'); }
+  }
+  function setPhase(next) {
+    phase = next;
+    const dark = next === 'black';
+    boot.classList.toggle('dark',dark);
+    white.classList.toggle('active',!dark); black.classList.toggle('active',dark);
+    white.setAttribute('aria-hidden',String(dark)); black.setAttribute('aria-hidden',String(!dark));
+    chime();
+  }
+  function remember() { try { sessionStorage.setItem(storageKey,'1'); } catch (_) {} }
+  function seen() { try { return sessionStorage.getItem(storageKey)==='1'; } catch (_) { return false; } }
+  function finish(focus = true) {
+    running = false; cancelTimers(); silence(); remember();
+    boot.hidden = true; boot.classList.remove('running');
+    menu.hidden = false; menu.inert = false; document.body.classList.remove('booting');
+    if (focus) launch.focus({preventScroll:true});
+    location.replace('./studio.html');
+  }
+  function start() {
+    cancelTimers(); silence(); running = true;
+    menu.hidden = true; menu.inert = true; boot.hidden = false;
+    document.body.classList.add('booting'); boot.classList.remove('running');
+    // Restart CSS animations when replay is selected.
+    white.classList.remove('active'); black.classList.remove('active');
+    void boot.offsetWidth;
+    if (reduced.matches) {
+      setPhase('black'); skip.textContent = 'CONTINUE TO MENU';
+      hint.textContent = 'PRESS ENTER TO CONTINUE';
+    } else {
+      boot.classList.add('running'); setPhase('white'); skip.textContent = 'SKIP INTRO';
+      hint.textContent = 'PRESS ENTER OR ESC TO SKIP';
+      later(()=>setPhase('black'),4900);
+      later(()=>finish(),10500);
+    }
+    skip.focus({preventScroll:true});
+  }
+  skip.addEventListener('click',()=>finish());
+  sound.addEventListener('click',enableSound);
+  replay.addEventListener('click',start);
+  document.addEventListener('keydown',event=>{
+    if (!running || (event.key !== 'Escape' && event.key !== 'Enter')) return;
+    // Let the focused audio button handle Enter without skipping the intro.
+    if (event.key==='Enter' && event.target===sound) return;
+    event.preventDefault(); event.stopImmediatePropagation(); finish();
+  },true);
+  window.addEventListener('pagehide',()=>{cancelTimers();silence();});
+  window.addEventListener('pageshow',event=>{if(event.persisted) finish(false);});
+  reduced.addEventListener('change',()=>{if(running) start();});
+  const returning = performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
+  if (seen() && (returning || new URLSearchParams(location.search).get('intro')!=='1')) finish();
+  else start();
+})();
+</script><noscript><style>.boot{display:none!important}main[hidden]{display:block!important}body.booting{overflow:auto}</style></noscript>
+</body></html>

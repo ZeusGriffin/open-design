@@ -1,0 +1,44 @@
+{
+  "product": "JUKEBOXX",
+  "kind": "vision-board",
+  "version": 1,
+  "exportedAt": "2026-11-17T15:19:44.399Z",
+  "cards": [
+    {
+      "id": "b0669556-bc3e-416f-a643-e0e2cbb501a1",
+      "kind": "note",
+      "title": "JUKEBOXX character direction",
+      "text": "White spacesuit. Blue on top of the afro. Use the recovered polygon head and artist reference. Low-poly PS2 style. The blue robot is a style reference only. Keep clouds drifting slowly and use game-menu navigation throughout.",
+      "color": "#72dbe7",
+      "image": "",
+      "createdAt": "2026-11-09T07:06:14.571Z"
+    },
+    {
+      "id": "2dc390de-0034-40f8-bd2a-b3444c48480c",
+      "kind": "image",
+      "title": "reference-head.png",
+      "text": "",
+      "color": "#72dbe7",
+      "createdAt": "2026-11-09T07:06:47.037Z",
+      "imageFile": "./reference-head.png"
+    },
+    {
+      "id": "787b12ec-89db-4115-88d2-12c2068ee2fd",
+      "kind": "image",
+      "title": "reference-artist.jpeg",
+      "text": "",
+      "color": "#72dbe7",
+      "createdAt": "2026-11-09T07:06:47.046Z",
+      "imageFile": "./reference-artist.jpeg"
+    },
+    {
+      "id": "e7ddf5ce-abef-4761-adcb-8be61d806afe",
+      "kind": "image",
+      "title": "reference-ps2.jpeg",
+      "text": "",
+      "color": "#72dbe7",
+      "createdAt": "2026-11-09T07:06:47.053Z",
+      "imageFile": "./reference-ps2.jpeg"
+    }
+  ]
+}
