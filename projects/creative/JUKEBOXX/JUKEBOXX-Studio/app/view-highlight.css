@@ -1,0 +1,12 @@
+/* Keep both title words on one shared alignment rail. */
+.scene-title{text-align:left}
+.scene-title h1{display:grid;justify-items:start;gap:.04em;line-height:.92;margin-left:-.12em;margin-bottom:18px}
+.scene-title .title-word{display:block;position:relative;width:max-content;max-width:100%;padding:.04em .14em .09em .12em;border:1px solid transparent;font-style:inherit;isolation:isolate}
+.scene-title h1 .title-view{color:#dcfcff;border-color:#8eeafa80;background:linear-gradient(100deg,#164e9da6,#296aa04d);text-shadow:-1px 0 #759bff,1px 0 #9affda,2px 3px #164b9e,0 0 9px #81e5f890,0 0 22px #3282d35e;box-shadow:inset 0 0 12px #8beaff19,0 0 14px #75dfff20;animation:view-phosphor 3.6s ease-in-out infinite}
+.title-view:before,.title-view:after{content:'';position:absolute;width:10px;height:10px;pointer-events:none;border-color:#c0f6ff;filter:drop-shadow(0 0 3px #6ac8fb)}
+.title-view:before{top:-4px;left:-4px;border-top:2px solid;border-left:2px solid}
+.title-view:after{right:-4px;bottom:-4px;border-right:2px solid;border-bottom:2px solid}
+.scene-title .title-view{background-image:repeating-linear-gradient(0deg,#bceeff0a 0 1px,transparent 1px 4px),linear-gradient(100deg,#164e9da6,#296aa04d)}
+@keyframes view-phosphor{0%,100%{box-shadow:inset 0 0 12px #8beaff19,0 0 14px #75dfff20;filter:brightness(1)}50%{box-shadow:inset 0 0 15px #8beaff29,0 0 19px #75dfff40;filter:brightness(1.08)}}
+@media(max-width:600px){.scene-title{text-align:left;max-width:170px}.scene-title h1{font-size:46px;letter-spacing:-3px;margin-bottom:10px}.title-view:before,.title-view:after{width:7px;height:7px}}
+@media(prefers-reduced-motion:reduce){.scene-title h1 .title-view{animation:none;filter:none}}

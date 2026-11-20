@@ -1,0 +1,33 @@
+[hidden]{display:none!important}
+body.booting{overflow:hidden;background:#000}
+body.booting:after{display:none}
+.boot{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:#f8f8f6;color:#174480;font-family:Arial,Helvetica,sans-serif;isolation:isolate;transition:background .65s ease,color .65s ease}
+.boot:after{content:'';position:absolute;inset:0;pointer-events:none;z-index:3;background:repeating-linear-gradient(transparent 0 3px,#000 3px 4px);opacity:.035}
+.boot-screen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:70px 24px;opacity:0;transition:opacity .7s ease;pointer-events:none}
+.boot-screen.active{opacity:1}
+.boot-studio{font-family:Georgia,'Times New Roman',serif;font-weight:bold;font-size:clamp(27px,6vw,46px);letter-spacing:.06em;margin:0 0 26px}
+.boot-emblem{width:clamp(108px,24vw,180px);height:clamp(108px,24vw,180px);overflow:visible;margin:0 0 25px;filter:drop-shadow(0 0 12px #ffb00018)}
+.boot-white.active .boot-emblem{animation:emblem-arrive 2.6s ease-out both}
+.boot-category{font-size:clamp(16px,3vw,22px);font-weight:400;letter-spacing:-.03em;line-height:.97;text-align:left;margin:0}
+.boot-category span{font-size:.74em;letter-spacing:.03em}
+.boot.dark{background:#000;color:#e7e7eb}
+.boot-monogram{width:clamp(130px,30vw,220px);height:auto;filter:drop-shadow(0 0 10px #ffa9000c);margin-bottom:16px}
+.boot-black.active .boot-monogram{animation:logo-arrive 1.5s ease-out both}
+.boot-title{font-weight:normal;font-size:clamp(34px,7vw,51px);letter-spacing:-.07em;margin:0 0 30px;line-height:1}
+.boot-title sup{font-size:9px;letter-spacing:0;vertical-align:top;margin:5px 0 0 5px;display:inline-block}
+.boot-credit{font-size:clamp(10px,2vw,13px);line-height:1.7;letter-spacing:.14em;margin:0 0 14px}
+.boot-subtitle{font-size:10px;letter-spacing:.35em;margin:0;color:#a0a3ad}
+.boot-controls{position:absolute;z-index:5;bottom:max(24px,env(safe-area-inset-bottom));left:24px;right:24px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.boot-control{color:inherit;background:transparent;border:1px solid currentColor;border-radius:0;padding:10px 14px;font-family:Consolas,'Courier New',monospace;font-size:10px;letter-spacing:.08em;cursor:pointer;min-height:40px}
+.boot-control:hover{background:#7772}.boot-control:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+.boot-hint{position:absolute;left:0;right:0;bottom:88px;font:9px Consolas,'Courier New',monospace;letter-spacing:.15em;text-align:center;opacity:.65}
+.boot-progress{height:2px;position:absolute;bottom:0;left:0;background:currentColor;width:0;opacity:.3}
+.boot.running .boot-progress{animation:boot-progress 10.5s linear forwards}
+.boot-replay{display:block;margin:22px 0 0 auto;font:10px Consolas,'Courier New',monospace;letter-spacing:.1em;color:#a9bedc;border:1px solid #52688d;background:#101a2b;padding:10px 14px;cursor:pointer}
+.boot-replay:focus-visible{outline:2px solid #a4e8ec;outline-offset:4px}
+.boot-static{margin-top:30px;color:#b7c9e1;font-size:10px;letter-spacing:.08em;line-height:1.8}
+@keyframes emblem-arrive{from{opacity:0;transform:scale(.76);filter:blur(12px)}35%{opacity:1}to{opacity:1;transform:scale(1);filter:blur(0)}}
+@keyframes logo-arrive{from{opacity:0;transform:translateY(6px);filter:blur(4px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes boot-progress{to{width:100%}}
+@media(prefers-reduced-motion:reduce){.boot,.boot-screen{transition:none}.boot *{animation:none!important}.boot-progress{display:none}}
+@media(max-width:400px){.boot-studio{letter-spacing:.02em}.boot-credit{letter-spacing:.08em}.boot-controls{left:16px;right:16px}.boot-control{font-size:9px;padding:9px 11px}}

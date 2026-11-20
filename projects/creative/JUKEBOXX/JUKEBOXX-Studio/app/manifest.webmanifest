@@ -1,0 +1,18 @@
+{
+  "name": "JUKE View — JUKEBOXX Studio",
+  "short_name": "JUKE View",
+  "description": "Johnny Jukebox creative review and annotation studio",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#101311",
+  "theme_color": "#151916",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
