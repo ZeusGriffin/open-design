@@ -2,6 +2,28 @@
 
 This repository keeps a pinned, reusable source of agent skills for Claude Code, Codex, ChatGPT-compatible agent workflows, and other Agent Skills clients.
 
+## Project-owned reusable skills
+
+### `apple-ship-stack`
+A routed iOS/mobile shipping skill built for the ZEUS workflow. It covers, when relevant:
+- app icon/store assets,
+- SwiftUI + Apple HIG + accessibility review,
+- Siri/App Intents/Shortcuts/Spotlight,
+- localization/String Catalogs/RTL,
+- theming/onboarding/local-first behavior,
+- StoreKit/monetization,
+- build/install verification,
+- privacy/permissions,
+- App Store/App Review preflight.
+
+Locations:
+- Agent/Codex/ChatGPT-compatible: `.agents/skills/apple-ship-stack/SKILL.md`
+- Claude Code: `.claude/skills/apple-ship-stack/SKILL.md`
+- Claude reusable command prompt: `.claude/commands/apple-ship.md`
+- Research/provenance notes: `.ai/APPLE_SHIP_RESEARCH.md`
+
+The skill is routed by default for current and future Apple/mobile app work through `.ai/WORKFLOW_DEFAULTS.md`.
+
 ## Provenance
 
 - Original reference supplied by Zee: https://youtube.com/shorts/rMw6YJz0Ows?is=AGeLHhLV8ntBZiON
