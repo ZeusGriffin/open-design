@@ -1,0 +1,22 @@
+{
+  "name": "johnny-jukebox-motion",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "remotion studio src/index.ts",
+    "render:launch": "remotion render src/index.ts JohnnyLaunch out/johnny-launch.mp4",
+    "render:single": "remotion render src/index.ts JohnnySingle out/johnny-single.mp4",
+    "compositions": "remotion compositions src/index.ts"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.544",
+    "remotion": "4.0.544",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0"
+  }
+}
