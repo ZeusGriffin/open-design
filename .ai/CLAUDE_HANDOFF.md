@@ -8,6 +8,10 @@ Use this repository's AI workflow exactly as written in:
 ## Operating rules
 - Preserve existing approved work.
 - Apply Baseline Lock + Karpathy + Token Saver + Delivery Verification automatically.
+- Apply LEAN BUILD + STACK Goal/Context where development work is involved.
+- For iPhone/iPad/mobile app work, automatically route to `.claude/skills/apple-ship-stack/SKILL.md` and load only the relevant modules.
+- The manual Claude shortcut/prompt is `.claude/commands/apple-ship.md`.
+- Use current Apple documentation for release-sensitive Apple requirements.
 - Use Jev (`typesafe-ai/jev`) only as a fast typed decision/verification layer.
 - Use your main capable model for implementation and reasoning.
 - Do not commit API keys or secrets.
