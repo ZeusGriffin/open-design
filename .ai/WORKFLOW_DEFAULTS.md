@@ -10,6 +10,15 @@ This is the shared default for AI-assisted work in this repository.
 5. Main Model — use the strongest appropriate model for coding, design, research, writing, and complex reasoning.
 6. Delivery Verification — test the actual target environment, interactions, open/share path, and acceptance criteria before calling work final.
 
+## Apple/mobile default routing
+For any current or future iPhone/iPad/mobile app work, inspect and route through `.agents/skills/apple-ship-stack/SKILL.md` or the runtime-equivalent Claude skill.
+
+- Load only the Apple Ship modules relevant to the task.
+- Apple Ship integrates with Baseline Lock + Karpathy + Token Saver + LEAN BUILD + STACK Goal/Context + Delivery Verification.
+- Typical triggers: app icons/assets, SwiftUI/HIG review, accessibility, Siri/App Intents/Shortcuts/Spotlight, localization/String Catalogs/RTL, theming, onboarding, local-first behavior, StoreKit/monetization, local builds, privacy/permissions, TestFlight/App Store/App Review.
+- Prefer current Apple documentation for release-sensitive requirements.
+- Do not claim device, Siri, payment, App Store, or hardware success without verification.
+
 ## Jev rules
 - Never use Jev as the primary creative/generative model.
 - Never block the project if Jev or the gateway is unavailable; fall back to the normal workflow.
