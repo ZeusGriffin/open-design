@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pocket Face · Offline Preview</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at center,#263027,#0c1116 70%);color:#ecf3ee;font:15px system-ui,-apple-system,sans-serif}
+main{max-width:900px;margin:0 auto;padding:42px 22px}header p{color:#a3b3ab;line-height:1.65}.eyebrow{color:#b0f58c;font:700 12px monospace;letter-spacing:.2em}
+h1{font-size:clamp(34px,6vw,58px);line-height:1.02;letter-spacing:-.05em;margin:15px 0}h1 span{color:#b0f58c}
+.workspace{display:grid;grid-template-columns:1.15fr 1fr;gap:24px;align-items:center;margin-top:36px}.preview{display:grid;place-items:center;min-height:365px}
+.case{position:relative;background:linear-gradient(130deg,#b0b6aa,#5f6c63 64%,#353b38);padding:26px;border-radius:36px;box-shadow:12px 30px 35px #0007;transform:rotate(-7deg)}
+.case:before{content:'';position:absolute;width:44px;height:46px;top:-36px;left:calc(50% - 22px);border:9px solid silver;border-radius:30px}
+.screen{border:8px solid #202928;border-radius:19px;background:#060b0d;overflow:hidden}canvas{width:256px;height:128px;display:block;image-rendering:pixelated}
+.case small{display:block;text-align:center;margin-top:12px;letter-spacing:.1em}.panel{background:#192026;border:1px solid #364039;border-radius:20px;padding:22px}
+h2{font-size:17px}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}button,select{border:1px solid #46534b;border-radius:9px;padding:10px;background:#27312e;color:white;font:inherit;cursor:pointer}button.active{background:#b0f58c;color:#152116;font-weight:700}
+.control{display:flex;align-items:center;justify-content:space-between;padding:17px 0;border-bottom:1px solid #38433c}
+input{accent-color:#b0f58c}select{width:100%;margin-top:15px}label{font-size:13px}.note{font-size:11px;color:#899b92;line-height:1.65}
+@media(max-width:670px){.workspace{grid-template-columns:1fr}.preview{min-height:290px}.case{transform:rotate(-7deg) scale(.87)}}
+</style></head><body><main><header><div class="eyebrow">POCKET FACE / BUILD 01</div><h1>A little face.<br><span>Lots of personality.</span></h1><p>Editable browser simulator. Works without an ESP32, batteries, installation, or internet.</p></header>
+<div class="workspace"><div class="preview"><div class="case"><div class="screen"><canvas id="face" width="128" height="64"></canvas></div><small>PF-01 · 128 × 64</small></div></div>
+<div class="panel"><h2>Choose expression</h2><div class="choices" id="choices"></div>
+<div class="control"><label>Auto personality</label><input id="auto" type="checkbox" checked></div>
+<div class="control"><label>Liquid motion (soft eye wobble)</label><input id="liquid" type="checkbox"></div>
+<div class="control"><label>Animation speed</label><input id="speed" type="range" min=".25" max="2.5" step=".25" value="1"></div>
+<select id="kind"><option value="oled">OLED · monochrome actual target</option><option value="lcd">LCD · concept preview ONLY</option></select>
+<p class="note">Color LCD display is not yet supported by hardware firmware. Change presets in source, then update firmware separately.</p></div></div></main>
+<script>
+const presets={neutral:[23,37,26,15,4],happy:[26,20,21,28,9],sad:[20,23,33,12,4],surprised:[18,41,22,10,10],sleepy:[24,8,36,8,3],angry:[21,22,30,21,3]};
+const names=Object.keys(presets),ctx=document.getElementById('face').getContext('2d');
+const controls=document.getElementById('choices');let mood='neutral',lookX=0,lookY=0,last=0,nextAction=1800,nextBlink=2200,blinkUntil=0,blinking=false;
+let forms=[[40,26,23,37],[88,26,23,37],[64,55,15,4]];
+for(const name of names){const btn=document.createElement('button');btn.textContent=name[0].toUpperCase()+name.slice(1);btn.onclick=()=>{mood=name;lookX=lookY=0;document.getElementById('auto').checked=false;updateButtons()};btn.dataset.name=name;controls.appendChild(btn)}
+function updateButtons(){for(const b of controls.children)b.classList.toggle('active',b.dataset.name===mood)}
+function box(x,y,w,h){w=Math.max(2,w);h=Math.max(2,h);x=Math.max(0,Math.min(128-w,x-w/2));y=Math.max(0,Math.min(64-h,y-h/2));ctx.beginPath();ctx.roundRect(x,y,w,h,Math.min(w,h)*.44);ctx.fill()}
+function draw(now){
+ const speed=+document.getElementById('speed').value,e=Math.min(.9,(document.getElementById('liquid').checked?.12:.26)*speed);
+ const fluid=document.getElementById('liquid').checked,wobble=fluid?Math.sin(now/260)*1.1:0;
+ if(now>=nextBlink){blinking=true;blinkUntil=now+150/speed;nextBlink=now+(2000+Math.random()*3600)/speed}
+ if(blinking&&now>=blinkUntil)blinking=false;
+ if(document.getElementById('auto').checked&&now>=nextAction){
+  if(Math.random()<.4){lookX=Math.round((Math.random()-.5)*24);lookY=Math.round((Math.random()-.5)*16)}
+  else{mood=names[Math.floor(Math.random()*names.length)];lookX=lookY=0;updateButtons()}
+  nextAction=now+(1500+Math.random()*2500)/speed;
+ }
+ const [ew,eh,ey,mw,mh]=presets[mood];
+ const targets=[[40+lookX,ey+lookY+wobble,ew+wobble*.35,blinking?2:eh],[88+lookX,ey+lookY+wobble,ew+wobble*.35,blinking?2:eh],[64+lookX*.4,55,mw,mh]];
+ for(let i=0;i<3;i++)for(let j=0;j<4;j++)forms[i][j]+=(targets[i][j]-forms[i][j])*e;
+ const lcd=document.getElementById('kind').value==='lcd';
+ ctx.fillStyle=lcd?'#15152f':'#02080b';ctx.fillRect(0,0,128,64);ctx.fillStyle=lcd?'#b3d1ff':'#eaf9f7';
+ forms.forEach(f=>box(...f));last=now;requestAnimationFrame(draw)
+}
+updateButtons();requestAnimationFrame(draw);
+</script></body></html>

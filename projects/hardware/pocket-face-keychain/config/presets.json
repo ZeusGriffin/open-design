@@ -1,0 +1,52 @@
+{
+  "resolution": [
+    128,
+    64
+  ],
+  "frameMs": 33,
+  "presets": {
+    "neutral": [
+      23,
+      37,
+      26,
+      15,
+      4
+    ],
+    "happy": [
+      26,
+      20,
+      21,
+      28,
+      9
+    ],
+    "sad": [
+      20,
+      23,
+      33,
+      12,
+      4
+    ],
+    "surprised": [
+      18,
+      41,
+      22,
+      10,
+      10
+    ],
+    "sleepy": [
+      24,
+      8,
+      36,
+      8,
+      3
+    ],
+    "angry": [
+      21,
+      22,
+      30,
+      21,
+      3
+    ]
+  },
+  "note": "Each preset: [eyeWidth,eyeHeight,eyeCenterY,mouthWidth,mouthHeight]. Mirror changes in firmware/src/main.cpp and web/index.html until generator exists."
+}
