@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>JUKE / System Menu</title>
+<style>[hidden]{display:none!important}
+body.booting{overflow:hidden;background:#000}
+body.booting:after{display:none}
+.boot{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:#f8f8f6;color:#174480;font-family:Arial,Helvetica,sans-serif;isolation:isolate;transition:background .65s ease,color .65s ease}
+.boot:after{content:'';position:absolute;inset:0;pointer-events:none;z-index:3;background:repeating-linear-gradient(transparent 0 3px,#000 3px 4px);opacity:.035}
+.boot-screen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:70px 24px;opacity:0;transition:opacity .7s ease;pointer-events:none}
+.boot-screen.active{opacity:1}
+.boot-studio{font-family:Georgia,'Times New Roman',serif;font-weight:bold;font-size:clamp(27px,6vw,46px);letter-spacing:.06em;margin:0 0 26px}
+.boot-emblem{width:clamp(108px,24vw,180px);height:clamp(108px,24vw,180px);overflow:visible;margin:0 0 25px;filter:drop-shadow(0 0 12px #ffb00018)}
+.boot-white.active .boot-emblem{animation:emblem-arrive 2.6s ease-out both}
+.boot-category{font-size:clamp(16px,3vw,22px);font-weight:400;letter-spacing:-.03em;line-height:.97;text-align:left;margin:0}
+.boot-category span{font-size:.74em;letter-spacing:.03em}
+.boot.dark{background:#000;color:#e7e7eb}
+.boot-monogram{width:clamp(130px,30vw,220px);height:auto;filter:drop-shadow(0 0 10px #ffa9000c);margin-bottom:16px}
+.boot-black.active .boot-monogram{animation:logo-arrive 1.5s ease-out both}
+.boot-title{font-weight:normal;font-size:clamp(34px,7vw,51px);letter-spacing:-.07em;margin:0 0 30px;line-height:1}
+.boot-title sup{font-size:9px;letter-spacing:0;vertical-align:top;margin:5px 0 0 5px;display:inline-block}
+.boot-credit{font-size:clamp(10px,2vw,13px);line-height:1.7;letter-spacing:.14em;margin:0 0 14px}
+.boot-subtitle{font-size:10px;letter-spacing:.35em;margin:0;color:#a0a3ad}
+.boot-controls{position:absolute;z-index:5;bottom:max(24px,env(safe-area-inset-bottom));left:24px;right:24px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.boot-control{color:inherit;background:transparent;border:1px solid currentColor;border-radius:0;padding:10px 14px;font-family:Consolas,'Courier New',monospace;font-size:10px;letter-spacing:.08em;cursor:pointer;min-height:40px}
+.boot-control:hover{background:#7772}.boot-control:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+.boot-hint{position:absolute;left:0;right:0;bottom:88px;font:9px Consolas,'Courier New',monospace;letter-spacing:.15em;text-align:center;opacity:.65}
+.boot-progress{height:2px;position:absolute;bottom:0;left:0;background:currentColor;width:0;opacity:.3}
+.boot.running .boot-progress{animation:boot-progress 10.5s linear forwards}
+.boot-replay{display:block;margin:22px 0 0 auto;font:10px Consolas,'Courier New',monospace;letter-spacing:.1em;color:#a9bedc;border:1px solid #52688d;background:#101a2b;padding:10px 14px;cursor:pointer}
+.boot-replay:focus-visible{outline:2px solid #a4e8ec;outline-offset:4px}
+.boot-static{margin-top:30px;color:#b7c9e1;font-size:10px;letter-spacing:.08em;line-height:1.8}
+@keyframes emblem-arrive{from{opacity:0;transform:scale(.76);filter:blur(12px)}35%{opacity:1}to{opacity:1;transform:scale(1);filter:blur(0)}}
+@keyframes logo-arrive{from{opacity:0;transform:translateY(6px);filter:blur(4px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes boot-progress{to{width:100%}}
+@media(prefers-reduced-motion:reduce){.boot,.boot-screen{transition:none}.boot *{animation:none!important}.boot-progress{display:none}}
+@media(max-width:400px){.boot-studio{letter-spacing:.02em}.boot-credit{letter-spacing:.08em}.boot-controls{left:16px;right:16px}.boot-control{font-size:9px;padding:9px 11px}}
+</style><style>
+*{box-sizing:border-box}body{margin:0;background:#060912;color:#dbe6f9;font-family:Consolas,'Courier New',monospace;min-height:100svh;background-image:radial-gradient(ellipse at 50% 20%,#263a63 0, #0c1427 48%,#04070e 100%)}body:after{content:'';position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(transparent 0 3px,#0003 3px 4px);opacity:.5}main{max-width:1100px;margin:auto;padding:38px 30px 24px}header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #53688d;padding-bottom:20px}.brand{font-size:clamp(30px,7vw,54px);font-weight:bold;letter-spacing:-4px;color:#f2f4ff;text-shadow:3px 3px #304367}.brand span{color:#a3b9e1}small{letter-spacing:3px;color:#9badca;font-size:11px}.status{color:#98dcb9;font-size:11px;text-align:right;line-height:1.8}.heading{margin:46px 0 10px;color:#b5c8e9;letter-spacing:5px;font-size:12px}h1{font-size:clamp(24px,5vw,38px);font-weight:normal;margin:0 0 32px;text-shadow:2px 2px #000}.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.tile{position:relative;min-height:285px;border:2px solid #697da0;background:linear-gradient(145deg,#3a4c6b,#182438 65%);box-shadow:inset 3px 3px #ffffff19,inset -4px -4px #0005,7px 9px #0005;padding:22px;color:inherit;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;transition:transform .12s,border-color .12s}.tile.selected{border:3px solid #a4e8ec;background:linear-gradient(145deg,#49688b,#1c334e 70%);box-shadow:0 0 22px #78c9e62b,inset 3px 3px #ffffff20,7px 9px #0005}.tile.selected:hover,.tile.selected:focus-visible{transform:translateY(-5px);outline:3px solid #fff;outline-offset:5px}.slot{font-size:10px;color:#b0c1db;letter-spacing:2px}.symbol{font-size:72px;text-align:center;font-weight:bold;line-height:1.2;color:#cde9eb;text-shadow:4px 4px #101925}.disc{margin:14px auto;width:112px;height:112px;border-radius:50%;border:2px solid #b9c9df;background:repeating-radial-gradient(circle,#23344a 0 4px,#8298b0 5px,#31465e 6px 9px);display:grid;place-items:center;box-shadow:5px 5px #0005}.disc span{background:#b4e4d5;border:5px solid #263d4d;border-radius:50%;padding:10px;color:#18372f;font-size:20px;font-weight:bold}.tile h2{font-size:21px;font-weight:normal;margin:12px 0 8px;letter-spacing:1px}.tile p{font-size:11px;line-height:1.7;color:#adbed5;margin:0}.disabled{opacity:.48}.enter{margin-top:36px;min-height:76px;padding:18px 22px;border:1px solid #5c7398;background:#09101d99;display:flex;justify-content:space-between;align-items:center;gap:20px}.enter b{font-weight:normal;color:#e6f5ff}.enter p{font-size:11px;color:#a7bbd7;margin:7px 0 0}.key{display:inline-flex;align-items:center;gap:10px;font-size:12px;white-space:nowrap;color:#a9d5f0}.cross{display:grid;place-items:center;border:2px solid #96bce3;border-radius:50%;height:28px;width:28px;font-size:22px}footer{margin-top:36px;display:flex;justify-content:space-between;color:#778dae;font-size:10px;letter-spacing:2px}.shapes{letter-spacing:8px;color:#adbbd5} @media(max-width:650px){main{padding:24px 20px}.tiles{grid-template-columns:1fr}.tile{min-height:230px}.disabled{min-height:100px;flex-direction:row;align-items:center;gap:18px}.disabled .symbol{font-size:35px}.heading{margin-top:30px}.status{font-size:9px}.enter{align-items:flex-start;flex-direction:column}footer{gap:20px;font-size:9px}}
+</style><style id="ps1-menu-style">body{background:#8d908c;color:#242c3a;font-family:Arial,Helvetica,sans-serif;background-image:radial-gradient(#ffffff40 .65px,transparent .85px),radial-gradient(#161e272b .7px,transparent 1px);background-position:0 0,2px 2px;background-size:4px 4px;min-height:100svh;padding:clamp(12px,3vw,36px)}
+body:after{opacity:.055;background:repeating-linear-gradient(transparent 0 2px,#000 2px 3px)}
+main{position:relative;max-width:1060px;min-height:min(710px,92svh);margin:auto;padding:clamp(20px,4vw,44px);background:#c6c7c0;background-image:radial-gradient(#fff3 .65px,transparent .8px);background-size:3px 3px;border:3px solid;border-color:#f5f4e8 #6e726f #626663 #eff0e7;box-shadow:inset 0 0 0 4px #a2a6a0,inset 0 0 0 6px #e0e0d6,7px 9px 0 #515955,10px 13px 0 #bac0b6}
+header{border:0;padding-bottom:20px;gap:20px;align-items:center}
+.brand{font-size:clamp(25px,5vw,42px);letter-spacing:-2px;color:#273f85;text-shadow:1px 1px #f8f6e6;font-family:Georgia,'Times New Roman',serif;line-height:1}
+.brand span{color:#ef4b22;display:inline-block;transform:rotate(-12deg);font-family:Arial,sans-serif;font-weight:900;margin-right:4px;text-shadow:2px 2px #9c2b17}
+header small{font-family:Arial,sans-serif;display:block;font-size:8px;letter-spacing:.15em;color:#5e6667;margin-top:7px}
+.status{font-family:Consolas,'Courier New',monospace;text-align:right;font-size:9px;color:#3b5551;letter-spacing:.05em;line-height:1.8}
+.status .light{color:#267849}
+.heading{display:flex;align-items:center;gap:12px;font-size:10px;letter-spacing:2px;color:#5a6264;margin:6px 0 14px;font-family:Consolas,'Courier New',monospace}
+.heading:after{content:'';flex:1;height:3px;background:#a0a59e;box-shadow:0 1px #f2f0df}
+main>h1{font-family:Arial,Helvetica,sans-serif;font-size:clamp(26px,5vw,42px);font-weight:900;font-style:italic;color:#223d8e;letter-spacing:-1px;line-height:1;margin:0 0 28px;text-shadow:1px 1px #f3f3df,2px 2px #7783a3}
+.tiles{grid-template-columns:1.1fr 1fr 1fr;gap:18px;align-items:stretch}
+.tile,.tile.selected{border:3px solid;border-color:#eeeee2 #737a77 #717774 #f2f1e8;border-radius:0;background:#aeb3ac;background-image:linear-gradient(125deg,#d4d7ce80,transparent 65%);box-shadow:inset 0 0 0 2px #9aa19a,3px 4px #666f6a;padding:18px;min-height:280px;color:#354149;transition:transform .1s,border-color .1s}
+.tile.selected{background:#d4d6cd;border-color:#f4f2da #354a81 #354a81 #f7f5e7;box-shadow:inset 0 0 0 2px #8798b7,4px 5px #6a7370;outline:2px solid #36558b;outline-offset:3px}
+.tile.selected:before{content:'';position:absolute;left:-16px;top:50%;border-left:12px solid #e76015;border-top:8px solid transparent;border-bottom:8px solid transparent;filter:drop-shadow(1px 2px #7b4c29)}
+.tile.selected:hover,.tile.selected:focus-visible{transform:translateY(-3px);border-color:#fff9d2 #253e7d #253e7d #fff9d2;outline:3px solid #ce6522;outline-offset:3px}
+.slot{font-family:Consolas,'Courier New',monospace;font-size:9px;color:#505b5a;letter-spacing:.1em}
+.disc{width:114px;height:114px;margin:20px auto 13px;border:1px solid #9faba8;background:conic-gradient(from 25deg,#eee8ca,#84a1be,#eaeee5,#95b5a4,#d4d8cf,#f5ca70,#e9e7d7,#81acc5,#eee8ca);box-shadow:3px 4px 0 #79827c,inset 0 0 0 8px #dce1d680,inset 0 0 0 10px #a5afa6;transform:rotate(-16deg);position:relative}
+.disc:after{content:'';position:absolute;width:26px;height:26px;top:43px;left:43px;border:7px solid #334b88;border-radius:50%;background:#c5c9be;box-shadow:0 0 0 4px #e8e8d4}
+.disc span{display:none}
+.tile h2{font-weight:900;font-style:italic;font-family:Arial,Helvetica,sans-serif;font-size:clamp(18px,2.5vw,25px);letter-spacing:-.8px;color:#284386;text-shadow:1px 1px #f4f2da;margin:10px 0 8px;line-height:1}
+.selected h2{color:#e8a50b;-webkit-text-stroke:.6px #a1421b;text-shadow:1px 1px #853213,2px 2px #713014}
+.tile p{font-size:10px;line-height:1.6;color:#4f5b5a;letter-spacing:.02em}
+.tile.disabled{opacity:1;background:#afb4ac;border-color:#d9dcd1 #7a817c #7a817c #d9dcd1;box-shadow:inset 0 0 0 2px #a1a89e,3px 4px #7c847d}
+.disabled .slot,.disabled p{color:#58625b}.disabled h2{color:#5c6a65;text-shadow:1px 1px #d4d8cd}
+.memory-card{position:relative;width:78px;height:104px;margin:23px auto 8px;background:#687e93;border:3px solid;border-color:#b2bfcb #405568 #384c5f #a6b7c4;border-radius:7px 7px 2px 2px;transform:rotate(-9deg);box-shadow:5px 4px #737e77}
+.memory-card:before{content:'JUKE';position:absolute;inset:18px 9px 28px;display:grid;place-items:center;background:#b6c0b9;border:1px inset #889e99;font-size:11px;font-weight:900;color:#3c5364;letter-spacing:.05em}
+.memory-card:after{content:'';position:absolute;bottom:6px;left:11px;right:11px;height:10px;background:repeating-linear-gradient(90deg,#d8c38b 0 5px,#657463 5px 7px)}
+.cube{width:80px;height:100px;position:relative;margin:22px auto 13px}
+.cube svg{width:100%;height:100%;opacity:.7}
+.enter{margin-top:28px;min-height:74px;padding:15px 18px;background:#acb3aa;border:2px solid;border-color:#7a837b #e9eadd #e9eadd #7a837b;gap:15px}
+.enter b{font-size:12px;font-weight:bold;letter-spacing:.07em;color:#233c7e}.enter p{font:10px/1.5 Arial,sans-serif;color:#4c5a52;margin-top:5px}
+.key{font:10px Consolas,'Courier New',monospace;color:#344857;gap:8px}
+.cross{background:#424953;border:2px solid #79898d;color:#98b8e8;box-shadow:1px 2px #80877e;width:25px;height:25px;font-size:21px}
+.menu-bottom{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:20px}
+.boot-replay{font:9px Consolas,'Courier New',monospace;letter-spacing:.04em;background:#b9bfb4;color:#304776;border:2px solid;border-color:#e9ebdf #777f78 #777f78 #e9ebdf;padding:9px 12px;margin:0;min-height:37px}
+.boot-replay:focus-visible{outline:2px solid #b05e1c;outline-offset:3px}
+.controller-symbols{display:flex;gap:12px;align-items:center;font-size:20px;font-family:Arial,sans-serif;font-weight:bold}
+.controller-symbols span:nth-child(1){color:#25867c}.controller-symbols span:nth-child(2){color:#c35754}.controller-symbols span:nth-child(3){color:#365b9d}.controller-symbols span:nth-child(4){color:#a66095}
+footer{color:#59665b;font:8px Consolas,'Courier New',monospace;letter-spacing:.12em;margin-top:26px;padding-top:14px;border-top:1px solid #9ca69b;box-shadow:0 -1px #e7e9df}
+.boot.dark .boot-title{font-style:normal;text-shadow:none}
+@media(max-width:650px){main{min-height:0;padding:21px 18px}header{padding-bottom:18px;gap:12px}.brand{font-size:25px}header small{font-size:6px}.status{font-size:7px}.heading{font-size:8px;letter-spacing:1px;margin-top:0}main>h1{font-size:27px;margin-bottom:22px}.tiles{grid-template-columns:1fr 1fr;gap:15px}.tile.selected{grid-column:1/-1;min-height:200px;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;align-items:center}.selected>.slot{grid-column:1/-1}.selected .disc{width:100px;height:100px;margin:10px auto}.disc:after{top:36px;left:36px}.selected h2{font-size:25px}.selected p{font-size:10px}.tile.disabled{display:flex;flex-direction:column;min-height:180px;padding:12px;align-items:stretch;gap:0}.disabled .slot{font-size:7px;line-height:1.5}.memory-card{width:48px;height:62px;margin:13px auto 11px;border-width:2px;box-shadow:3px 3px #737e77}.memory-card:before{inset:9px 5px 18px;font-size:7px}.memory-card:after{height:6px;bottom:4px;left:6px;right:6px}.cube{height:64px;width:53px;margin:13px auto 9px}.disabled h2{font-size:14px;margin:3px 0 6px;letter-spacing:-.4px}.disabled p{font-size:8px}.enter{margin-top:20px;padding:12px;min-height:66px;flex-direction:row;align-items:center}.enter b{font-size:10px}.enter p{font-size:9px}.key{font-size:8px;white-space:normal;max-width:70px}.cross{flex-shrink:0}.menu-bottom{margin-top:18px;gap:10px}.boot-replay{padding:8px;font-size:8px}.controller-symbols{gap:9px;font-size:17px}footer{margin-top:18px;font-size:7px;gap:15px;line-height:1.5}}
+</style></head><body class="booting">
+<section class="boot" id="boot" aria-label="JUKE startup intro">
+  <div class="boot-screen boot-white active" id="bootWhite">
+    <p class="boot-studio">JUKEBOXX</p>
+    <svg class="boot-emblem" viewBox="0 0 200 200" aria-hidden="true">
+      <defs><linearGradient id="amber" x1="0" x2="1"><stop stop-color="#f15a12"/><stop offset=".5" stop-color="#ffdf00"/><stop offset="1" stop-color="#ff7210"/></linearGradient><linearGradient id="copper" x1="0" x2="1"><stop stop-color="#d82c08"/><stop offset="1" stop-color="#ffbf00"/></linearGradient></defs>
+      <path d="M100 0 200 100 100 200 0 100Z" fill="url(#amber)"/>
+      <path d="M100 0 100 69 63 100 100 131 100 200 0 100Z" fill="url(#copper)"/>
+      <path d="M100 32 145 77 116 77 116 121 93 144 65 116 80 101 93 114 101 106 101 62 76 62Z" fill="#fff0a1" opacity=".87"/>
+      <path d="M100 0 200 100 100 200 116 121 145 77Z" fill="#ffda00" opacity=".2"/>
+    </svg>
+    <p class="boot-category">CREATIVE<br><span>ENTERTAINMENT</span></p>
+  </div>
+  <div class="boot-screen boot-black" id="bootBlack" aria-hidden="true">
+    <svg class="boot-monogram" viewBox="0 0 260 220" aria-hidden="true">
+      <path d="M28 170 93 142 157 158 92 190Z" fill="#f8bf09"/>
+      <path d="m28 170 64 20v13l-64-20Z" fill="#a46b02"/>
+      <path d="m92 190 65-32v13l-65 32Z" fill="#b28a02"/>
+      <path d="m97 143 67-28 68 24-70 33-28-10 42-21-19-6-42 17Z" fill="#2584c2"/>
+      <path d="m162 172 70-33v13l-70 34Z" fill="#164c88"/>
+      <path d="m94 181 40-19 28 10v14l-41-15-27 13Z" fill="#18a38e"/>
+      <path d="m127 23 43 17v103c0 40-24 45-53 31l-28-14v-35l30 13c7 3 8 0 8-7Z" fill="#ee321c"/>
+      <path d="m170 40 12-7v111c0 22-12 34-29 35 12-6 17-17 17-36Z" fill="#9f1b13"/>
+      <path d="m127 23 12-7 43 17-12 7Z" fill="#ff6140"/>
+    </svg>
+    <h1 class="boot-title">JUKE View<sup>TM</sup></h1>
+    <p class="boot-credit">Created by<br>JUKEBOXX Studio</p>
+    <p class="boot-subtitle">VISUAL FEEDBACK SYSTEM</p>
+  </div>
+  <p class="boot-hint" id="bootHint">PRESS ENTER OR ESC TO SKIP</p>
+  <div class="boot-controls"><button type="button" class="boot-control" id="bootSound" aria-pressed="false">SOUND OFF</button><button type="button" class="boot-control" id="bootSkip">SKIP INTRO</button></div>
+  <div class="boot-progress" aria-hidden="true"></div>
+</section><main hidden inert><header><div><div class="brand"><span>J</span> JUKEBOXX</div><small>CREATIVE ENTERTAINMENT SYSTEM</small></div><div class="status"><span class="light">● DISC READY</span><br>SLOT 01</div></header><p class="heading">SYSTEM / JUKE-01</p><h1>MAIN MENU</h1><section class="tiles" aria-label="Applications"><a class="tile selected" href="./index.html" id="launch"><span class="slot">01 / CREATIVE DISC</span><div class="disc"><span>JUKE</span></div><div><h2>JUKE VIEW</h2><p>Visual feedback workstation<br>Open boards. Mark up. Make notes.</p></div></a><div class="tile disabled"><span class="slot">02 / MEMORY CARD</span><div class="memory-card" aria-hidden="true"></div><div><h2>REVIEW ARCHIVE</h2><p>Coming soon</p></div></div><div class="tile disabled"><span class="slot">03 / EXPANSION</span><div class="cube" aria-hidden="true"><svg viewBox="0 0 100 120"><path d="m50 5 43 24-43 25L7 29Z" fill="#d9ae31"/><path d="M7 29 50 54v55L7 84Z" fill="#377d9a"/><path d="m50 54 43-25v55l-43 25Z" fill="#a45b50"/><path d="m50 5 43 24-43 25L7 29Z" fill="none" stroke="#ecebd6" stroke-width="2"/></svg></div><div><h2>EMPTY SLOT</h2><p>More creative tools to come</p></div></div></section><div class="enter"><div><b>JUKE VIEW selected</b><p>Select the disc to start your creative session.</p></div><span class="key"><span class="cross">×</span> ENTER TO START</span></div><div class="menu-bottom"><button type="button" class="boot-replay" id="bootReplay">↻ REPLAY STARTUP</button><div class="controller-symbols" aria-hidden="true"><span>△</span><span>○</span><span>×</span><span>□</span></div></div><footer><span>JUKEBOXX STUDIO · V0.1</span><span>CREATIVE SYSTEM / 01</span></footer></main><script>(() => {
+  'use strict';
+  const boot = document.getElementById('boot');
+  const menu = document.querySelector('main');
+  const white = document.getElementById('bootWhite');
+  const black = document.getElementById('bootBlack');
+  const skip = document.getElementById('bootSkip');
+  const sound = document.getElementById('bootSound');
+  const replay = document.getElementById('bootReplay');
+  const launch = document.getElementById('launch');
+  const hint = document.getElementById('bootHint');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const storageKey = 'juke-view-boot-seen-v1';
+  let timers = [], audio, master, voices = [], audible = false, running = false, phase = 'white';
+  function cancelTimers() { timers.forEach(clearTimeout); timers = []; }
+  function later(fn, delay) { timers.push(setTimeout(fn, delay)); }
+  function silence() {
+    if (master && audio) master.gain.setValueAtTime(0, audio.currentTime);
+    voices.forEach(osc => { try { osc.stop(); } catch (_) {} });
+    voices = [];
+  }
+  function tone(frequency, offset, duration, level, type = 'sine', endFrequency) {
+    const at = audio.currentTime + offset;
+    const osc = audio.createOscillator(), gain = audio.createGain();
+    osc.type = type; osc.frequency.setValueAtTime(frequency, at);
+    if (endFrequency) osc.frequency.exponentialRampToValueAtTime(endFrequency, at + duration);
+    gain.gain.setValueAtTime(0, at);
+    gain.gain.linearRampToValueAtTime(level, at + .18);
+    gain.gain.exponentialRampToValueAtTime(.0001, at + duration);
+    osc.connect(gain); gain.connect(master); osc.start(at); osc.stop(at + duration + .05);
+    voices.push(osc);
+  }
+  // An original synthesized boot chord; no downloaded video or audio is needed.
+  function chime() {
+    if (!audible || !audio || audio.state !== 'running') return;
+    silence(); master.gain.setValueAtTime(.22, audio.currentTime);
+    if (phase === 'white') {
+      tone(66, 0, 4, .5, 'sine', 55);
+      [130.81,196,261.63,392].forEach((f,i)=>tone(f,.08+i*.1,3.5,.14));
+      tone(1200,.05,2.4,.025,'sine',350);
+    } else {
+      [261.63,329.63,392,523.25].forEach((f,i)=>tone(f,i*.11,3.1,.13,'sine'));
+      tone(65.41,0,3.6,.3);
+    }
+  }
+  async function enableSound() {
+    audible = !audible;
+    sound.setAttribute('aria-pressed', String(audible));
+    sound.textContent = audible ? 'SOUND ON' : 'SOUND OFF';
+    if (!audible) { silence(); return; }
+    try {
+      const Audio = window.AudioContext || window.webkitAudioContext;
+      if (!Audio) throw Error('Audio unavailable');
+      if (!audio) { audio = new Audio(); master = audio.createGain(); master.gain.value = 0; master.connect(audio.destination); }
+      await audio.resume();
+      if (running && audible) chime();
+    } catch (_) { audible = false; sound.textContent = 'SOUND UNAVAILABLE'; sound.setAttribute('aria-pressed','false'); }
+  }
+  function setPhase(next) {
+    phase = next;
+    const dark = next === 'black';
+    boot.classList.toggle('dark',dark);
+    white.classList.toggle('active',!dark); black.classList.toggle('active',dark);
+    white.setAttribute('aria-hidden',String(dark)); black.setAttribute('aria-hidden',String(!dark));
+    chime();
+  }
+  function remember() { try { sessionStorage.setItem(storageKey,'1'); } catch (_) {} }
+  function seen() { try { return sessionStorage.getItem(storageKey)==='1'; } catch (_) { return false; } }
+  function finish(focus = true) {
+    running = false; cancelTimers(); silence(); remember();
+    boot.hidden = true; boot.classList.remove('running');
+    menu.hidden = false; menu.inert = false; document.body.classList.remove('booting');
+    if (focus) launch.focus({preventScroll:true});
+  }
+  function start() {
+    cancelTimers(); silence(); running = true;
+    menu.hidden = true; menu.inert = true; boot.hidden = false;
+    document.body.classList.add('booting'); boot.classList.remove('running');
+    // Restart CSS animations when replay is selected.
+    white.classList.remove('active'); black.classList.remove('active');
+    void boot.offsetWidth;
+    if (reduced.matches) {
+      setPhase('black'); skip.textContent = 'CONTINUE TO MENU';
+      hint.textContent = 'PRESS ENTER TO CONTINUE';
+    } else {
+      boot.classList.add('running'); setPhase('white'); skip.textContent = 'SKIP INTRO';
+      hint.textContent = 'PRESS ENTER OR ESC TO SKIP';
+      later(()=>setPhase('black'),4900);
+      later(()=>finish(),10500);
+    }
+    skip.focus({preventScroll:true});
+  }
+  skip.addEventListener('click',()=>finish());
+  sound.addEventListener('click',enableSound);
+  replay.addEventListener('click',start);
+  document.addEventListener('keydown',event=>{
+    if (!running || (event.key !== 'Escape' && event.key !== 'Enter')) return;
+    // Let the focused audio button handle Enter without skipping the intro.
+    if (event.key==='Enter' && event.target===sound) return;
+    event.preventDefault(); event.stopImmediatePropagation(); finish();
+  },true);
+  window.addEventListener('pagehide',()=>{cancelTimers();silence();});
+  window.addEventListener('pageshow',event=>{if(event.persisted) finish(false);});
+  reduced.addEventListener('change',()=>{if(running) start();});
+  const returning = performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
+  if (seen() && (returning || new URLSearchParams(location.search).get('intro')!=='1')) finish(false);
+  else start();
+})();
+</script><noscript><style>.boot{display:none!important}main[hidden]{display:block!important}body.booting{overflow:auto}</style></noscript></body></html>
