@@ -1,0 +1,108 @@
+name: Wuzplay Cyberdeck v9 DFU
+
+on:
+  push:
+    branches: ["wuzplay-cyberdeck-v9-build"]
+  workflow_dispatch:
+
+jobs:
+  rotation-test:
+    # Proves the game-path 180 degree rotation equals a true rotation of the 128x64 bitmap
+    # (not a mirror). Compiles the exact header the firmware uses. Blocks the DFU build on failure.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Host unit test - screen rotation
+        run: |
+          gcc -std=c99 -Wall -Wextra -Werror -o rotation_test wuzplay-cyberdeck-v9/tests/rotation_test.c
+          ./rotation_test
+
+  build-dfu:
+    needs: rotation-test
+    runs-on: ubuntu-latest
+    container: solosky/nrf52-sdk:latest
+    steps:
+      - name: Checkout build harness
+        uses: actions/checkout@v4
+
+      - name: Clone Pixl.js firmware base
+        run: |
+          git clone --branch 2.12.0 --depth 1 https://github.com/solosky/pixl.js.git pixljs-src
+          cd pixljs-src
+          git submodule update --init --recursive
+
+      - name: Apply Wuzplay Cyberdeck v9 changes
+        run: |
+          python3 wuzplay-cyberdeck-v9/apply_patch.py pixljs-src
+          python3 wuzplay-cyberdeck-v9/post_patch_fixes.py pixljs-src
+          python3 wuzplay-cyberdeck-v9/apply_features.py pixljs-src
+
+      - name: Build OLED DFU
+        run: |
+          cd pixljs-src/fw
+          set +e
+          make all BOARD=OLED RELEASE=1 APP_VERSION=900 > "$GITHUB_WORKSPACE/build.log" 2>&1
+          rc=$?
+          tail -n 60 "$GITHUB_WORKSPACE/build.log"
+          exit $rc
+
+      - name: Surface compiler errors as annotations
+        if: failure()
+        run: |
+          grep -nE "error:|undefined reference|overflowed|Error [0-9]+|No rule to make" build.log | head -40 | while IFS= read -r l; do echo "::error::$l"; done
+          echo "::error::build.log lines: $(wc -l < build.log)"
+
+      - name: Flash size diagnostics (largest objects and symbols)
+        if: always()
+        run: |
+          cd pixljs-src/fw/_build
+          OBJ=$(find . -name '*.o' | sort)
+          TOP=$(arm-none-eabi-size $OBJ | awk 'NR>1 {print $4, $6}' | sort -rn | head -25 | awk '{printf "%d %s | ", $1, $2}')
+          echo "::notice title=Largest objects (bytes)::$TOP"
+          SYM=$(arm-none-eabi-nm -A -S --size-sort -t d $OBJ 2>/dev/null | awk '$3 ~ /^[TtRrDd]$/ {print $2, $4, $1}' | sort -rn | head -25 | awk '{printf "%d %s | ", $1, $2}')
+          echo "::notice title=Largest flash symbols (bytes)::$SYM"
+
+      - name: Report warnings from new Cyberdeck code
+        if: always()
+        run: |
+          grep -nE "warning:" build.log | grep -E "wuz_|app_cyberdeck|cyberdeck_data|/wuz/|driver\.c|mui_list_view|chameleon_view|app_desktop" | head -30 | while IFS= read -r l; do echo "::warning::$l"; done || true
+
+      - name: Record firmware size
+        run: |
+          arm-none-eabi-size pixljs-src/fw/_build/pixljs.out | tee firmware-size.txt
+
+      - name: Validate DFU and build end-to-end package
+        run: |
+          test -s pixljs-src/fw/_build/pixjs_ota_v900.zip
+          mkdir -p wuzplay-output
+          cp pixljs-src/fw/_build/pixjs_ota_v900.zip wuzplay-output/Wuzplay_Cyberdeck_v9_DFU_KEEP_ZIPPED.zip
+          python3 wuzplay-cyberdeck-v9/package_release.py \
+            wuzplay-output/Wuzplay_Cyberdeck_v9_DFU_KEEP_ZIPPED.zip \
+            --out wuzplay-output \
+            --repo-root .
+          cp firmware-size.txt wuzplay-output/firmware-size.txt
+          unzip -l wuzplay-output/Wuzplay_Cyberdeck_v9_DFU_KEEP_ZIPPED.zip
+          unzip -l wuzplay-output/Wuzplay_Cyberdeck_v9_Verified_Package.zip
+          sha256sum wuzplay-output/*.zip | tee wuzplay-output/SHA256.txt
+
+      - name: Publish build facts as run annotations
+        run: |
+          echo "::notice title=Firmware size (text data bss dec)::$(tail -n 1 firmware-size.txt)"
+          unzip -p wuzplay-output/Wuzplay_Cyberdeck_v9_DFU_KEEP_ZIPPED.zip manifest.json | tr -d ' \n' | head -c 900 > manifest-compact.txt
+          echo "::notice title=DFU manifest::$(cat manifest-compact.txt)"
+          echo "::notice title=SHA256::$(tr '\n' ' ' < wuzplay-output/SHA256.txt)"
+
+      - name: Upload verified Wuzplay package
+        uses: actions/upload-artifact@v4
+        with:
+          name: Wuzplay-Cyberdeck-v9-Verified-Package
+          path: wuzplay-output/
+          if-no-files-found: error
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Wuzplay-Cyberdeck-v9-Build-Log
+          path: build.log
+          if-no-files-found: ignore
